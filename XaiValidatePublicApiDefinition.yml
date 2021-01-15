@@ -25,7 +25,7 @@ info:
       - XAI Extract (OCR) - coming soon!
 
     ## Getting Started  
-    The XAI Validate API allows you to integrate assessment of financial poistion into your workflow. The table below provides a summary of endpoints, which allow you to get "data in" and then "data out". You can use the [XAI Validate user interface](https://app.tictoc.ai) at any time to interact with your data and the automated assessment of financial position.
+    The XAI Validate API allows you to integrate assessment of financial position into your workflow. The table below provides a summary of endpoints, which allow you to get "data in" and then "data out". You can use the [XAI Validate user interface](https://app.tictoc.ai) at any time to interact with your data and the automated assessment of financial position.
       
     Before you can start using the API there are a few things you will need to do first:
       - sign-up for XAI Validate. [Contact us](mailto:enterprise@tictoc.ai) to discuss the right product and access to our `sandbox`
