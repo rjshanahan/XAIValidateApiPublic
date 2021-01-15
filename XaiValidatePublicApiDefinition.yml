@@ -4,25 +4,30 @@ info:
   description:   >-
     ## Welcome to XAI Validate  
     
-    XAI Validate is powered by [Tic:Toc](https://tictoc.ai), a technology solutions company providing innovative products to make financial services processes faster, smarter and simpler.
-    
-    
-    XAI Validate solves for digital financial data validation using Explainable Artificial Intelligence (XAI) models to distil and render the customers’ financial data into an application decision summary. It is powered by a set of sophisticated normalisation, categorisation and assessment models, supported by an intuitive user interface that allows assessors to interact with and understand your customers' financial data. This will dramatically reduce the time required for assessment and to increase conversion, while ensuring process assurance and credit quality. We prove all technology against our direct to consumer home loans business, [Tic:Toc Home Loans](https://tictoc.com.au/).
-     
+    XAI Validate is powered by [Tic:Toc](https://tictoc.ai), a Fintech providing innovative products to make financial services processes faster, smarter and simpler. We provide lenders with AI automation technology to grow their lending volumes without compromising on credit quality.
+         
     If you're a lender you can use XAI Validate in two ways:
-      - **Detect and Position** (Actuals only): instantly identify income, expenses, assets and liabilities, behavioural and risk insights.
-      - **Verify and Decision** (Stated vs Actuals): ingest and verify customers’ declared financials against the actual financial position identified in the data. This also allows you to configure your credit policy automating responsible lending assessment decisions.      
+      - **Detect and Position**: instantly identify income, expenses, assets and liabilities, behavioural and risk insights. .
+      - **Declare and Verify**:Verify customers’ declared financials against the actual financial position identified in the data. Ideal for those who want to configure their credit policy and underwrite by exception.      
       
     XAI Validate supports a range of data sources including:
       - popular data aggregators
       - connect your own data
       - Consumer Data Right support (coming soon!)
-          
-    ## Getting Started  
+     
     
-    The XAI Validate API provides a way to seamlessly integrate assessment of financial poistion into your workflow. The table below provides a summary of endpoints, which allow you to get "data in" and then "data out". You can use the [XAI Validate user interface](https://app.tictoc.ai) at any time to interact with your data and the automated assessment of financial position.
+    ## Data Inputs
+     
+    XAI Validate suport a range of data sources including:
+      - popular data aggregators
+      - connect your own data
+      - Consumer Data Right (CDR) - coming soon!
+      - XAI Extract (OCR) - coming soon!
+
+    ## Getting Started  
+    The XAI Validate API allows you to integrate assessment of financial poistion into your workflow. The table below provides a summary of endpoints, which allow you to get "data in" and then "data out". You can use the [XAI Validate user interface](https://app.tictoc.ai) at any time to interact with your data and the automated assessment of financial position.
       
-    You'll need the following to start developing:
+    Before you can start using the API there are a few things you will need to do first:
       - sign-up for XAI Validate. [Contact us](mailto:enterprise@tictoc.ai) to discuss the right product and access to our `sandbox`
       - your client credentials for the XAI Validate user interface and API. These will provided to you by Tic:Toc, and must be stored securely
       - you're then ready to start developing against our test environment using the endpoints below. 
@@ -48,7 +53,7 @@ info:
       - **accounts**: applicants own accounts, which can be held individually or jointly with the other  applicant on the application
       - **transactions**: these are the credits and debits against each account. Transactions are enriched with attributes such as categories, high risk flags and expense management. 
       
-    ## References
+    ## Resources
     
     Here are a few resources to help you on your way:
       - **User guide**: you can access this through the XAI Validate application. Simply login and navigate to your name in the top right.
