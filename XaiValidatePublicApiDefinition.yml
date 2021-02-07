@@ -172,7 +172,6 @@ paths:
           | illion ODS BrokerFlow | `ODS` | A list of your BrokerFlow `DocumentIds`| You can provide multiple `DocumentIds` for each applicant. |
           | illion ODS MultiBank (coming soon!)| `ODSSCV` | None | When your customers link their accounts, their data will automatically synch with your XAI Validate application. |
           | Yodlee v1.1 | `YOD11` | As list of your Yodlee customer identifiers. | You should have a one to one linking of applicant to Yodlee customer identifier. |
-          | Yodlee v1.0 | `YOD` | As list of your Yodlee customer identifiers. | You should have a one to one linking of applicant to Yodlee customer identifier. |
           | Basiq (coming soon!) | `BSQ` | As list of your Basiq customer identifiers. | You should have a one to one linking of applicant to Basiq customer identifier. |
           | Connect your own data | `EXT` | None | By selecting `EXT` you will be required to upload your data to the application. Please see [`/financialvalidation/provideaccounts`](#/financialvalidation/provideaccounts) for more information. |  
         
@@ -219,13 +218,14 @@ paths:
       description:  >-
     
         This versatile endpoint allows you to perform the following functions against an existing application:
+          
           | Function | Description |
           |-----|-----|        
           | Add/edit "stated/declared" financials against an application | This is only relevant if you require a "declare and verify" approach to financial assessment, and have passed the `"IsActualsOnly": false` parameter in your [`/application/create`](#Application/Create) request.|
           | Link additional data source to an application |This is useful when your applicants provide additional bank account information thorugh your data aggregator, and you need to rerun the automated assessment. Please see the table below for data source details. |
           | Add/edit applicants within an application| Add new applicants or edit existing ones. |
-         
-        When you call the endpoint, automated assessment will commence once you receive a successful response. You can monitor the progress using the [`/application/getstatus`](#/application/getstatus) endpoint.
+          
+        When you call the endpoint, automated assessment will commence once you receive a successful response. You can monitor the progress using the [`/application/getstatus`](#/application/getstatus) endpoint or by subscribing the status update webhook.
           
         Please note the assessment levels XAI Validate currently supports for providing "stated/declared" financials. These have been designed in line with lending best practices:
           
@@ -244,7 +244,6 @@ paths:
           | illion ODS BrokerFlow | `ODS` | A list of your BrokerFlow `DocumentIds`| You can provide multiple `DocumentIds` for each applicant. |
           | illion ODS MultiBank (coming soon!)| `ODSSCV` | None | When your customers link their accounts, their data will automatically synch with your XAI Validate application. |
           | Yodlee v1.1 | `YOD11` | As list of your Yodlee customer identifiers. | You should have a one to one linking of applicant to Yodlee customer identifier. |
-          | Yodlee v1.0 | `YOD` | As list of your Yodlee customer identifiers. | You should have a one to one linking of applicant to Yodlee customer identifier. |
           | Basiq (coming soon!) | `BSQ` | As list of your Basiq customer identifiers. | You should have a one to one linking of applicant to Basiq customer identifier. |
           | Connect your own data | `EXT` | None | By selecting `EXT` you will be required to upload your data to the application. Please see [`/financialvalidation/provideaccounts`](#/financialvalidation/provideaccounts) for more information. |  
         
@@ -344,9 +343,10 @@ paths:
     
         This endpoint allows you to upload your customers data in a specific format. The unique upload URL will be returned in the [`/financialvalidation/provideaccounts`](#/manageAccountTransaction) endpoint response. A unique URL will be returned per applicant.
           
-        Please note:
-        * you will `PUT` the object to the `UploadUrl` directly, not to the XAI Validate endpoint.
-        * no headers are required in the `PUT`.
+        Please note:  
+          
+          * you will `PUT` the object to the `UploadUrl` directly, not to the XAI Validate endpoint.  
+          * no headers are required in the `PUT`.
           
         Once you have successfully uploaded the data, the automated financial validation process will be triggered.
            
