@@ -10,27 +10,23 @@ info:
       - **Detect and Position**: instantly identify income, expenses, assets and liabilities, behavioural and risk insights. .
       - **Declare and Verify**:Verify customers’ declared financials against the actual financial position identified in the data. Ideal for those who want to configure their credit policy and underwrite by exception.      
       
-    XAI Validate supports a range of data sources including:
-      - popular data aggregators
-      - connect your own data
-      - Consumer Data Right support (coming soon!)
-     
     
     ## Data Inputs
      
     XAI Validate suport a range of data sources including:
-      - popular data aggregators
-      - connect your own data
+      - Popular data aggregators
+      - Connect your own data
       - Consumer Data Right (CDR) - coming soon!
       - XAI Extract (OCR) - coming soon!
 
     ## Getting Started  
+    
     The XAI Validate API allows you to integrate assessment of financial position into your workflow. The table below provides a summary of endpoints, which allow you to get "data in" and then "data out". You can use the [XAI Validate user interface](https://app.tictoc.ai) at any time to interact with your data and the automated assessment of financial position.
       
     Before you can start using the API there are a few things you will need to do first:
-      - sign-up for XAI Validate. [Contact us](mailto:enterprise@tictoc.ai) to discuss the right product and access to our `sandbox`
-      - your client credentials for the XAI Validate user interface and API. These will provided to you by Tic:Toc, and must be stored securely
-      - you're then ready to start developing against our test environment using the endpoints below. 
+      - Sign-up for XAI Validate. [Contact us](mailto:enterprise@tictoc.ai) to discuss the right product and access to our `sandbox`
+      - Your client credentials for the XAI Validate user interface and API. These will provided to you by Tic:Toc, and must be stored securely
+      - You're then ready to start developing against our test environment using the endpoints below. 
       
 
       | Endpoint Name| Description |
@@ -53,12 +49,19 @@ info:
       - **accounts**: applicants own accounts, which can be held individually or jointly with the other  applicant on the application
       - **transactions**: these are the credits and debits against each account. Transactions are enriched with attributes such as categories, high risk flags and expense management. 
       
+   
     ## Resources
     
     Here are a few resources to help you on your way:
-      - **User guide**: you can access this through the XAI Validate application. Simply login and navigate to your name in the top right.
-      - **SDKs**: coming soon
-      - **Postman 'Collection'**: download this collection to help you interact with the XAI Validate APIs using Postman (coming soon).
+      - **User guide**: you can access this through the XAI Validate application with the in-app contextual help.
+      - **Postman 'Collection'**: <a href="https://github.com/TicTocHomeLoans/XAIValidateApiPublic/raw/main/XAI%20Validate%20API%20Collection.postman_collection.json" target="_blank">download the Postman Collection here</a> to help you interact with the XAI Validate API.
+      - **SDK**: coming soon!
+      
+    ## Support
+    
+    **Contact**
+  
+    Need help? [Get in touch](mailto:enterprise@tictoc.ai)!
       
   contact:
     name: Tic:Toc Enterprise
@@ -3055,10 +3058,10 @@ components:
           type: number
           format: integer
           example: 1
-          description: 	The number of test applications to create.
+          description:   The number of test applications to create.
         IsStatedAndActual:
           type: boolean
-          description:	Boolean to indicate whether you want a "declare and verify" approach to validation (true) or "detect and position" (false).
+          description:  Boolean to indicate whether you want a "declare and verify" approach to validation (true) or "detect and position" (false).
         CreateJointApplication:
           type: boolean
           description: Boolean to indicate whether you want a single or joint test application.
