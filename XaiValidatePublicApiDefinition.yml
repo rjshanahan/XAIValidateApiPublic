@@ -495,6 +495,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseRequestError'
       x-codegen-request-body-name: RequestBody  
+  /financialvalidation/result/getinsurers/{ApplicationReferenceNumber}:
+    get:
+      tags:
+      - Results
+      summary: (Coming soon!) Identify instances of insurance premiums, excess and claim payments.
+        within an application's linked data.
+      description: >-
+      
+        This endpoint allows you to extract insurance information from your customer's financial account and transaction data. The table below summarises the key objects returned:
+          
+          | Object | Description |
+          |-----|-----|   
+          | `InsuranceClaimsPayments` | This list of objects summarises any insurance claim payments identified in the data. These are usually one off events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average.|
+          | `InsuranceExcessPayments` | This list of objects summarises any insurance excess payments identified in the data. These are usually one off events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average.|
+          | `InsurancePremiums` | This list of objects summarises any insurance premium payments identified in the data. This includes ongoing and one of events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average, regularity, first and last date.|
+        
+      operationId: getInsurers
+      parameters:
+        - in: path
+          name: ApplicationReferenceNumber
+          schema:
+            type: string
+          required: true
+          description: The Application Reference Number provided to you when you created an application.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseGetInsurersSummary'
+      x-codegen-request-body-name: RequestBody
+
   /financialvalidation/application/getstatus:
     post:
       tags:
@@ -2201,6 +2234,124 @@ components:
           type: string
           format: uuid
           description: unique request identifier
+    ResponseGetInsurersSummary:
+      required:
+      - Application
+      type: object
+      properties:
+        Application:
+          type: object
+          properties:
+            ApplicationReferenceNumber:
+              type: string
+              description: Unique XAI Validate application reference number (Arn).
+                Results for one application can be retrieved at a time.
+            ExternalApplicationReferenceNumber:
+              type: string
+              description: Unique application identifier from your own system.
+          description: Request object containing Application Create payload.
+        InsuranceClaimsPayments:
+          type: array
+          description: This list of objects summarises any insurance claim payments identified in the data. These are usually one of events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average.
+          items:
+            type: object
+            properties:
+              InsuranceSummary:
+                $ref: '#/components/schemas/ResponseInsuranceSummary'
+        InsuranceExcessPayments:
+          type: array
+          description: This list of objects summarises any insurance excess payments identified in the data. These are usually one of events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average.
+          items:
+            type: object
+            properties:
+              InsuranceSummary:
+                $ref: '#/components/schemas/ResponseInsuranceSummary'
+        InsurancePremiums:
+          type: array
+          description:   This list of objects summarises any insurance premium payments identified in the data. This includes ongoing and one of events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average, regularity, first and last date.
+          items:
+            type: object
+            properties:
+              InsuranceSummary:
+                $ref: '#/components/schemas/ResponseInsuranceSummary'
+    ResponseInsuranceSummary:
+      type: object
+      required:
+        - InsurerName
+        - InsurerType
+        - TransactionCount
+        - TransactionSum
+        - TransactionAverage
+        - TransactionSd
+        - TransactionRange
+      properties:
+        InsurerName:
+          type: string
+          description: Name of the insurer.
+          example: Your Insurer Pty Ltd
+        InsurerType:
+          type: string
+          description: The type the insurer.
+          enum:
+            - HOME
+            - CAR
+            - LIFE
+            - BUSINESS
+            - PET
+            - HEALTH
+            - OTHER
+        TransactionCount:
+          type: number
+          description: The count of contributing transactions.
+        TransactionSum:
+          type: number
+          description: The sum of contributing transactions.
+        TransactionAverage:
+          type: number
+          description: The arithmetic average of contributing transactions.
+        TransactionSd:
+          type: number
+          description: The standard deviation of contributing transactions.
+        TransactionRange:
+          type: number
+          description: Days between first and last transaction identified.
+        Transactions:
+          description: The underlying transactions for the Insurance Summary.
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseBasicTransaction'
+    ResponseBasicTransaction:
+      type: object
+      required:
+        - AccountNumber
+        - FinancialInstitution
+        - TransactionPostedOn
+        - TransactionDescription
+        - TransactionAmount
+      properties:
+        AccountNumber:
+          type: string
+          description: The account number to which the transaction belongs.
+        AccountOwner:
+          type: string
+          description: Names of the account owner - can be multiple in the case of joint accounts.
+        FinancialInstitution:
+          type: string
+          description: Financial Instituion name for the account.
+        TransactionPostedOn:
+          type: string
+          format: date-time
+          description: The transaction posted date.
+        TransactionDescription:
+          type: number
+          description: The transaction description.
+        TransactionAmount:
+          type: number
+          description: The amount of the transaction including the sign.
+        TransactionCategory:
+          type: string
+          description: The category allocated to the transaction.
+
     RequestJobsFinancialValidation:
       required:
       - Application
