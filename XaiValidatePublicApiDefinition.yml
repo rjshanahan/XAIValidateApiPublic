@@ -499,17 +499,17 @@ paths:
     get:
       tags:
       - Results
-      summary: (Coming soon!) Identify instances of insurance premiums, excess and claim payments.
+      summary: (Coming soon!) Identify instances of insurance premiums, excess and claim payments
         within an application's linked data.
       description: >-
       
-        This endpoint allows you to extract insurance information from your customer's financial account and transaction data. The table below summarises the key objects returned:
+        This endpoint allows you to extract insurance information from your customer's linked financial account and transaction data. The table below summarises the key objects returned:
           
           | Object | Description |
           |-----|-----|   
           | `InsuranceClaimsPayments` | This list of objects summarises any insurance claim payments identified in the data. These are usually one off events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average.|
           | `InsuranceExcessPayments` | This list of objects summarises any insurance excess payments identified in the data. These are usually one off events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average.|
-          | `InsurancePremiums` | This list of objects summarises any insurance premium payments identified in the data. This includes ongoing and one of events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average, regularity, first and last date.|
+          | `InsurancePremiums` | This list of objects summarises any insurance premium payments identified in the data. This includes ongoing and one off events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average, regularity, first and last date.|
         
       operationId: getInsurers
       parameters:
