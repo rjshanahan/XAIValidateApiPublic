@@ -3,65 +3,53 @@ info:
   title: XAI Validate API
   description:   >-
     ## Welcome to XAI Validate  
-    
-    XAI Validate is powered by [Tic:Toc](https://tictoc.ai), a Fintech providing innovative products to make financial services processes faster, smarter and simpler. We provide lenders with AI automation technology to grow their lending volumes without compromising on credit quality.
-         
-    If you're a lender you can use XAI Validate in two ways:
-      - **Detect and Position**: instantly identify income, expenses, assets and liabilities, behavioural and risk insights. .
-      - **Declare and Verify**:Verify customers’ declared financials against the actual financial position identified in the data. Ideal for those who want to configure their credit policy and underwrite by exception.      
-      
-    
+      XAI Validate is powered by [Tic:Toc](https://tictoc.ai), a Fintech providing innovative products to make financial services processes faster, smarter and simpler. We provide lenders with AI automation technology to grow their lending volumes without compromising on credit quality.
+            
+      If you're a lender you can use XAI Validate in two ways:
+      - **Detect and Position**: instantly identify income, expenses, assets and liabilities, behavioural and risk insights.
+      - **Declare and Verify**: verify customers’ declared financials against the actual financial position identified in the data. Ideal for those who want to configure their credit policy and underwrite by exception.      
+        
     ## Data Inputs
-     
-    XAI Validate suport a range of data sources including:
-      - Popular data aggregators
-      - Connect your own data
+      XAI Validate supports a range of data sources including:
+      - popular data aggregators
+      - connect your own data
       - Consumer Data Right (CDR) - coming soon!
-      - XAI Extract (OCR) - coming soon!
+      - XAI Data (OCR) - coming soon!
 
     ## Getting Started  
-    
-    The XAI Validate API allows you to integrate assessment of financial position into your workflow. The table below provides a summary of endpoints, which allow you to get "data in" and then "data out". You can use the [XAI Validate user interface](https://app.tictoc.ai) at any time to interact with your data and the automated assessment of financial position.
-      
-    Before you can start using the API there are a few things you will need to do first:
+      The XAI Validate API allows you to integrate the assessment of financial position into your workflow. The table below provides a summary of endpoints, which allow you to get "data in" and then "data out". You can use the [XAI Validate user interface](https://app.tictoc.ai) at any time to interact with your data and the automated assessment of financial position.
+          
+      Before you can start using the API there are a few things you will need to do first:
       - Sign-up for XAI Validate. [Contact us](mailto:enterprise@tictoc.ai) to discuss the right product and access to our `sandbox`
-      - Your client credentials for the XAI Validate user interface and API. These will provided to you by Tic:Toc, and must be stored securely
+      - Your client credentials for the XAI Validate user interface and API. These will be be provided to you by Tic:Toc, and must be stored securely
       - You're then ready to start developing against our test environment using the endpoints below. 
-      
 
-      | Endpoint Name| Description |
-      |-----|-----|
-      | [`/application/create`](#/financialvalidation/application/create) | Create an application linking your applicants, and their external data aggregator reference identifiers.  |
-      | [`/application/manage`](#/financialvalidation/application/manage) | Update an existing application including adding "declared/stated" financials, updating applicant details or adding new xternal data aggregator reference identifiers.  |
-      | [`/provideaccounts`](#/financialvalidation/provideaccounts) | Connect your customers' account and transaction data against an existing application and applicant. This is ideal if you've sourced your own raw transaction data from core systems or through Open Banking.  |
-      | [`/application/getstatus`](#/application/getstatus) |  Monitor the progress of automated financial assessment.  |
-      | [`/result/getsummary`](#/result/getsummary)| Retrieve the results of automated financial assessment. The endpoint will surface automated assessments against your configured credit policy (where relevant), and validation figures for income, expenses, assets and liabilities. |
-      | [`/serviceability/getserviceability`](#/serviceability/getserviceability)| Calculate serviceability for your application including income, expense, debt, borrowing amount and ratios. |
-      | [`/token`](#/token) | XAI Validate uses OAuth2 authentication. Every time you call these endpoints you'll need to ensure you have a valid token.  |
-      
-      
+        | Endpoint Name| Description |
+        |-----|-----|
+        | [`/application/create`](#/financialvalidation/application/create) | Create an application linking your applicants, and their external data aggregator reference identifiers.  |
+        | [`/application/manage`](#/financialvalidation/application/manage) | Update an existing application including adding "declared/stated" financials, updating applicant details or adding new eexternal data aggregator reference identifiers.  |
+        | [`/provideaccounts`](#/financialvalidation/provideaccounts) | Connect your customers' account and transaction data against an existing application and applicant. This is ideal if you've sourced your own raw transaction data from core systems or through Open Banking.  |
+        | [`/application/getstatus`](#/application/getstatus) |  Monitor the progress of automated financial assessment.  |
+        | [`/result/getsummary`](#/result/getsummary)| Retrieve the results of automated financial assessment. The endpoint will surface automated assessments against your configured credit policy (where relevant), and validation figures for income, expenses, assets and liabilities. |
+        | [`/serviceability/getserviceability`](#/serviceability/getserviceability)| Calculate serviceability for your application including income, expense, debt, borrowing amount and ratios. |
+        | [`/token`](#/token) | XAI Validate uses OAuth2 authentication. Every time you call these endpoints you'll need to ensure you have a valid token.  |
+          
     ## Data Model  
-      
-    When you interact with the XAI Validate user interface and APIs you'll notice there's a clear structure to the data. We've designed the XAI Validate data model to be optimised for automating assessment of financial position. The data hierarchy is:
+      When you interact with the XAI Validate user interface and APIs you'll notice there's a clear structure to the data. We've designed the XAI Validate data model to be optimised for automating assessment of financial position. The data hierarchy is:
       - **application**: this is the structure that holds all other elements and represents a point-in-time product application from your customer
       - **applicants**: an application can have one or more applicants (currently limited to two). Applicants can belong to multiple applications, e.g. a customer applying for a credit card and a home loan would exist in two applications
-      - **households**: your applicants belong to households. For convenience we will assign applicants to a single, default household at the start of application
+      - **households**: your applicants belong to households. For convenience, we will assign applicants to a single, default household at the start of the the application
       - **accounts**: applicants own accounts, which can be held individually or jointly with the other  applicant on the application
-      - **transactions**: these are the credits and debits against each account. Transactions are enriched with attributes such as categories, high risk flags and expense management. 
-      
-   
+      - **transactions**: these are the credits and debits against each account. Transactions are enriched with attributes such as categories, high-risk flags, and expense management. 
+          
     ## Resources
-    
-    Here are a few resources to help you on your way:
+      Here are a few resources to help you on your way:
       - **User guide**: you can access this through the XAI Validate application with the in-app contextual help.
       - **Postman 'Collection'**: <a href="https://github.com/TicTocHomeLoans/XAIValidateApiPublic/raw/main/XAI%20Validate%20API%20Collection.postman_collection.json" target="_blank">download the Postman Collection here</a> to help you interact with the XAI Validate API.
       - **SDK**: coming soon!
-      
+
     ## Support
-    
-    **Contact**
-  
-    Need help? [Get in touch](mailto:enterprise@tictoc.ai)!
+      Need help? [Get in touch](mailto:enterprise@tictoc.ai)!
       
   contact:
     name: Tic:Toc Enterprise
