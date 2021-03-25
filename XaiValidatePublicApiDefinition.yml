@@ -3,53 +3,58 @@ info:
   title: XAI Validate API
   description:   >-
     ## Welcome to XAI Validate  
-      XAI Validate is powered by [Tic:Toc](https://tictoc.ai), a Fintech providing innovative products to make financial services processes faster, smarter and simpler. We provide lenders with AI automation technology to grow their lending volumes without compromising on credit quality.
-            
-      If you're a lender you can use XAI Validate in two ways:
-      - **Detect and Position**: instantly identify income, expenses, assets and liabilities, behavioural and risk insights.
-      - **Declare and Verify**: verify customers’ declared financials against the actual financial position identified in the data. Ideal for those who want to configure their credit policy and underwrite by exception.      
-        
-    ## Data Inputs
-      XAI Validate supports a range of data sources including:
+    
+    XAI Validate is powered by [Tic:Toc](https://tictoc.ai), a technology solutions company providing innovative products to make financial services processes faster, smarter and simpler.
+    
+    
+    XAI Validate solves for digital financial data validation using Explainable Artificial Intelligence (XAI) models to distil and render the customers’ financial data into an application decision summary. It is powered by a set of sophisticated normalisation, categorisation and assessment models, supported by an intuitive user interface that allows assessors to interact with and understand your customers' financial data. This will dramatically reduce the time required for assessment and to increase conversion, while ensuring process assurance and credit quality. We prove all technology against our direct to consumer home loans business, [Tic:Toc Home Loans](https://tictoc.com.au/).
+     
+    If you're a lender you can use XAI Validate in two ways:
+      - **Detect and Position** (Actuals only): instantly identify income, expenses, assets and liabilities, behavioural and risk insights.
+      - **Verify and Decision** (Stated vs Actuals): ingest and verify customers’ declared financials against the actual financial position identified in the data. This also allows you to configure your credit policy automating responsible lending assessment decisions.      
+      
+    XAI Validate supports a range of data sources including:
       - popular data aggregators
       - connect your own data
-      - Consumer Data Right (CDR) - coming soon!
-      - XAI Data (OCR) - coming soon!
-
+      - Consumer Data Right support (coming soon!)
+          
     ## Getting Started  
-      The XAI Validate API allows you to integrate the assessment of financial position into your workflow. The table below provides a summary of endpoints, which allow you to get "data in" and then "data out". You can use the [XAI Validate user interface](https://app.tictoc.ai) at any time to interact with your data and the automated assessment of financial position.
-          
-      Before you can start using the API there are a few things you will need to do first:
-      - Sign-up for XAI Validate. [Contact us](mailto:enterprise@tictoc.ai) to discuss the right product and access to our `sandbox`
-      - Your client credentials for the XAI Validate user interface and API. These will be be provided to you by Tic:Toc, and must be stored securely
-      - You're then ready to start developing against our test environment using the endpoints below. 
+    
+    The XAI Validate API provides a way to seamlessly integrate assessment of financial poistion into your workflow. The table below provides a summary of endpoints, which allow you to get "data in" and then "data out". You can use the [XAI Validate user interface](https://app.tictoc.ai) at any time to interact with your data and the automated assessment of financial position.
+      
+    You'll need the following to start developing:
+      - sign-up for XAI Validate. [Contact us](mailto:enterprise@tictoc.ai) to discuss the right product and access to our `sandbox`
+      - your client credentials for the XAI Validate user interface and API. These will provided to you by Tic:Toc, and must be stored securely
+      - you're then ready to start developing against our test environment using the endpoints below. 
+      
 
-        | Endpoint Name| Description |
-        |-----|-----|
-        | [`/application/create`](#/financialvalidation/application/create) | Create an application linking your applicants, and their external data aggregator reference identifiers.  |
-        | [`/application/manage`](#/financialvalidation/application/manage) | Update an existing application including adding "declared/stated" financials, updating applicant details or adding new eexternal data aggregator reference identifiers.  |
-        | [`/provideaccounts`](#/financialvalidation/provideaccounts) | Connect your customers' account and transaction data against an existing application and applicant. This is ideal if you've sourced your own raw transaction data from core systems or through Open Banking.  |
-        | [`/application/getstatus`](#/application/getstatus) |  Monitor the progress of automated financial assessment.  |
-        | [`/result/getsummary`](#/result/getsummary)| Retrieve the results of automated financial assessment. The endpoint will surface automated assessments against your configured credit policy (where relevant), and validation figures for income, expenses, assets and liabilities. |
-        | [`/serviceability/getserviceability`](#/serviceability/getserviceability)| Calculate serviceability for your application including income, expense, debt, borrowing amount and ratios. |
-        | [`/token`](#/token) | XAI Validate uses OAuth2 authentication. Every time you call these endpoints you'll need to ensure you have a valid token.  |
-          
+      | Endpoint Name| Description |
+      |-----|-----|
+      | [`/application/create`](#/financialvalidation/application/create) | Create an application linking your applicants, and their external data aggregator reference identifiers.  |
+      | [`/application/manage`](#/financialvalidation/application/manage) | Update an existing application including adding "declared/stated" financials, updating applicant details or adding new xternal data aggregator reference identifiers.  |
+      | [`/application/get`](#/financialvalidation/application/get) | Retrieve an existing application using an application reference number.  |
+      | [`/provideaccounts`](#/financialvalidation/provideaccounts) | Connect your customers' account and transaction data against an existing application and applicant. This is ideal if you've sourced your own raw transaction data from core systems or through Open Banking.  |
+      | [`/application/getstatus`](#/application/getstatus) |  Monitor the progress of automated financial assessment.  |
+      | [`/result/getsummary`](#/result/getsummary)| Retrieve the results of automated financial assessment. The endpoint will surface automated assessments against your configured credit policy (where relevant), and validation figures for income, expenses, assets and liabilities. |
+      | [`/serviceability/getserviceability`](#/serviceability/getserviceability)| Calculate serviceability for your application including income, expense, debt, borrowing amount and ratios. |
+      | [`/token`](#/token) | XAI Validate uses OAuth2 authentication. Every time you call these endpoints you'll need to ensure you have a valid token.  |
+      
+      
     ## Data Model  
-      When you interact with the XAI Validate user interface and APIs you'll notice there's a clear structure to the data. We've designed the XAI Validate data model to be optimised for automating assessment of financial position. The data hierarchy is:
+      
+    When you interact with the XAI Validate user interface and APIs you'll notice there's a clear structure to the data. We've designed the XAI Validate data model to be optimised for automating assessment of financial position. The data hierarchy is:
       - **application**: this is the structure that holds all other elements and represents a point-in-time product application from your customer
       - **applicants**: an application can have one or more applicants (currently limited to two). Applicants can belong to multiple applications, e.g. a customer applying for a credit card and a home loan would exist in two applications
-      - **households**: your applicants belong to households. For convenience, we will assign applicants to a single, default household at the start of the the application
+      - **households**: your applicants belong to households. For convenience we will assign applicants to a single, default household at the start of application
       - **accounts**: applicants own accounts, which can be held individually or jointly with the other  applicant on the application
-      - **transactions**: these are the credits and debits against each account. Transactions are enriched with attributes such as categories, high-risk flags, and expense management. 
-          
-    ## Resources
-      Here are a few resources to help you on your way:
-      - **User guide**: you can access this through the XAI Validate application with the in-app contextual help.
-      - **Postman 'Collection'**: <a href="https://github.com/TicTocHomeLoans/XAIValidateApiPublic/raw/main/XAI%20Validate%20API%20Collection.postman_collection.json" target="_blank">download the Postman Collection here</a> to help you interact with the XAI Validate API.
-      - **SDK**: coming soon!
-
-    ## Support
-      Need help? [Get in touch](mailto:enterprise@tictoc.ai)!
+      - **transactions**: these are the credits and debits against each account. Transactions are enriched with attributes such as categories, high risk flags and expense management. 
+      
+    ## References
+    
+    Here are a few resources to help you on your way:
+      - **User guide**: you can access this through the XAI Validate application. Simply login and navigate to your name in the top right.
+      - **SDKs**: coming soon
+      - **Postman 'Collection'**: download this collection to help you interact with the XAI Validate APIs using Postman (coming soon).
       
   contact:
     name: Tic:Toc Enterprise
@@ -206,14 +211,13 @@ paths:
       description:  >-
     
         This versatile endpoint allows you to perform the following functions against an existing application:
-          
           | Function | Description |
           |-----|-----|        
           | Add/edit "stated/declared" financials against an application | This is only relevant if you require a "declare and verify" approach to financial assessment, and have passed the `"IsActualsOnly": false` parameter in your [`/application/create`](#Application/Create) request.|
           | Link additional data source to an application |This is useful when your applicants provide additional bank account information thorugh your data aggregator, and you need to rerun the automated assessment. Please see the table below for data source details. |
           | Add/edit applicants within an application| Add new applicants or edit existing ones. |
-          
-        When you call the endpoint, automated assessment will commence once you receive a successful response. You can monitor the progress using the [`/application/getstatus`](#/application/getstatus) endpoint or by subscribing the status update webhook.
+         
+        When you call the endpoint, automated assessment will commence once you receive a successful response. You can monitor the progress using the [`/application/getstatus`](#/application/getstatus) endpoint.
           
         Please note the assessment levels XAI Validate currently supports for providing "stated/declared" financials. These have been designed in line with lending best practices:
           
@@ -264,6 +268,50 @@ paths:
                 $ref: '#/components/schemas/ResponseRequestError'
         422:
           description: Unable to create application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
+  /financialvalidation/application/get:
+    post:
+      tags:
+      - Application
+      summary: Retrieves an existing application based on a unique identifier.
+      description:  >-
+        This endpoint allows you to retrieve an "application". 
+        
+        The application is retrieved using a `ApplicationReferenceNumber` (Arn) that is made available when creating your application.
+        
+      operationId: getApplication
+      parameters:
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The JSON request body for the POST.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestGetApplication'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseGetApplication'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to retrieve application.
           content:
             application/json:
               schema:
@@ -331,10 +379,9 @@ paths:
     
         This endpoint allows you to upload your customers data in a specific format. The unique upload URL will be returned in the [`/financialvalidation/provideaccounts`](#/manageAccountTransaction) endpoint response. A unique URL will be returned per applicant.
           
-        Please note:  
-          
-          * you will `PUT` the object to the `UploadUrl` directly, not to the XAI Validate endpoint.  
-          * no headers are required in the `PUT`.
+        Please note:
+        * you will `PUT` the object to the `UploadUrl` directly, not to the XAI Validate endpoint.
+        * no headers are required in the `PUT`.
           
         Once you have successfully uploaded the data, the automated financial validation process will be triggered.
            
@@ -367,6 +414,70 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseUploadAccountTransaction'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to link data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
+      
+      
+  /enrichment/categorise:
+    post:
+      tags:
+      - Transactions
+      summary: Categorise and enrich expense transactions.
+      description:  >-
+    
+        This endpoint allows you to enrich raw expense transaction data with the following:
+          * **category**: the LIXI Living Expense aligned expense category, including a prediction probability
+          * **discretionary expense** (coming soon): an indicator as to whether the expense is discretionary spend, including a prediction probability
+          * **expense merchant** (coming soon): the merchant for where the transaction was made
+          * **high risk cash withdrawal** (coming soon): indicator as to whether the cash withdrawal is may be risky (one of multiple on the same day, greater than $2,000 or one of a series of cash withdrawals representing greater than 10% of the months' expenses)
+          * **high risk merchant** (coming soon): an indicator as to whether the merchant is one of a configurable list of potentially risky merchants (e.g. gambling)
+          * **adverse** (coming soon): indicator as to whether the transaction indicates potentially adverse behaviour (e.g. direct debit dishonour).
+          * **internal transfer** (coming soon): indicator as to whether the transaction is an internal transfer.
+            
+        Here are a few important technical notes to remember:
+          * this endpoint is synchronous, with results returned within seconds of your request
+          * no data is persisted - each expense you provide is enriched, a response returned and that's it! No data is saved besides the metadata of your request (e.g. when, number of accounts, number of transactions)
+          * only expenses are accepted (that is, `TransactionAmount` less than $0). If you provide credit transactions in your request, these will not be included in the response
+          * a maximum of 5 accounts can be submitted in a single request
+          * a total of 2,000 transactions can be submitted in a single request
+           
+        The request supports multiple account and transaction elements, and is consistent with the [`/financialvalidation/provideaccounts`](#/manageAccountTransaction) format. However, you don't need to supply all these elements. Below is an example of the minimal request:
+          * `AccountType`: you must specify this for each list of transaction. If you don't know you can simply provide `NOTMATCHED`. The options are `TRANSACTION`, `CREDITCARD`, `HOMELOAN`, `PERSONALLOAN`
+          * `TransactionPostedOn`: the date of the transaction within the `Transactions` list
+          * `TransactionDescription`: the raw transaction description
+          * `TransactionAmount`: the raw transaction amount with its sign. Remember, only expenses (amount < $0) are categorised by this endpoint.
+      operationId: enrichExpenses
+      parameters:
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The JSON request body for the POST.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestEnrichExpense'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseEnrichExpense'
         401:
           description: Unauthorized.
           content:
@@ -483,39 +594,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseRequestError'
       x-codegen-request-body-name: RequestBody  
-  /financialvalidation/result/getinsurers/{ApplicationReferenceNumber}:
-    get:
-      tags:
-      - Results
-      summary: (Coming soon!) Identify instances of insurance premiums, excess and claim payments
-        within an application's linked data.
-      description: >-
-      
-        This endpoint allows you to extract insurance information from your customer's linked financial account and transaction data. The table below summarises the key objects returned:
-          
-          | Object | Description |
-          |-----|-----|   
-          | `InsuranceClaimsPayments` | This list of objects summarises any insurance claim payments identified in the data. These are usually one off events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average.|
-          | `InsuranceExcessPayments` | This list of objects summarises any insurance excess payments identified in the data. These are usually one off events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average.|
-          | `InsurancePremiums` | This list of objects summarises any insurance premium payments identified in the data. This includes ongoing and one off events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average, regularity, first and last date.|
-        
-      operationId: getInsurers
-      parameters:
-        - in: path
-          name: ApplicationReferenceNumber
-          schema:
-            type: string
-          required: true
-          description: The Application Reference Number provided to you when you created an application.
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseGetInsurersSummary'
-      x-codegen-request-body-name: RequestBody
-
   /financialvalidation/application/getstatus:
     post:
       tags:
@@ -661,8 +739,6 @@ paths:
                 '200':
                   description: OK       
       x-codegen-request-body-name: RequestBody
-      
-      
   /serviceability/getserviceability:
     post:
       tags:
@@ -880,11 +956,10 @@ components:
                       DataProviderName:
                         type: string
                         description: Name of your data provider. Currently accepted
-                          values are `YOD` (for Yodlee API 1.0), `YOD11` (for Yodlee API 1.1), `ODS` for illion ODS, and `EXT` if you wish to connect your own data.
+                          values are `YOD11` (for Yodlee API 1.1), `ODS` for illion ODS, and `EXT` if you wish to connect your own data.
                         enum:
                         - YOD11
                         - ODS
-                        - YOD
                         - EXT
                       DataProviderReference:
                         type: array
@@ -892,9 +967,22 @@ components:
                           data provider.
                         items:
                           type: string
-                    description: Object containing external identifiers for your existing
-                      data aggregator. For example, illion ODS Document IDs for the
-                      applicant. You can only choose one data provider.
+                  CreditBureauReference:
+                    type: object
+                    required: 
+                    - CreditBureauName
+                    properties:
+                      CreditBureauName:
+                        type: string
+                        description: Name of your credit bureau - currently suppors Equifax (`EQX`)
+                        enum:
+                        - EQX
+                      CreditBureauReference:
+                        type: array
+                        description: List of values to be included the credit bureau request.
+                        items:
+                          type: string
+                    description: Object containing credit bureau request information.
             IsActualsOnly:
               type: boolean
               description: "Boolean value indicating if the application requires a\
@@ -915,6 +1003,8 @@ components:
       required:
       - Applicants
       - ApplicationReferenceNumber
+      - ApplicationId
+      - Version
       - CreatedOn
       - RequestId
       type: object
@@ -922,10 +1012,16 @@ components:
         ApplicationReferenceNumber:
           type: string
           description: Unique XAI Validate Application Reference Number (Arn).
+        ApplicationId:
+          type: integer
+          description: Unique identifier for the application.
         CreatedOn:
           type: string
           description: Timestamp indicating when the application was created.
           format: date-time
+        Version:
+          type: string
+          description: The version of the application that was created
         RequestId:
           type: string
           description: Unique identifier which can be used to check the over financial
@@ -950,168 +1046,13 @@ components:
                 description: Email address of the applicant.
               ContactId:
                 type: integer
-                description: Unique identifier for the contact record created for
-                  your applicant.
+                description: Unique identifier for the contact record created for your applicant.
+              Version:
+                type: string
+                description: The version of the application that was created
     RequestManageApplicationFinancials:
-      required:
-      - Application
-      type: object
-      properties:
-        Application:
-          type: object
-          properties:
-            ApplicationReferenceNumber:
-              type: string
-              description: Unique XAI Validate Application Reference Number (Arn).
-                This will be returned from the [`/application/create`](#/application/createApplication)
-                endpoint.
-            DeclaredFinancialsApplication:
-              type: object
-              description: Application-specific "declared financials". These will
-                be consumed as part of XAI Validate's automated assessment, and compared
-                to "actual financials" identified as part of the AI models, within
-                your credit policy tolerances.
-              properties:
-                AssestsCash:
-                  type: number
-                  description: The application's total cash savings - to be used
-                    as "deposit" declared financial.
-            Households:
-              type: array
-              description: Array containing Households. These in turn contain applicants.
-              items:
-                type: object
-                properties:
-                  HouseholdAddress:
-                    type: string
-                    description: |
-                      Household address - default `Household _n_`
-                  DeclaredFinancialsHousehold:
-                    type: object
-                    description: Household-specific "declared financials". These will
-                      be consumed as part of XAI Validate's automated assessment,
-                      and compared to "actual financials" identified as part of the
-                      AI models, within your credit policy tolerances.
-                    properties:
-                      ExpensesMonthly:
-                        type: number
-                        description: The household's monthly expenses. This is the
-                          sum of monthly non-discretionary expenses for the applicants
-                          within the household.
-                  ApplicationContacts:
-                    type: array
-                    description: Object containing array of applicants. The first
-                      Applicant in the array will be considered the "primary" applicant.
-                      The current allowed maximum applicants is two. We will match
-                      applicants based on email address.
-                    items:
-                      type: object
-                      properties:
-                        EmailAddress:
-                          type: string
-                          description: Applicant email address. This will be used
-                            to assign "stated/declared" financials to an applicant
-                        ExternalDataIds:
-                          type: object
-                          properties:
-                            DataProviderName:
-                              type: string
-                              description: Name of your data provider. Currently accepted
-                                values are `YOD` (for Yodlee API 1.0), `YOD11` (for Yodlee API 1.1) and `ODS` for illion ODS.
-                              enum:
-                              - YOD11
-                              - ODS
-                              - YOD
-                            DataProviderReference:
-                              type: array
-                              description: List of external reference identifiers
-                                for your data provider.
-                              items:
-                                type: string
-                          description: If you need to append additional financial
-                            data, your data aggregator details can be passed in this
-                            optional object.
-                        DeclaredFinancialsApplicant:
-                          type: object
-                          description: Applicant-specific "declared financials". These
-                            will be consumed as part of XAI Validate's automated assessment,
-                            and compared to "actual financials" identified as part
-                            of the AI models, within your credit policy tolerances.
-                          properties:
-                            IncomeSalary:
-                              type: object
-                              properties:
-                                IncomeGrossAnnualSalaryAmount:
-                                  type: number
-                                  description: 'The applicant''s gross annual income
-                                    amount. required: true'
-                                IncomeGrossAnnualSalaryFrequency:
-                                  type: string
-                                  description: 'The applicant''s income frequency.
-                                    required: true'
-                                  enum:
-                                  - MONTH
-                                  - FORT
-                                  - WEEK
-                                  - ANNUAL
-                                  - IRREGULAR
-                              description: The applicant's gross annual income.
-                            IncomeRental:
-                              type: array
-                              description: The applicant's rental income per investment
-                                property. Current maximum declared home loans is
-                                8.
-                              items:
-                                type: object
-                                properties:
-                                  RentalPropertyAddress:
-                                    type: string
-                                    description: The address of the investment property.
-                                  IncomeRentalMonthly:
-                                    type: number
-                                    description: Monthly rental income for the investment
-                                      property.
-                                  InvestmentPropertyOwnershipPercentage:
-                                    type: number
-                                    description: Applicant ownership percentage
-                                      for investment property.
-                            LiabilitiesHomeLoans:
-                              type: array
-                              description: The applicant's home loans. Current maximum
-                                declared home loans is 8.
-                              items:
-                                type: object
-                                properties:
-                                  HomeLoanPropertyAddress:
-                                    type: string
-                                    description: The address of the home loan liability.
-                                  HomeLoanBalance:
-                                    type: number
-                                    description: Declared home loan balance.
-                                  HomeLoanRepaymentMonthly:
-                                    type: number
-                                    description: Declared home loan monthly repayment.
-                                  HomeLoanOwnershipPercentage:
-                                    type: number
-                                    description: Applicant ownership percentage
-                                      for property.
-                            LiabilitiesCreditCardLimit:
-                              type: number
-                              description: 'The applicant''s total credit card limit
-                                for all cards.            '
-                            LiabilitiesCreditCardBalance:
-                              type: number
-                              description: 'The applicant''s total credit card balance
-                                for all cards.                                 '
-                            LiabilitiesPersonaLoanBalance:
-                              type: number
-                              description: 'The applicant''s total personal loan
-                                balance for all loans.            '
-                            LiabilitiesPersonaLoanRepaymentMonthly:
-                              type: number
-                              description: "The applicant's total personal loan\
-                                \ monthly repayment for all loans.    \n\n  "
-          description: Request object containing Application Create payload.
+      $ref: '#/components/schemas/ApplicationSchema'
+      description: Request object containing Application Create payload.
     ResponseManageApplicationFinancials:
       required:
       - Applicants
@@ -2222,124 +2163,6 @@ components:
           type: string
           format: uuid
           description: unique request identifier
-    ResponseGetInsurersSummary:
-      required:
-      - Application
-      type: object
-      properties:
-        Application:
-          type: object
-          properties:
-            ApplicationReferenceNumber:
-              type: string
-              description: Unique XAI Validate application reference number (Arn).
-                Results for one application can be retrieved at a time.
-            ExternalApplicationReferenceNumber:
-              type: string
-              description: Unique application identifier from your own system.
-          description: Request object containing Application Create payload.
-        InsuranceClaimsPayments:
-          type: array
-          description: This list of objects summarises any insurance claim payments identified in the data. These are usually one of events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average.
-          items:
-            type: object
-            properties:
-              InsuranceSummary:
-                $ref: '#/components/schemas/ResponseInsuranceSummary'
-        InsuranceExcessPayments:
-          type: array
-          description: This list of objects summarises any insurance excess payments identified in the data. These are usually one of events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average.
-          items:
-            type: object
-            properties:
-              InsuranceSummary:
-                $ref: '#/components/schemas/ResponseInsuranceSummary'
-        InsurancePremiums:
-          type: array
-          description:   This list of objects summarises any insurance premium payments identified in the data. This includes ongoing and one of events. An object is returned per insurance entity identified, which includes key descriptive statistics such as sum, count, average, regularity, first and last date.
-          items:
-            type: object
-            properties:
-              InsuranceSummary:
-                $ref: '#/components/schemas/ResponseInsuranceSummary'
-    ResponseInsuranceSummary:
-      type: object
-      required:
-        - InsurerName
-        - InsurerType
-        - TransactionCount
-        - TransactionSum
-        - TransactionAverage
-        - TransactionSd
-        - TransactionRange
-      properties:
-        InsurerName:
-          type: string
-          description: Name of the insurer.
-          example: Your Insurer Pty Ltd
-        InsurerType:
-          type: string
-          description: The type the insurer.
-          enum:
-            - HOME
-            - CAR
-            - LIFE
-            - BUSINESS
-            - PET
-            - HEALTH
-            - OTHER
-        TransactionCount:
-          type: number
-          description: The count of contributing transactions.
-        TransactionSum:
-          type: number
-          description: The sum of contributing transactions.
-        TransactionAverage:
-          type: number
-          description: The arithmetic average of contributing transactions.
-        TransactionSd:
-          type: number
-          description: The standard deviation of contributing transactions.
-        TransactionRange:
-          type: number
-          description: Days between first and last transaction identified.
-        Transactions:
-          description: The underlying transactions for the Insurance Summary.
-          type: array
-          items:
-            $ref: '#/components/schemas/ResponseBasicTransaction'
-    ResponseBasicTransaction:
-      type: object
-      required:
-        - AccountNumber
-        - FinancialInstitution
-        - TransactionPostedOn
-        - TransactionDescription
-        - TransactionAmount
-      properties:
-        AccountNumber:
-          type: string
-          description: The account number to which the transaction belongs.
-        AccountOwner:
-          type: string
-          description: Names of the account owner - can be multiple in the case of joint accounts.
-        FinancialInstitution:
-          type: string
-          description: Financial Instituion name for the account.
-        TransactionPostedOn:
-          type: string
-          format: date-time
-          description: The transaction posted date.
-        TransactionDescription:
-          type: number
-          description: The transaction description.
-        TransactionAmount:
-          type: number
-          description: The amount of the transaction including the sign.
-        TransactionCategory:
-          type: string
-          description: The category allocated to the transaction.
-
     RequestJobsFinancialValidation:
       required:
       - Application
@@ -3128,6 +2951,250 @@ components:
           type: string
           description: 'Unique identifier for the request that generated the error.     '
           format: uuid
+                
+    RequestEnrichExpense:
+      required:
+        - Accounts
+      type: object
+      properties:
+        Accounts:
+          type: array
+          description: List containing your applicant's account data
+          items:
+            type: object
+            properties:
+              AccountId:
+                type: string
+                format: uuid
+                description: a unique identifier you've allocated to the account
+              FinancialInstitution:
+                type: string
+                example: "Commonwealth Bank of Australia"
+                description: the financial institution name from an agreed enumeration
+              AccountBsb:
+                type: string
+                example: 065-125
+                description: the account BSB if available
+              AccountNumber:
+                type: string
+                example: 112xxxx4658
+                description: Account number from the source system. This can be obfuscated before providing. This will form part of the matching logic to identify joint account ownership.
+              AccountType:
+                type: string
+                example: TRANSACTION
+                description: Account type indicator. This must be provided. If you don't know it then please provide `NOTMATCHED` 
+                enum:
+                - TRANSACTION
+                - CREDITCARD
+                - HOMELOAN
+                - PERSONALLOAN
+                - NOTMATCHED
+              AccountName:
+                type: string
+                example: PARTY ACCOUNT
+                description: The name of the account.
+              CurrentBalance:
+                type: number
+                example: -5486.15
+                description: The balance of the account at the request point of time. Can be positive, zero or negative
+              AvailableBalance:
+                type: number
+                example: -5454.15
+                description: Balance representing the amount of funds available for transfer. Assumed to be zero or positive. This should be the `CurrentBalance` – sum(pending transactions)
+              CreditLimit:
+                type: number
+                example: 10000
+                description: The maximum amount of credit available for the account.
+              Transactions:
+                type: array
+                description: List containing your applicant's account's transactions
+                items:
+                  type: object
+                  required:
+                  - TransactionPostedOn
+                  - TransactionDescription
+                  - TransactionAmount
+                  properties:
+                    TransactionId:
+                      type: string
+                      format: uuid
+                      description: Unique transaction identifier from your source system.
+                    TransactionPostedOn:
+                      type: string
+                      format: date-time
+                      description: This the date on which the transaction was posted to the account.
+                    TransactionDescription:
+                      type: string
+                      example: Coffee from the corner Recxxx65125
+                      description: The transaction description/narrative
+                    TransactionAmount:
+                      type: number
+                      example: -5.56
+                      description: The amount of the transaction including the sign. Expected to be positive,  negative or zero.
+    ResponseEnrichExpense:
+      required:
+        - Accounts
+      type: object
+      properties:
+        Accounts:
+          type: array
+          description: List containing your applicant's account data
+          items:
+            type: object
+            required:
+              - AccountType
+            properties:
+              AccountId:
+                type: string
+                format: uuid
+                description: a unique identifier you've allocated to the account
+              FinancialInstitution:
+                type: string
+                example: "Commonwealth Bank of Australia"
+                description: the financial institution name from an agreed enumeration
+              AccountBsb:
+                type: string
+                example: 065-125
+                description: the account BSB if available
+              AccountNumber:
+                type: string
+                example: 112xxxx4658
+                description: Account number from the source system. This can be obfuscated before providing. This will form part of the matching logic to identify joint account ownership.
+              AccountType:
+                type: string
+                example: TRANSACTION
+                description: Account type indicator. This must be provided. If you don't know it then please provide `NOTMATCHED` 
+                enum:
+                - TRANSACTION
+                - CREDITCARD
+                - HOMELOAN
+                - PERSONALLOAN
+                - NOTMATCHED
+              AccountName:
+                type: string
+                example: PARTY ACCOUNT
+                description: The name of the account.
+              CurrentBalance:
+                type: number
+                example: -5486.15
+                description: The balance of the account at the request point of time. Can be positive, zero or negative
+              AvailableBalance:
+                type: number
+                example: -5454.15
+                description: Balance representing the amount of funds available for transfer. Assumed to be zero or positive. This should be the `CurrentBalance` – sum(pending transactions)
+              CreditLimit:
+                type: number
+                example: 10000
+                description: The maximum amount of credit available for the account.
+              Transactions:
+                type: array
+                description: List containing your applicant's account's transactions
+                items:
+                  type: object
+                  required:
+                  - TransactionPostedOn
+                  - TransactionDescription
+                  - TransactionAmount
+                  - ExpenseCategory
+                  - ExpenseCategoryProbability
+                  - ExpenseMerchant
+                  - IsInternalTransfer
+                  - IsAdverseTransaction
+                  - IsHighRiskMerchant
+                  - IsHighRiskCashWithdrawal
+                  - IsDiscretionaryExpense
+                  - DiscretionaryExpenseAmount
+                  - DiscretionaryExpenseProbability
+                  properties:
+                    TransactionId:
+                      type: string
+                      format: uuid
+                      description: Unique transaction identifier from your source system.
+                    TransactionPostedOn:
+                      type: string
+                      format: date-time
+                      description: This the date on which the transaction was posted to the account.
+                    TransactionDescription:
+                      type: string
+                      example: Coffee from the corner Recxxx65125
+                      description: The transaction description/narrative
+                    TransactionAmount:
+                      type: number
+                      example: -5.56
+                      description: The amount of the transaction including the sign. Expected to be positive,  negative or zero.
+                    ExpenseCategory: 
+                      type: string
+                      example: Restaurants, cafes and takeaway
+                      description: The name of the LIX Living Expense aligned expense category assigned to the transaction.
+                      enum:
+                        - Alcoholic beverages
+                        - Higher education, vocational training and professional association
+                        - Childcare
+                        - Recreation, entertainment and travel
+                        - Food, groceries and household cleaning products
+                        - Medical and health care
+                        - Fees and taxes on the primary residence
+                        - General insurance
+                        - Fees and taxes on the other residences
+                        - Other goods and services
+                        - Clothing and personal care
+                        - Household furnishings, equipment, and home repairs and improvements
+                        - Rent or board
+                        - Communications and subscriptions
+                        - Transportation costs including public transport and taxis
+                        - Uncategorised
+                        - Credit card repayments
+                        - Home loan repayments
+                        - Other loan repayments
+                        - Other income
+                        - Salary income
+                        - Savings transfer
+                        - Transfers
+                        - Cash withdrawals
+                        - Internal transfer
+                        - Interest and fee payments
+                        - Recreational gambling
+                        - Health insurance
+                        - Pet care and insurance
+                        - Restaurants, cafes and takeaway
+                        - Public and private schooling and tuition
+                        - Utilities and insurance for other residences
+                        - Utilities for the primary residence
+                        - Government benefits
+                        - Superannuation
+                        - Education
+                    ExpenseCategoryProbability:
+                      type: number
+                      example: 0.964485
+                      description: The probability of the expense category prediction.
+                    ExpenseMerchant:
+                      type: string
+                      example: Coffee Shop Pty Ltd
+                      description: The merchant where the expense was made.
+                    IsInternalTransfer:
+                      type: boolean
+                      description: Internal transfer indicator.
+                    IsAdverseTransaction:
+                      type: boolean
+                      description: Adverse transaction indicator.
+                    IsHighRiskMerchant:
+                      type: boolean
+                      description: High risk merchant transaction indicator.
+                    IsHighRiskCashWithdrawal:
+                      type: boolean
+                      description: High risk cash withdrawal transaction indicator.
+                    IsDiscretionaryExpense:
+                      type: boolean
+                      description: Discretionary expense transaction indicator.
+                    DiscretionaryExpenseAmount:
+                      type: number
+                      example: -5.56
+                      description: Discretionary expense predicted amount.
+                    DiscretionaryExpenseProbability:
+                      type: number
+                      example: 0.85485233
+                      description: Discretionary expense prediction probability.
+     
     ResponseNewFacility:
       type: object
       description: The new debt facilities for which your customer is applying for serviceability results.
@@ -3197,10 +3264,10 @@ components:
           type: number
           format: integer
           example: 1
-          description:   The number of test applications to create.
+          description: 	The number of test applications to create.
         IsStatedAndActual:
           type: boolean
-          description:  Boolean to indicate whether you want a "declare and verify" approach to validation (true) or "detect and position" (false).
+          description:	Boolean to indicate whether you want a "declare and verify" approach to validation (true) or "detect and position" (false).
         CreateJointApplication:
           type: boolean
           description: Boolean to indicate whether you want a single or joint test application.
@@ -3282,6 +3349,443 @@ components:
           type: string
           description: 'Unique identifier for the request that generated the error.     '
           format: uuid
+    RequestGetApplication:
+      required:
+      - ApplicationReferenceNumber
+      type: object
+      properties:
+        ApplicationReferenceNumber:
+          type: string
+          description: Unique identifier for the application.
+          example: "ABC123456"
+    ResponseGetApplication:
+      $ref: '#/components/schemas/ApplicationSchema'
+    ApplicationSchema:
+      required:
+      - Application
+      type: object
+      properties:
+        Application:
+          type: object
+          properties:
+            ApplicationReferenceNumber:
+              type: string
+              description: Unique XAI Validate Application Reference Number (Arn).
+                This will be returned from the [`/application/create`](#/application/createApplication)
+                endpoint.
+            ApplicationId:
+              type: integer
+              description: Unique identifier for the application
+            Version:
+              type: string
+              description: The version of the application being managed
+            ApplicationStatus:
+              type: string
+              description: Status of the application being managed
+              enum:
+              - Commenced
+              - Assess
+            SecurityProperties:
+              type: array
+              description: List of all security properties linked to the application
+              items:
+                type: object
+                properties:
+                  PropertyAddress:
+                    type: string
+                    description: The full address of the security property.
+                  PropertyPostcode:
+                    type: string
+                    description: The postcode of the security property.
+                  PropertyType:
+                    type: string
+                    description: The property type of the security.
+                    enum:
+                    - HOUSE
+                    - UNIT
+                    - APARTMENT
+                    - FLATS
+                  EstimatedValue:
+                    type: number
+                    description: The estimated value of the security.
+            Product:
+              properties:
+                  Key:
+                    type: string
+                    description: The product key.
+                  RepaymentType:
+                    type: string
+                    description: The repayment type of the product.
+                    enum:
+                    - PI
+                    - IO
+                    - LOC
+                  LoanPurpose:
+                    type: string
+                    description: The purpose of the product.
+                    enum:
+                    - PUR
+                    - REF
+                  PropertyUsage:
+                    type: string
+                    description: The usage of the security.
+                    enum:
+                    - PRI
+                    - INV
+                  LoanTerm:
+                    type: number
+                    description: The loan term in years.
+                  MonthlyRepayment:
+                    type: number
+                    description: The monthly loan repayment in dollars.
+                  InterestRate:
+                    type: number
+                    description: The interest rate of the loan.
+                  LoanAmount:
+                    type: number
+                    description: The loan amount for the loan.
+            DeclaredFinancialsApplication:
+              type: object
+              description: Application-specific "declared financials". These will
+                be consumed as part of XAI Validate's automated assessment, and compared
+                to "actual financials" identified as part of the AI models, within
+                your credit policy tolerances.
+              properties:
+                AssestsCash:
+                  type: number
+                  description: The application's total cash savings - to be used
+                    as "deposit" declared financial.
+            Households:
+              type: array
+              description: Array containing Households. These in turn contain applicants.
+              items:
+                type: object
+                properties:
+                  HouseholdAddress:
+                    type: string
+                    description: |
+                      Household address - default `Household _n_`
+                  DeclaredFinancialsHousehold:
+                    type: object
+                    description: Household-specific "declared financials". These will
+                      be consumed as part of XAI Validate's automated assessment,
+                      and compared to "actual financials" identified as part of the
+                      AI models, within your credit policy tolerances.
+                    properties:
+                      ExpensesMonthly:
+                        type: number
+                        description: The household's monthly expenses. This is the
+                          sum of monthly non-discretionary expenses for the applicants
+                          within the household.
+                  ApplicationContacts:
+                    type: array
+                    description: Object containing array of applicants. The first
+                      Applicant in the array will be considered the "primary" applicant.
+                      The current allowed maximum applicants is two. We will match
+                      applicants based on email address.
+                    items:
+                      type: object
+                      properties:
+                        ContactId:
+                          type: integer
+                          description: Unique identifier for the contact record created for your applicant.
+                        Version:
+                          type: string
+                          description: The version of the application that was created
+                        EmailAddress:
+                          type: string
+                          description: Applicant email address. This will be used
+                            to assign "stated/declared" financials to an applicant
+                        FirstName:
+                          type: string
+                          description: Applicant first name - this is required.
+                        Surname:
+                          type: string
+                          description: Applicant last name - this is required.
+                        PhoneNumber:
+                          type: string
+                          description: Applicant phone number.
+                        DateOfBirth:
+                          type: string
+                          description: Applicant date of birth.
+                          format: date
+                        ConsentedOn:
+                          type: string
+                          description: The date and time that the applicant consented to credit checks.
+                          format: date-time
+                        ResidentialAddress:
+                          type: string
+                          description: The full residential address of the applicant
+                        HasHecsDebt:
+                          type: boolean
+                          description: Determines whether the applicant has a HECS debt to pay.
+                        Dependants:
+                          type: number
+                          description: The number of dependants for the applicant
+                        ResidentialStatus:
+                          type: string
+                          description: The residential status of the applicant
+                          enum:
+                          - RENT
+                          - OO
+                          - OM
+                          - SHARE
+                        DriversLicenseNumber:
+                          type: string
+                          description: The drivers license number for the applicant
+                        DriversLicenseState:
+                          type: string
+                          description: The drivers license state for the applicant
+                        ContactType:
+                          type: string
+                          description: The type of applicant
+                          enum:
+                          - PA
+                          - SA
+                        ExternalDataIds:
+                          type: object
+                          properties:
+                            DataProviderName:
+                              type: string
+                              description: Name of your data provider. Currently accepted
+                                values are `YOD11` (for Yodlee API 1.1) and `ODS` for illion ODS.
+                              enum:
+                              - YOD11
+                              - ODS
+                            DataProviderReference:
+                              type: array
+                              description: List of external reference identifiers
+                                for your data provider.
+                              items:
+                                type: string
+                          description: If you need to append additional financial
+                            data, your data aggregator details can be passed in this
+                            optional object.
+                        DeclaredFinancialsApplicant:
+                          type: object
+                          description: Applicant-specific "declared financials". These
+                            will be consumed as part of XAI Validate's automated assessment,
+                            and compared to "actual financials" identified as part
+                            of the AI models, within your credit policy tolerances.
+                          properties:
+                            IncomeSalary:
+                              type: object
+                              properties:
+                                IncomeGrossAnnualSalaryAmount:
+                                  type: number
+                                  description: 'The applicant''s gross annual income
+                                    amount. required: true'
+                                IncomeGrossAnnualSalaryFrequency:
+                                  type: string
+                                  description: 'The applicant''s income frequency.
+                                    required: true'
+                                  enum:
+                                  - MONTH
+                                  - FORT
+                                  - WEEK
+                                  - ANNUAL
+                                  - IRREGULAR
+                                Employer:
+                                  type: string
+                                  description: The name of the applicant''s employer
+                                EmploymentType:
+                                  type: string
+                                  description: The applicant''s employment type.
+                                  enum:
+                                  - CASUAL
+                                  - FT
+                                  - PT
+                                  - SE
+                                  - UN
+                            IncomeRental:
+                              type: array
+                              description: The applicant's rental income per investment
+                                property. Current maximum declared home loans is
+                                8.
+                              items:
+                                type: object
+                                properties:
+                                  RentalPropertyAddress:
+                                    type: string
+                                    description: The address of the investment property.
+                                  IncomeRentalMonthly:
+                                    type: number
+                                    description: Monthly rental income for the investment
+                                      property.
+                                  InvestmentPropertyOwnershipPercentage:
+                                    type: number
+                                    description: Applicant ownership percentage
+                                      for investment property.
+                            IncomeSavingsInterestAnnual:
+                              type: number
+                              description: Yearly savings interest for the applicant. Will appear as "Interest"
+                            IncomeSharesAnnual:
+                              type: number
+                              description: Yearly share dividends for the applicant. Will appear as "Dividends and distributions"
+                            IncomeGovernmentPaymentsAnnual:
+                              type: number
+                              description: Yearly government payments for the applicant. Will appear as "Government benefits"
+                            IncomeGiftsAnnual:
+                              type: number
+                              description: Yearly gifts payments for the applicant. Will appear as "Gifts"
+                            IncomeChildSupportAnnual:
+                              type: number
+                              description: Yearly child support payments for the applicant. Will appear as "Child support"
+                            IncomeSelfEmployedAnnual:
+                              type: number
+                              description: Yearly self employed income for the applicant. Will appear as "Self employed income"   
+                            IncomeOtherAnnual:
+                              type: number
+                              description: Yearly other income for the applicant. Will appear as "Other"  
+                            LiabilitiesHomeLoans:
+                              type: array
+                              description: The applicant's home loans. Current maximum
+                                declared home loans is 8.
+                              items:
+                                type: object
+                                properties:
+                                  HomeLoanName:
+                                    type: string
+                                    description: The name or institution of the home loan liability.
+                                  HomeLoanPropertyAddress:
+                                    type: string
+                                    description: The address of the home loan liability.
+                                  HomeLoanBalance:
+                                    type: number
+                                    description: Declared home loan balance.
+                                  HomeLoanRepaymentMonthly:
+                                    type: number
+                                    description: Declared home loan monthly repayment.
+                                  HomeLoanOwnershipPercentage:
+                                    type: number
+                                    description: Applicant ownership percentage
+                                      for property.
+                            LiabilitiesPersonalLoans:
+                              type: array
+                              description: The applicant's personal loans.
+                              items:
+                                type: object
+                                properties:
+                                  PersonalLoanName:
+                                    type: string
+                                    description: The name or institution of the personal loan liability.
+                                  PersonalLoanBalance:
+                                    type: number
+                                    description: Declared personal loan balance.
+                                  PersonalLoanRepaymentMonthly:
+                                    type: number
+                                    description: Declared personal loan monthly repayment.
+                            LiabilitiesCreditCards:
+                              type: array
+                              description: The applicant's credit cards.
+                              items:
+                                type: object
+                                properties:
+                                  CreditCardName:
+                                    type: string
+                                    description: The name or institution of the credit card liability.
+                                  CreditCardBalance:
+                                    type: number
+                                    description: Declared credit card balance.
+                                  CreditCardLimit:
+                                    type: number
+                                    description: Declared credit card monthly repayment.
+                            LiabilitiesCreditCardLimit:
+                              type: number
+                              description: 'The applicant''s total credit card limit
+                                for all cards.            '
+                            LiabilitiesCreditCardBalance:
+                              type: number
+                              description: 'The applicant''s total credit card balance
+                                for all cards.                                 '
+                            LiabilitiesPersonaLoanBalance:
+                              type: number
+                              description: 'The applicant''s total personal loan
+                                balance for all loans.            '
+                            LiabilitiesPersonaLoanRepaymentMonthly:
+                              type: number
+                              description: "The applicant's total personal loan\
+                                \ monthly repayment for all loans.    \n\n  "
+                            ExpensesFoodGroceriesMonthly:
+                              type: number
+                              description: Declared monthly expenses for food and groceries. Will appear under "Food, groceries and household cleaning products" category.
+                            ExpensesUtiliesPrimaryResidenceMonthly:
+                              type: number
+                              description: Declared monthly expenses for utilities and insurance for the primary residence. Will appear under "Utilities for the primary residence"  
+                            ExpensesUtilitiesInsuranceMonthly:
+                              type: number
+                              description: Declared monthly expenses for utilities and insurance forother residences. Will appear under "Utilities and insurance for other residences"
+                            ExpensesClothingPersonalCareMonthly:
+                              type: number
+                              description: Declared monthly expenses for clothing and personal care. Will appear under "Clothing and personal care"
+                            ExpensesMedicalHealthCareMonthly:
+                              type: number
+                              description: Declared monthly expenses for medical and health care. Will appear under "Medical and health care"
+                            ExpensesTransportMonthly:
+                              type: number
+                              description: Declared monthly expenses for transport. Will appear under "Transportation costs including public transport and taxis"
+                            ExpensesEntertainmentRecreationMonthly:
+                              type: number
+                              description: Declared monthly expenses for recreation and entertainment. Will appear under "Recreation, entertainment and travel"
+                            ExpensesChildcareMonthly:
+                              type: number
+                              description: Declared monthly expenses for childcare. Will appear under "Childcare"
+                            ExpensesRentMonthly:
+                              type: number
+                              description: Declared monthly expenses for rent or board. Will appear under "Rent or board"
+                            ExpensesSchoolTuitionMonthly:
+                              type: number
+                              description: Declared monthly expenses for public or private school education. Will appear under "Public and private schooling and tuition"
+                            ExpensesAlcoholMonthly:
+                              type: number
+                              description: Declared monthly expenses for alcohol. Will appear under "Alcoholic beverages"
+                            ExpensesCashWithdrawalsMonthly:
+                              type: number
+                              description: Declared monthly expenses for cash withdrawals. Will appear under "Cash withdrawals"
+                            ExpensesCommunicationsMonthly:
+                              type: number
+                              description: Declared monthly expenses for communications and subscriptions. Will appear under "Communications and subscriptions"
+                            ExpensesCreditCardRepaymentsMonthly:
+                              type: number
+                              description: Declared monthly expenses for credit card repayments. Will appear under "Credit card repayments"
+                            ExpensesFeesTaxesOtherResidencesMonthly:
+                              type: number
+                              description: Declared monthly expenses for fees and taxes on other residences. Will appear under "Fees and taxes on the other residences"
+                            ExpensesFeesTaxesPrimaryResidencesMonthly:
+                              type: number
+                              description: Declared monthly expenses for fees and taxes on the primary residence. Will appear under "Fees and taxes on the primary residence"
+                            ExpensesGeneralInsuranceMonthly:
+                              type: number
+                              description: Declared monthly expenses for general insurance. Will appear under "General insurance"
+                            ExpensesHealthInsuranceMonthly:
+                              type: number
+                              description: Declared monthly expenses for health insurance. Will appear under "Health insurance"       
+                            ExpensesHigherEducationMonthly:
+                              type: number
+                              description: Declared monthly expenses for higher education and vocational training. Will appear under "Higher education, vocational training and professional association"                                     
+                            ExpensesHomeLoanRepaymentsMonthly:
+                              type: number
+                              description: Declared monthly expenses for home loan repayments. Will appear under "Home loan repayments"   
+                            ExpensesHouseholdFurnishingsMonthly:
+                              type: number
+                              description: Declared monthly expenses for household furnishings. Will appear under "Household furnishings, equipment, and home repairs and improvements"                             
+                            ExpensesOtherLoanRepaymentsMonthly:
+                              type: number
+                              description: Declared monthly expenses for other loan repayments. Will appear under "Other loan repayments"   
+                            ExpensesRecreationalGamblingMonthly:
+                              type: number
+                              description: Declared monthly expenses for recreational gambling. Will appear under "Recreational gambling" 
+                            ExpensesRestaurantsCafesMonthly:
+                              type: number
+                              description: Declared monthly expenses for restaurants, cafes and takeaway. Will appear under "Restaurants, cafes and takeaway"  
+                            ExpensesTransfersMonthly:
+                              type: number
+                              description: Declared monthly expenses for transfers. Will appear under "Transfers"  
+                              
+                            ExpensesOtherMonthly:
+                              type: number
+                              description: Declared monthly expenses for other goods and services. Will appear under "Other goods and services"
+          description: Object containing application payload.
   securitySchemes:
     tokenAuth:
       type: http
