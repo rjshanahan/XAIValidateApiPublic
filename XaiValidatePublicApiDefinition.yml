@@ -163,9 +163,9 @@ paths:
           | Data Source | `DataProviderName` | `DataProviderReference` | Details |
           |-----|-----|-----|-----|
           | illion ODS BrokerFlow | `ODS` | A list of your BrokerFlow `DocumentIds`| You can provide multiple `DocumentIds` for each applicant. |
-          | illion ODS MultiBank (coming soon!)| `ODSSCV` | None | When your customers link their accounts, their data will automatically synch with your XAI Validate application. |
-          | Yodlee v1.1 | `YOD11` | As list of your Yodlee customer identifiers. | You should have a one to one linking of applicant to Yodlee customer identifier. |
-          | Basiq (coming soon!) | `BSQ` | As list of your Basiq customer identifiers. | You should have a one to one linking of applicant to Basiq customer identifier. |
+          | illion ODS MultiBank | `MB` | None | A unique URL will be returned when you call the endpoint, which your customers can use to link their accounts. Their data will automatically synch with your XAI Validate application. |
+          | Yodlee v1.1 | `YOD11` | A list of your Yodlee customer identifiers. | You should have a one to one linking of applicant to Yodlee customer identifier. |
+          | Basiq (coming soon!) | `BSQ` | A list of your Basiq customer identifiers. | You should have a one to one linking of applicant to Basiq customer identifier. |
           | Connect your own data | `EXT` | None | By selecting `EXT` you will be required to upload your data to the application. Please see [`/financialvalidation/provideaccounts`](#/financialvalidation/provideaccounts) for more information. |  
         
       operationId: createApplication
@@ -217,8 +217,10 @@ paths:
           | Link additional data source to an application |This is useful when your applicants provide additional bank account information thorugh your data aggregator, and you need to rerun the automated assessment. Please see the table below for data source details. |
           | Add/edit applicants within an application| Add new applicants or edit existing ones. |
          
-        When you call the endpoint, automated assessment will commence once you receive a successful response. You can monitor the progress using the [`/application/getstatus`](#/application/getstatus) endpoint.
-          
+        When you call the endpoint, automated assessment will commence once you receive a successful response. You can monitor the progress using the [`/application/getstatus`](#/application/getstatus) endpoint. However, you can control when the automated assessments is started by using the `ApplicationStatus` parameter:
+          - `Commenced`: hold automated assessment until you're ready. This is helpful if you're gradually building an application object as your customer completes their application.
+          - `Assess`: trigger automated asssessment. As this is an optional parameter, `Assess` is the default status.
+            
         Please note the assessment levels XAI Validate currently supports for providing "stated/declared" financials. These have been designed in line with lending best practices:
           
           | Assessment Level | Financial Types |
@@ -234,7 +236,7 @@ paths:
           | Data Source | `DataProviderName` | `DataProviderReference` | Details |
           |-----|-----|-----|-----|
           | illion ODS BrokerFlow | `ODS` | A list of your BrokerFlow `DocumentIds`| You can provide multiple `DocumentIds` for each applicant. |
-          | illion ODS MultiBank (coming soon!)| `ODSSCV` | None | When your customers link their accounts, their data will automatically synch with your XAI Validate application. |
+          | illion ODS MultiBank | `MB` | None | A unique URL will be returned when you call the endpoint, which your customers can use to link their accounts. Their data will automatically synch with your XAI Validate application. |
           | Yodlee v1.1 | `YOD11` | As list of your Yodlee customer identifiers. | You should have a one to one linking of applicant to Yodlee customer identifier. |
           | Basiq (coming soon!) | `BSQ` | As list of your Basiq customer identifiers. | You should have a one to one linking of applicant to Basiq customer identifier. |
           | Connect your own data | `EXT` | None | By selecting `EXT` you will be required to upload your data to the application. Please see [`/financialvalidation/provideaccounts`](#/financialvalidation/provideaccounts) for more information. |  
@@ -956,33 +958,18 @@ components:
                       DataProviderName:
                         type: string
                         description: Name of your data provider. Currently accepted
-                          values are `YOD11` (for Yodlee API 1.1), `ODS` for illion ODS, and `EXT` if you wish to connect your own data.
+                          values are `YOD11` (for Yodlee API 1.1), `ODS` for illion ODS, `MB` for illion ODS BankStatements "Multibank", `EXT` if you wish to connect your own data.
                         enum:
                         - YOD11
                         - ODS
                         - EXT
+                        - MB
                       DataProviderReference:
                         type: array
                         description: List of external reference identifiers for your
                           data provider.
                         items:
                           type: string
-                  CreditBureauReference:
-                    type: object
-                    required: 
-                    - CreditBureauName
-                    properties:
-                      CreditBureauName:
-                        type: string
-                        description: Name of your credit bureau - currently suppors Equifax (`EQX`)
-                        enum:
-                        - EQX
-                      CreditBureauReference:
-                        type: array
-                        description: List of values to be included the credit bureau request.
-                        items:
-                          type: string
-                    description: Object containing credit bureau request information.
             IsActualsOnly:
               type: boolean
               description: "Boolean value indicating if the application requires a\
@@ -1003,8 +990,6 @@ components:
       required:
       - Applicants
       - ApplicationReferenceNumber
-      - ApplicationId
-      - Version
       - CreatedOn
       - RequestId
       type: object
@@ -1012,27 +997,15 @@ components:
         ApplicationReferenceNumber:
           type: string
           description: Unique XAI Validate Application Reference Number (Arn).
-        ApplicationId:
-          type: integer
-          description: Unique identifier for the application.
         CreatedOn:
           type: string
           description: Timestamp indicating when the application was created.
           format: date-time
-        Version:
-          type: string
-          description: The version of the application that was created
         RequestId:
           type: string
           description: Unique identifier which can be used to check the over financial
             validation status through the [`/jobs`](#/application/getstatus) endpoint.
           format: uuid
-        GroupId:
-          type: string
-          example: AABB112233-3fa85f64-5717-4562-b3fc-2c963f66afa6
-          description: 'Unique grouping identifier which can be used to check the
-            over financial validation status through the [`/jobs`](#/application/getstatus)
-            endpoint. '
         Applicants:
           type: array
           description: List of objects indicating applicants included within the application.
@@ -1047,9 +1020,10 @@ components:
               ContactId:
                 type: integer
                 description: Unique identifier for the contact record created for your applicant.
-              Version:
+              LinkUrl:
                 type: string
-                description: The version of the application that was created
+                description: Unique customer data linking URL for illion ODS "MultiBank customers"
+                example: http://scv-test.bankstatements.com.au/NNNN-NNNN123456AA_1?ip=FFAABB-CC-DD-AA-BB
     RequestManageApplicationFinancials:
       $ref: '#/components/schemas/ApplicationSchema'
       description: Request object containing Application Create payload.
@@ -1101,6 +1075,10 @@ components:
                 type: integer
                 description: Unique identifier for the contact record created for
                   your applicant.
+              LinkUrl:
+                type: string
+                description: Unique customer data linking URL for illion ODS "MultiBank customers"
+                example: http://scv-test.bankstatements.com.au/NNNN-NNNN123456AA_1?ip=FFAABB-CC-DD-AA-BB
     RequestGetResultsSummary:
       required:
       - Application
@@ -3264,10 +3242,10 @@ components:
           type: number
           format: integer
           example: 1
-          description: 	The number of test applications to create.
+          description: The number of test applications to create.
         IsStatedAndActual:
           type: boolean
-          description:	Boolean to indicate whether you want a "declare and verify" approach to validation (true) or "detect and position" (false).
+          description: Boolean to indicate whether you want a "declare and verify" approach to validation (true) or "detect and position" (false).
         CreateJointApplication:
           type: boolean
           description: Boolean to indicate whether you want a single or joint test application.
@@ -3381,10 +3359,10 @@ components:
               description: The version of the application being managed
             ApplicationStatus:
               type: string
-              description: Status of the application being managed
+              description: Status of the application being managed. This is an optional parameter with the default value set to `Assess`. If you use `Commenced`, then automated assessment won't be triggered until you set this value to `Assess`.
               enum:
-              - Commenced
               - Assess
+              - Commenced
             SecurityProperties:
               type: array
               description: List of all security properties linked to the application
@@ -3785,6 +3763,7 @@ components:
                             ExpensesOtherMonthly:
                               type: number
                               description: Declared monthly expenses for other goods and services. Will appear under "Other goods and services"
+
           description: Object containing application payload.
   securitySchemes:
     tokenAuth:
