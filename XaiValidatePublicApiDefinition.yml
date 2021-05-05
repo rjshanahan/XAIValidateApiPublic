@@ -3429,7 +3429,7 @@ components:
                 to "actual financials" identified as part of the AI models, within
                 your credit policy tolerances.
               properties:
-                AssestsCash:
+                AssetsCash:
                   type: number
                   description: The application's total cash savings - to be used
                     as "deposit" declared financial.
