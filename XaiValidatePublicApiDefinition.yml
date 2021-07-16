@@ -54,7 +54,7 @@ info:
       - **households**: your applicants belong to households. For convenience we will assign applicants to a single, default household at the start of application
       - **accounts**: applicants own accounts, which can be held individually or jointly with the other  applicant on the application
       - **transactions**: these are the credits and debits against each account. Transactions are enriched with attributes such as categories, high risk flags and expense management. 
-      - **documents**: // Add document description here //. 
+      - **documents**: each application and applicant can have a document linked, each with a defined type and format.
       
     ## References
     
