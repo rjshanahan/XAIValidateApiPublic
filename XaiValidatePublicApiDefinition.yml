@@ -1034,36 +1034,33 @@ paths:
           |`image/jpeg` | JPEG image |
           |`image/png` | PNG image |
              
+        The `DocumentType` is used to index and specify the type of document being uploaded:
              
-        The `DocumentType` is used to index and specify the type of document being uploaded:  
-             
-            | `DocumentType` | Description |
-            |-----|-----|
-            | `BS` | Bank Statement |
-            | `CC` | Credit Card Statement|
-            | `PS` | Payslip |
-            | `TR` | Tax Return | 
-            | `LS` | Loan Statement|
-            | `HL` | Home Loan Statement|
-            | `DEP` | Deposit Statement |
-            | `PLS` | Personal Loan Statement| 
-            | `VOI` | Verification of Identity |
-            | `ID` | Identity Document |
-            | `NOA` | Notice of Assessment |
-            | `EM` | Email |
-            | `CTR` | Company Tax Return |
-            | `EC` | Employment Contract |
-            | `AL` | Accountants Letter |
-            | `VR` | Valuation Report |
-            | `IL` | Investment Loan Statement |
-            | `RENT` | Rental documentation |
-            | `BONUS` | Bonus documentation|
-            | `GOV` | Government Benefit |
-            | `BRD` | Borrower Repayment Declaration |
-            | `COS` | Contract of Sale |
-            | `OTHER` | Other document |
-                
-             
+          | `DocumentType` | Description |
+          |-----|-----|
+          | `BS` | Bank Statement |
+          | `CC` | Credit Card Statement|
+          | `PS` | Payslip |
+          | `TR` | Tax Return | 
+          | `LS` | Loan Statement|
+          | `HL` | Home Loan Statement|
+          | `DEP` | Deposit Statement |
+          | `PLS` | Personal Loan Statement| 
+          | `VOI` | Verification of Identity |
+          | `ID` | Identity Document |
+          | `NOA` | Notice of Assessment |
+          | `EM` | Email |
+          | `CTR` | Company Tax Return |
+          | `EC` | Employment Contract |
+          | `AL` | Accountants Letter |
+          | `VR` | Valuation Report |
+          | `IL` | Investment Loan Statement |
+          | `RENT` | Rental documentation |
+          | `BONUS` | Bonus documentation|
+          | `GOV` | Government Benefit |
+          | `BRD` | Borrower Repayment Declaration |
+          | `COS` | Contract of Sale |
+          | `OTHER` | Other document |  
       operationId: uploadDocument
       parameters:
         - in: header
@@ -1174,7 +1171,7 @@ paths:
           | `GOV` | Government Benefit |
           | `BRD` | Borrower Repayment Declaration |
           | `COS` | Contract of Sale |
-          | `OTHER` | Other document |
+          | `OTHER` | Other document |  
       operationId: getDocument
       parameters:
         - in: header
@@ -1219,31 +1216,31 @@ paths:
                  
         The `DocumentType` is defined as per the table below:   
              
-            | `DocumentType` | Description |
-            |-----|-----|
-            | `BS` | Bank Statement |
-            | `CC` | Credit Card Statement|
-            | `PS` | Payslip |
-            | `TR` | Tax Return | 
-            | `LS` | Loan Statement|
-            | `HL` | Home Loan Statement|
-            | `DEP` | Deposit Statement |
-            | `PLS` | Personal Loan Statement| 
-            | `VOI` | Verification of Identity |
-            | `ID` | Identity Document |
-            | `NOA` | Notice of Assessment |
-            | `EM` | Email |
-            | `CTR` | Company Tax Return |
-            | `EC` | Employment Contract |
-            | `AL` | Accountants Letter |
-            | `VR` | Valuation Report |
-            | `IL` | Investment Loan Statement |
-            | `RENT` | Rental documentation |
-            | `BONUS` | Bonus documentation|
-            | `GOV` | Government Benefit |
-            | `BRD` | Borrower Repayment Declaration |
-            | `COS` | Contract of Sale |
-            | `OTHER` | Other document |
+          | `DocumentType` | Description |
+          |-----|-----|
+          | `BS` | Bank Statement |
+          | `CC` | Credit Card Statement|
+          | `PS` | Payslip |
+          | `TR` | Tax Return | 
+          | `LS` | Loan Statement|
+          | `HL` | Home Loan Statement|
+          | `DEP` | Deposit Statement |
+          | `PLS` | Personal Loan Statement| 
+          | `VOI` | Verification of Identity |
+          | `ID` | Identity Document |
+          | `NOA` | Notice of Assessment |
+          | `EM` | Email |
+          | `CTR` | Company Tax Return |
+          | `EC` | Employment Contract |
+          | `AL` | Accountants Letter |
+          | `VR` | Valuation Report |
+          | `IL` | Investment Loan Statement |
+          | `RENT` | Rental documentation |
+          | `BONUS` | Bonus documentation|
+          | `GOV` | Government Benefit |
+          | `BRD` | Borrower Repayment Declaration |
+          | `COS` | Contract of Sale |
+          | `OTHER` | Other document |
                 
       operationId: getDocumentList
       parameters:
