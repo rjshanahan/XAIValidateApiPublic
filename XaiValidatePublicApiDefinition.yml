@@ -1017,7 +1017,7 @@ paths:
       - Document
       summary: Get a link to upload a document to an application.
       description:  >-
-        Upload a document to an application or applicant. This endpoint returns a pre-signed URL to upload the document. You can upload the documents using this URL via the [`/{UploadDocumentUrl}`](#/{UploadDocumentUrl}) endpoint. 
+        This endpoint returns a pre-signed URL to upload the document. You can upload the documents using this URL via the [`/{UploadDocumentUrl}`](#/{UploadDocumentUrl}) endpoint. 
         
         Your request must the `ApplicationReferenceNumber` and `DocumentName`. You must also include an enumeration for:
           - `FileType`
@@ -1102,7 +1102,7 @@ paths:
       - Document
       summary: Upload document linked to an application.
       description:  >-
-        This endpoint allows you to upload a document to your application. The unique upload URL will be returned in the [`/document/upload`](#/document/upload) endpoint response.
+        This endpoint allows you to upload a document to an application. The unique upload URL will be returned in the [`/document/upload`](#/document/upload) endpoint response.
             
         Please note:
           * you will `PUT` the object to the `UploadDocumentUrl` directly, not to the XAI Validate endpoint.
@@ -1135,82 +1135,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseRequestError'
       x-codegen-request-body-name: RequestBody
-  /document/get:
-    post:
-      tags:
-      - Document
-      summary: Get information about a document linked to an application.
-      description:  >-
-        This endpoint allows you to retrieve a document information by its identifier. This can be retrieved from the [`/document/getlist`](#/document/getlist) endpoint.
-          
-        The `DocumentType` in the response is defined as per the table below:
-
-          | `DocumentType` | Description |
-          |-----|-----|
-          | `BS` | Bank Statement |
-          | `CC` | Credit Card Statement|
-          | `PS` | Payslip |
-          | `TR` | Tax Return | 
-          | `LS` | Loan Statement|
-          | `HL` | Home Loan Statement|
-          | `DEP` | Deposit Statement |
-          | `PLS` | Personal Loan Statement| 
-          | `VOI` | Verification of Identity |
-          | `ID` | Identity Document |
-          | `NOA` | Notice of Assessment |
-          | `EM` | Email |
-          | `CTR` | Company Tax Return |
-          | `EC` | Employment Contract |
-          | `AL` | Accountants Letter |
-          | `VR` | Valuation Report |
-          | `IL` | Investment Loan Statement |
-          | `RENT` | Rental documentation |
-          | `BONUS` | Bonus documentation|
-          | `GOV` | Government Benefit |
-          | `BRD` | Borrower Repayment Declaration |
-          | `COS` | Contract of Sale |
-          | `OTHER` | Other document |
-      operationId: getDocument
-      parameters:
-        - in: header
-          name: x-api-key
-          schema:
-            type: string
-          required: true
-      requestBody:
-        description: The JSON request body for the POST.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RequestGetDocument'
-        required: true
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseGetDocument'
-        401:
-          description: Unauthorized.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseRequestError'
-        422:
-          description: Unable to retrieve document.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseRequestError'
-      x-codegen-request-body-name: RequestBody
   /document/getlist:
     post:
       tags:
       - Document
       summary: Get a list of documents linked to an application.
       description:  >-
-        This endpoint allows you to retrieve a list documents including their identifier. This can then be used to download the document.
+        This endpoint allows you to retrieve a list of documents including their identifier. The identifier can then be used to download the document via the [`/document/download`](#/document/download).
           
         The `DocumentType` is defined as per the table below: 
         
@@ -1273,6 +1204,75 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseRequestError'
       x-codegen-request-body-name: RequestBody
+  /document/get:
+    post:
+      tags:
+      - Document
+      summary: Get information about a document linked to an application.
+      description:  >-
+        This endpoint allows you to retrieve a document information by its identifier. This identifier can be retrieved from the [`/document/getlist`](#/document/getlist) endpoint.
+          
+        The `DocumentType` in the response is defined as per the table below:
+
+          | `DocumentType` | Description |
+          |-----|-----|
+          | `BS` | Bank Statement |
+          | `CC` | Credit Card Statement|
+          | `PS` | Payslip |
+          | `TR` | Tax Return | 
+          | `LS` | Loan Statement|
+          | `HL` | Home Loan Statement|
+          | `DEP` | Deposit Statement |
+          | `PLS` | Personal Loan Statement| 
+          | `VOI` | Verification of Identity |
+          | `ID` | Identity Document |
+          | `NOA` | Notice of Assessment |
+          | `EM` | Email |
+          | `CTR` | Company Tax Return |
+          | `EC` | Employment Contract |
+          | `AL` | Accountants Letter |
+          | `VR` | Valuation Report |
+          | `IL` | Investment Loan Statement |
+          | `RENT` | Rental documentation |
+          | `BONUS` | Bonus documentation|
+          | `GOV` | Government Benefit |
+          | `BRD` | Borrower Repayment Declaration |
+          | `COS` | Contract of Sale |
+          | `OTHER` | Other document |
+      operationId: getDocument
+      parameters:
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The JSON request body for the POST.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestGetDocument'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseGetDocument'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to retrieve document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
   /document/download:
     post:
       tags:
@@ -1324,7 +1324,7 @@ paths:
         This endpoint allows you to download a document linked to your application. The unique download URL will be returned in the [`/document/download`](#/document/download) endpoint response. 
          
         Please note:  
-          * you will `GET` the object to the `DownloadDocumentUrl` directly, not to the XAI Validate endpoint.
+          * you will `GET` the object from the `DownloadDocumentUrl` link directly.
           * no headers are required in the `GET`.
           * no `body` required.
       operationId: downloadDocumentLink
