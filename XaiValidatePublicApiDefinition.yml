@@ -31,14 +31,20 @@ info:
       | Endpoint Name| Description |
       |-----|-----|
       | [`/application/create`](#/financialvalidation/application/create) | Create an application linking your applicants, and their external data aggregator reference identifiers.  |
-      | [`/application/manage`](#/financialvalidation/application/manage) | Update an existing application including adding "declared/stated" financials, updating applicant details or adding new xternal data aggregator reference identifiers.  |
+      | [`/application/manage`](#/financialvalidation/application/manage) | Update an existing application including adding "declared/stated" financials, updating applicant details or adding new external data aggregator reference identifiers.  |
       | [`/application/get`](#/financialvalidation/application/get) | Retrieve an existing application using an application reference number.  |
       | [`/provideaccounts`](#/financialvalidation/provideaccounts) | Connect your customers' account and transaction data against an existing application and applicant. This is ideal if you've sourced your own raw transaction data from core systems or through Open Banking.  |
       | [`/application/getstatus`](#/application/getstatus) |  Monitor the progress of automated financial assessment.  |
       | [`/result/getsummary`](#/result/getsummary)| Retrieve the results of automated financial assessment. The endpoint will surface automated assessments against your configured credit policy (where relevant), and validation figures for income, expenses, assets and liabilities. |
       | [`/serviceability/getserviceability`](#/serviceability/getserviceability)| Calculate serviceability for your application including income, expense, debt, borrowing amount and ratios. |
       | [`/token`](#/token) | XAI Validate uses OAuth2 authentication. Every time you call these endpoints you'll need to ensure you have a valid token.  |
-      
+      | [`/credit/enquiry`](#/credit/enquiry) | (Coming soon!) Make a credit enquiry based on key identifying information for an applicant.  |
+      | [`/credit/getenquiry`](#/credit/getenquiry) | (Coming soon!) Retrieve the results of a credit enquiry detailing accounts and liabilities for an applicant.  |
+      | [`/credit/getsummary`](#/credit/getsummary) | (Coming soon!) Retrieve the summary of credit policy rules applied to the credit enquiry for an applicant.  |
+      | [`/document/upload`](#/document/upload) | Upload a document to an application or applicant. This endpoint returns a pre-signed URL to upload the document.  |
+      | [`/document/get`](#/document/get) | Retrieve information about a specific document linked to an application or applicant.  |
+      | [`/document/getlist`](#/document/getlist) | Retrieves the list of documents for an application or applicant.  |
+      | [`/document/download`](#/document/download) | Retrieves the pre-signed URL to download the document.  |
       
     ## Data Model  
       
@@ -48,6 +54,7 @@ info:
       - **households**: your applicants belong to households. For convenience we will assign applicants to a single, default household at the start of application
       - **accounts**: applicants own accounts, which can be held individually or jointly with the other  applicant on the application
       - **transactions**: these are the credits and debits against each account. Transactions are enriched with attributes such as categories, high risk flags and expense management. 
+      - **documents**: // Add document description here //. 
       
     ## References
     
@@ -415,7 +422,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseUploadAccountTransaction'
+                $ref: '#/components/schemas/ResponseUpload'
         401:
           description: Unauthorized.
           content:
@@ -429,8 +436,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseRequestError'
       x-codegen-request-body-name: RequestBody
-      
-      
   /enrichment/categorise:
     post:
       tags:
@@ -809,6 +814,138 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseRequestError' 
+  /credit/enquiry:
+    post:
+      tags:
+      - Credit
+      summary: (Coming soon!) Make a credit enquiry based on key applicant identifying information.
+      description:  >-
+        This endpoint allows you to perform a credit enquiry on behalf of an applicant". 
+        
+        Key identifying information must supplied to perform the enquiry. If the enquiry has been performed for the same applicant in the last 90 days, the most recent enquiry will be re-used.
+        
+      operationId: creditEnquiry
+      parameters:
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The JSON request body for the POST.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCreditEnquiry'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCreditEnquiry'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to retrieve application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
+  /credit/getenquiry:
+    post:
+      tags:
+      - Credit
+      summary: (Coming soon!) Retrieve the results of a credit enquiry detailing accounts and liabilities for an applicant.
+      description:  >-
+        This endpoint allows you to retrieve the details extracted from the credit enquiry made on behalf of an applicant. 
+        
+        You must supply the CreditEnquiryId returned by the /credit/enquiry API call.
+        
+      operationId: getEnquiry
+      parameters:
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The JSON request body for the POST.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCreditGetEnquiry'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCreditGetEnquiry'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to retrieve application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
+  /credit/getsummary:
+    post:
+      tags:
+      - Credit
+      summary: (Coming soon!) Retrieve the summary of credit policy rules applied to the credit enquiry for an applicant.
+      description:  >-
+        This endpoint allows you to retrieve the summary of the credit policy rules applied to the credit enquiry made on behalf of an applicant. 
+        
+        You must supply the CreditEnquiryId returned by the /credit/enquiry API call.
+        
+      operationId: getSummary
+      parameters:
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The JSON request body for the POST.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCreditGetSummary'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCreditGetSummary'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to retrieve application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
   /financialvalidation/sampleapplication/create:
     post:
       tags:
@@ -874,7 +1011,358 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseRequestError'
       x-codegen-request-body-name: RequestBody
-
+  /document/upload:
+    post:
+      tags:
+      - Document
+      summary: Get a link to upload a document to an application.
+      description:  >-
+        Upload a document to an application or applicant. This endpoint returns a pre-signed URL to upload the document. You can upload the documents using this URL via the `/{UploadDocumentUrl}` endpoint. 
+        
+        Your request must the `ApplicationReferenceNumber` and `DocumentName`. You must also include an enumeration for:
+          - `FileType`
+          - `DocumentType`
+         
+        The `FileType` is the MIME type of the document with enumerations:
+           
+          |`FileType` | Description|
+          |-----|-----|
+          |`application/msword` | Microsoft Word document |
+          |`application/pdf` | PDF document |
+          |`application/vnd.ms-excel` | Microsoft Excel document |
+          |`application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` | Microsoft Excel (xlsx) document |
+          |`image/jpeg` | JPEG image |
+          |`image/png` | PNG image |
+          
+          
+        The `DocumentType` is used to index and specify the type of document being uploaded:
+          | `DocumentType` | Description |
+          |-----|-----|
+          | `BS` | Bank Statement |
+          | `CC` | Credit Card Statement|
+          | `PS` | Payslip |
+          | `TR` | Tax Return | 
+          | `LS` | Loan Statement|
+          | `HL` | Home Loan Statement|
+          | `DEP` | Deposit Statement |
+          | `PLS` | Personal Loan Statement| 
+          | `VOI` | Verification of Identity |
+          | `ID` | Identity Document |
+          | `NOA` | Notice of Assessment |
+          | `EM` | Email |
+          | `CTR` | Company Tax Return |
+          | `EC` | Employment Contract |
+          | `AL` | Accountants Letter |
+          | `VR` | Valuation Report |
+          | `IL` | Investment Loan Statement |
+          | `RENT` | Rental documentation |
+          | `BONUS` | Bonus documentation|
+          | `GOV` | Government Benefit |
+          | `BRD` | Borrower Repayment Declaration |
+          | `COS` | Contract of Sale |
+          | `OTHER` | Other document |
+              
+              
+          
+              
+      operationId: uploadDocument
+      parameters:
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The JSON request body for the POST.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUploadDocument'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUploadDocument'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to retrieve upload URL.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
+  /{UploadDocumentUrl}:
+    put:
+      tags:
+      - Document
+      summary: Upload document linked to an application.
+      description:  >-
+    
+        This endpoint allows you to upload a document to your application. The unique upload URL will be returned in the `/document/upload` endpoint response.
+            
+        Please note:  
+          * you will `PUT` the object to the `UploadDocumentUrl` directly, not to the XAI Validate endpoint.
+          * no headers are required in the `PUT`.
+          * the document `body` should be specified as `binary`.
+            
+        Once you have successfully uploaded the data, the automated financial validation process will be triggered.
+        
+      operationId: uploadDocument
+      parameters:
+        - in: path
+          name: UploadDocumentUrl
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUpload'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to link data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
+  /document/get:
+    post:
+      tags:
+      - Document
+      summary: Get information about a document linked to an application.
+      description:  >-
+        This endpoint allows you to retrieve a document information by its identifier. This can be retrieved from the `/document/getlist` endpoint.
+                 
+        The `DocumentType` in the response is defined as per the table below.          
+          | `DocumentType` | Description |
+          |-----|-----|
+          | `BS` | Bank Statement |
+          | `CC` | Credit Card Statement|
+          | `PS` | Payslip |
+          | `TR` | Tax Return | 
+          | `LS` | Loan Statement|
+          | `HL` | Home Loan Statement|
+          | `DEP` | Deposit Statement |
+          | `PLS` | Personal Loan Statement| 
+          | `VOI` | Verification of Identity |
+          | `ID` | Identity Document |
+          | `NOA` | Notice of Assessment |
+          | `EM` | Email |
+          | `CTR` | Company Tax Return |
+          | `EC` | Employment Contract |
+          | `AL` | Accountants Letter |
+          | `VR` | Valuation Report |
+          | `IL` | Investment Loan Statement |
+          | `RENT` | Rental documentation |
+          | `BONUS` | Bonus documentation|
+          | `GOV` | Government Benefit |
+          | `BRD` | Borrower Repayment Declaration |
+          | `COS` | Contract of Sale |
+          | `OTHER` | Other document |
+      operationId: getDocument
+      parameters:
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The JSON request body for the POST.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestGetDocument'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseGetDocument'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to retrieve document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
+  /document/getlist:
+    post:
+      tags:
+      - Document
+      summary: Get a list of documents linked to an application.
+      description:  >-
+        This endpoint allows you to retrieve a list documents including their identifier. This can then be used to download the document.
+                 
+        The `DocumentType` in the response is defined as per the table below.          
+          | `DocumentType` | Description |
+          |-----|-----|
+          | `BS` | Bank Statement |
+          | `CC` | Credit Card Statement|
+          | `PS` | Payslip |
+          | `TR` | Tax Return | 
+          | `LS` | Loan Statement|
+          | `HL` | Home Loan Statement|
+          | `DEP` | Deposit Statement |
+          | `PLS` | Personal Loan Statement| 
+          | `VOI` | Verification of Identity |
+          | `ID` | Identity Document |
+          | `NOA` | Notice of Assessment |
+          | `EM` | Email |
+          | `CTR` | Company Tax Return |
+          | `EC` | Employment Contract |
+          | `AL` | Accountants Letter |
+          | `VR` | Valuation Report |
+          | `IL` | Investment Loan Statement |
+          | `RENT` | Rental documentation |
+          | `BONUS` | Bonus documentation|
+          | `GOV` | Government Benefit |
+          | `BRD` | Borrower Repayment Declaration |
+          | `COS` | Contract of Sale |
+          | `OTHER` | Other document |
+        
+      operationId: getDocumentList
+      parameters:
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The JSON request body for the POST.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestGetListDocument'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseGetListDocument'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to retrieve documents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
+  /document/download:
+    post:
+      tags:
+      - Document
+      summary: Get a link to download a specific document linked to an application.
+      description:  >-
+        This endpoint generates a pre-signed URL to download a document.
+        
+      operationId: downloadDocument
+      parameters:
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The JSON request body for the POST.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestDownloadDocument'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDownloadDocument'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to download document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
+  /{DownloadDocumentUrl}:
+    get:
+      tags:
+      - Document
+      summary: Download document linked to an application.
+      description:  >-
+    
+        This endpoint allows you to download a document linked to your application. The unique download URL will be returned in the `/document/download` endpoint response. 
+         
+        Please note:  
+          * you will `GET` the object to the `DownloadDocumentUrl` directly, not to the XAI Validate endpoint.
+          * no headers are required in the `GET`.
+          * no `body` required.
+            
+        
+      operationId: downloadDocument
+      parameters:
+        - in: path
+          name: DownloadDocumentUrl
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUpload'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to link data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
 components:
   schemas:
     ResponseGetToken:
@@ -2920,14 +3408,14 @@ components:
                       type: string
                       example: "7000"
                       description: The merchant category code (or MCC) for an outgoing payment to a merchant.
-    ResponseUploadAccountTransaction:
+    ResponseUpload:
       type: object
       required:
         - RequestId
       properties:
         RequestId:
           type: string
-          description: 'Unique identifier for the request that generated the error.     '
+          description: 'Unique identifier for the request.    '
           format: uuid
                 
     RequestEnrichExpense:
@@ -3327,6 +3815,198 @@ components:
           type: string
           description: 'Unique identifier for the request that generated the error.     '
           format: uuid
+    
+    RequestCreditEnquiry:
+      required:
+      - ApplicationReferenceNumber
+      - FirstName
+      - Surname
+      - DateOfBirth
+      - DriversLicenseNumber
+      - DriversLicenseState
+      - ResidentialAddress
+      type: object
+      properties:
+        ApplicationReferenceNumber:
+          type: string
+          description: Unique identifier for the application.
+          example: "ABC123456"
+        FirstName:
+          type: string
+          description: Applicant first name - this is required.
+        MiddleName:
+          type: string
+          description: Applicant middle name.
+        Surname:
+          type: string
+          description: Applicant last name - this is required.
+        DateOfBirth:
+          type: string
+          description: Applicant date of birth - this is required.
+          format: date
+        DriversLicenseNumber:
+          type: string
+          description: Applicant drivers license number - this is required.
+        DriversLicenseState:
+          type: string
+          description: Applicant drivers license state - this is required.
+        ResidentialAddress:
+          type: string
+          description: Applicant's residential address as a string
+          example: 123 Example Street, Demoville, 2222, NSW
+    ResponseCreditEnquiry:
+      type: object
+      properties:
+        CreditEnquiryId:
+          type: string
+          description: Unique identifier for the credit enquiry.
+        ApplicationReferenceNumber:
+          type: string
+          description: Unique identifier for the application.
+          example: "ABC123456"
+        RequestId:
+          type: string
+          format: uuid
+          description: unique request identifier
+    RequestCreditGetEnquiry:
+      type: object
+      properties:
+        CreditEnquiryId:
+          type: string
+          description: Unique identifier for the credit enquiry.
+    ResponseCreditGetEnquiry:
+      type: object
+      properties:
+        CreditEnquiryId:
+          type: string
+          description: Unique identifier for the credit enquiry.
+        ApplicationReferenceNumber:
+          type: string
+          description: Unique identifier for the application.
+          example: "ABC123456"
+        TBD:
+          type: string
+          description: To be determined.
+        RequestId:
+          type: string
+          format: uuid
+          description: unique request identifier
+    RequestCreditGetSummary:
+      type: object
+      properties:
+        ApplicationReferenceNumber:
+          type: string
+          description: Unique identifier for the application.
+          example: "ABC123456"
+        CreditEnquiryId:
+          type: string
+          description: Unique identifier for the credit enquiry.
+    ResponseCreditGetSummary:
+      required:
+      - Application
+      type: object
+      properties:
+        Application:
+          type: object
+          properties:
+            ApplicationReferenceNumber:
+              type: string
+              description: Unique XAI Validate application reference number (Arn).
+                Results for one application can be retrieved at a time.
+            ExternalApplicationReferenceNumber:
+              type: string
+              description: Unique application identifier from your own system.
+          description: Request object containing Application Create payload.
+        CreditReportAccountSummary:
+          type: array
+          description: Financial Validate result objects for each automated assessment.
+          items:
+            type: object
+            properties:
+              FinancialInstitution:
+                type: string
+                example: "Commonwealth Bank of Australia"
+                description: the financial institution name from an agreed enumeration
+              AccountBsb:
+                type: string
+                example: 065-125
+                description: the account BSB if available
+              AccountNumber:
+                type: string
+                example: 112xxxx4658
+                description: Account number from the source system. This can be obfuscated before providing. This will form part of the matching logic to identify joint account ownership.
+              AccountType:
+                type: string
+                example: TRANSACTION
+                description: Account type indicator. This will be used to drive configuration within your client profile. If this isn't provided the account type default will be `OTHER` 
+                enum:
+                - TRANSACTION
+                - CREDITCARD
+                - HOMELOAN
+                - PERSONALLOAN
+                - OTHER
+              AccountName:
+                type: string
+                example: PARTY ACCOUNT
+                description: The name of the account.
+              CurrentBalance:
+                type: number
+                example: -5486.15
+                description: The balance of the account at the request point of time. Can be positive, zero or negative
+              AvailableBalance:
+                type: number
+                example: -5454.15
+                description: Balance representing the amount of funds available for transfer. Assumed to be zero or positive. This should be the `CurrentBalance` – sum(pending transactions)
+              CreditLimit:
+                type: number
+                example: 10000
+                description: The maximum amount of credit available for the account.
+              AccountAge:
+                type: number
+                example: 12
+                description: Age in months of account.
+        ApplicationContactResults:     
+          type: array
+          description: Credit assessment result objects for each applicant.
+          items:
+            type: object
+            required:
+            - ContactId
+            - Version
+            - CreditSummary
+            properties:
+              ContactId:
+                type: integer
+                description: Unique identifier for the contact record created for your applicant.
+              Version:
+                type: string
+                description: The version of the application that was created  
+              CreditPolicyRuleSummary:
+                type: array
+                description: Summary object for Credit Policy rules.
+                items:
+                  type: object
+                  properties:
+                    AssessmentStatus:
+                      type: string
+                      description: Overall status of the assessment - returns
+                        FAILED if any individual results are FAILED.
+                      enum:
+                        - PASSED
+                        - FAILED
+                        - REVIEWED
+                    CreditPolicyRuleName:
+                      type: string
+                      description: The configured credit policy rule
+                      example: Evidence of payment arrears
+                    CreditPolicyRuleValue:
+                      type: integer
+                      description: The configured credit policy rule result form the credit bureau.
+                      example: 2 
+        RequestId:
+          type: string
+          format: uuid
+          description: unique request identifier
     RequestGetApplication:
       required:
       - ApplicationReferenceNumber
@@ -3429,7 +4109,7 @@ components:
                 to "actual financials" identified as part of the AI models, within
                 your credit policy tolerances.
               properties:
-                AssetsCash:
+                AssestsCash:
                   type: number
                   description: The application's total cash savings - to be used
                     as "deposit" declared financial.
@@ -3765,6 +4445,258 @@ components:
                               description: Declared monthly expenses for other goods and services. Will appear under "Other goods and services"
 
           description: Object containing application payload.
+    RequestUploadDocument: 
+      required:
+        - ApplicationReferenceNumber
+        - DocumentName
+        - FileType
+        - DocumentType
+      type: object
+      properties:
+        ApplicationReferenceNumber:
+          type: string
+          description: Unique identifier for the application.
+          example: "ABC123456"
+        DocumentName:
+          type: string
+          example: "Contract for ABC123456"
+          description: The document name.
+        FileType:
+          type: string
+          example: "application/pdf"
+          description: The type of file.
+          enum:
+          - application/msword
+          - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+          - application/pdf
+          - application/vnd.ms-excel
+          - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+          - image/jpeg
+          - image/png
+        DocumentType:
+          type: string
+          example: COS
+          description: The type of the document.
+          enum:
+          - BS
+          - CC
+          - PS
+          - TR
+          - LS
+          - HL
+          - DEP
+          - PLS
+          - VOI
+          - ID
+          - NOA
+          - EM
+          - CTR
+          - EC
+          - AL
+          - VR
+          - IL
+          - RENT
+          - BONUS
+          - GOV
+          - BRD
+          - COS
+          - OTHER
+    ResponseUploadDocument:
+      type: object
+      properties:
+        LinkUrl:
+          type: string
+          description: Pre-signe URL to upload document.
+        RequestId:
+          type: string
+          format: uuid
+          description: Unique request identifier.
+    RequestGetDocument: 
+      required:
+        - ApplicationReferenceNumber
+        - DocumentId
+      type: object
+      properties:
+        ApplicationReferenceNumber:
+          type: string
+          description: Unique identifier for the application.
+          example: "ABC123456"
+        DocumentId:
+          type: integer
+          description: The unique Id of the document.
+    ResponseGetDocument:
+      type: object
+      properties:
+        ApplicationDocument:
+          $ref: '#/components/schemas/DocumentSchema'
+        RequestId:
+          type: string
+          format: uuid
+          description: Unique request identifier.    
+    RequestGetListDocument: 
+      required:
+        - ApplicationReferenceNumber
+      type: object
+      properties:
+        ApplicationReferenceNumber:
+          type: string
+          description: Unique identifier for the application.
+          example: "ABC123456"
+        SearchCriteria:
+          type: object
+          description: The search criteriea.
+          properties:
+            TextFilter:
+              type: string
+              description: Text filter for document name or type.
+            ContactIds:
+              type: array
+              description: Contact Ids of the document.
+              items:
+                type: integer
+        SortCriteria:
+          type: object
+          description: The sort criteria.
+          properties:
+            SortField:
+              type: string
+              description: The sort field.
+            SortDirection:
+              type: string
+              description: The sort direction.
+        Pagination:
+          type: object
+          properties:
+            PageSize:
+              type: number
+              description: The number of items per page.
+            PageNumber:
+              type: number
+              description: The current page number.
+    ResponseGetListDocument:
+      type: object
+      properties:
+        ApplicationDocuments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentSchema'
+        Pagination:
+          type: object
+          properties:
+            PageSize:
+              type: number
+              description: The number of items per page.
+            PageNumber:
+              type: number
+              description: The current page number.
+            TotalSize:
+              type: number
+              description: The total number of items.
+            TotalPages:
+              type: number
+              description: The total number of pages.
+        RequestId:
+          type: string
+          format: uuid
+          description: Unique request identifier.
+    RequestDownloadDocument: 
+      required:
+        - ApplicationReferenceNumber
+        - DocumentId
+      type: object
+      properties:
+        ApplicationReferenceNumber:
+          type: string
+          description: Unique identifier for the application.
+          example: "ABC123456"
+        DocumentId:
+          type: integer
+          description: The unique Id of the document.
+    ResponseDownloadDocument:
+      type: object
+      properties:
+        LinkUrl:
+          type: string
+          description: Pre-signed URL to download document.
+        RequestId:
+          type: string
+          format: uuid
+          description: Unique request identifier.   
+    DocumentSchema:
+      type: object
+      properties:
+        Name:
+          type: string
+          description: The name of the document.
+        DocumentType:
+          type: string
+          example: COS
+          description: The type of the document.
+          enum:
+          - BS
+          - CC
+          - PS
+          - TR
+          - LS
+          - HL
+          - DEP
+          - PLS
+          - VOI
+          - ID
+          - NOA
+          - EM
+          - CTR
+          - EC
+          - AL
+          - VR
+          - IL
+          - RENT
+          - BONUS
+          - GOV
+          - BRD
+          - COS
+          - OTHER
+        EnterpriseService:
+          type: string
+          example: YOD
+          description: The document provider.
+          enum:
+          - YOD11
+          - BASIQ
+          - ODS
+          - EXT
+          - MB
+        FileType:
+          type: string
+          example: "application/pdf"
+          description: The type of file.
+          enum:
+          - application/msword
+          - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+          - application/pdf
+          - application/vnd.ms-excel
+          - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+          - image/jpeg
+          - image/png
+        ApplicationId:
+          type: integer
+          description: The unique identifier of the application.
+        PropertyId:
+          type: integer
+          description: The unique identifier of the of the propery that the document belongs to.
+        DocumentStoreKey:
+          type: string
+          description: The document key with the path where document is stored in AWS WorkDocs.
+        Size:
+          type: number
+          description: The size of the document.
+        UploadedOn:
+          type: string
+          format: date-time
+          description: The date that document was uploaded.
+        UploadedBy:
+          type: string
+          description: The user who uploaded the document.
   securitySchemes:
     tokenAuth:
       type: http
