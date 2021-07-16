@@ -1033,9 +1033,10 @@ paths:
           |`application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` | Microsoft Excel (xlsx) document |
           |`image/jpeg` | JPEG image |
           |`image/png` | PNG image |
-          
-          
+             
+             
         The `DocumentType` is used to index and specify the type of document being uploaded:
+           
           | `DocumentType` | Description |
           |-----|-----|
           | `BS` | Bank Statement |
@@ -1061,10 +1062,8 @@ paths:
           | `BRD` | Borrower Repayment Declaration |
           | `COS` | Contract of Sale |
           | `OTHER` | Other document |
-              
-              
-          
-              
+                
+
       operationId: uploadDocument
       parameters:
         - in: header
@@ -1218,7 +1217,8 @@ paths:
       description:  >-
         This endpoint allows you to retrieve a list documents including their identifier. This can then be used to download the document.
                  
-        The `DocumentType` in the response is defined as per the table below.          
+        The `DocumentType` is defined as per the table below: 
+           
           | `DocumentType` | Description |
           |-----|-----|
           | `BS` | Bank Statement |
@@ -1244,7 +1244,7 @@ paths:
           | `BRD` | Borrower Repayment Declaration |
           | `COS` | Contract of Sale |
           | `OTHER` | Other document |
-        
+            
       operationId: getDocumentList
       parameters:
         - in: header
