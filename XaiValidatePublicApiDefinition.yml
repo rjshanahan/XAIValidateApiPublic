@@ -1017,14 +1017,14 @@ paths:
       - Document
       summary: Get a link to upload a document to an application.
       description:  >-
-        Upload a document to an application or applicant. This endpoint returns a pre-signed URL to upload the document. You can upload the documents using this URL via the `/{UploadDocumentUrl}` endpoint. 
+        Upload a document to an application or applicant. This endpoint returns a pre-signed URL to upload the document. You can upload the documents using this URL via the [`/{UploadDocumentUrl}`](#/{UploadDocumentUrl}) endpoint. 
         
         Your request must the `ApplicationReferenceNumber` and `DocumentName`. You must also include an enumeration for:
           - `FileType`
           - `DocumentType`
          
         The `FileType` is the MIME type of the document with enumerations:
-           
+        
           |`FileType` | Description|
           |-----|-----|
           |`application/msword` | Microsoft Word document |
@@ -1033,10 +1033,10 @@ paths:
           |`application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` | Microsoft Excel (xlsx) document |
           |`image/jpeg` | JPEG image |
           |`image/png` | PNG image |
-             
-             
+          
+          
         The `DocumentType` is used to index and specify the type of document being uploaded:
-           
+        
           | `DocumentType` | Description |
           |-----|-----|
           | `BS` | Bank Statement |
@@ -1062,8 +1062,6 @@ paths:
           | `BRD` | Borrower Repayment Declaration |
           | `COS` | Contract of Sale |
           | `OTHER` | Other document |
-                
-
       operationId: uploadDocument
       parameters:
         - in: header
@@ -1104,17 +1102,13 @@ paths:
       - Document
       summary: Upload document linked to an application.
       description:  >-
-    
-        This endpoint allows you to upload a document to your application. The unique upload URL will be returned in the `/document/upload` endpoint response.
+        This endpoint allows you to upload a document to your application. The unique upload URL will be returned in the [`/document/upload`](#/document/upload) endpoint response.
             
-        Please note:  
+        Please note:
           * you will `PUT` the object to the `UploadDocumentUrl` directly, not to the XAI Validate endpoint.
           * no headers are required in the `PUT`.
           * the document `body` should be specified as `binary`.
-            
-        Once you have successfully uploaded the data, the automated financial validation process will be triggered.
-        
-      operationId: uploadDocument
+      operationId: uploadDocumentLink
       parameters:
         - in: path
           name: UploadDocumentUrl
@@ -1147,9 +1141,10 @@ paths:
       - Document
       summary: Get information about a document linked to an application.
       description:  >-
-        This endpoint allows you to retrieve a document information by its identifier. This can be retrieved from the `/document/getlist` endpoint.
-                 
-        The `DocumentType` in the response is defined as per the table below.          
+        This endpoint allows you to retrieve a document information by its identifier. This can be retrieved from the [`/document/getlist`](#/document/getlist) endpoint.
+          
+        The `DocumentType` in the response is defined as per the table below:
+
           | `DocumentType` | Description |
           |-----|-----|
           | `BS` | Bank Statement |
@@ -1216,9 +1211,9 @@ paths:
       summary: Get a list of documents linked to an application.
       description:  >-
         This endpoint allows you to retrieve a list documents including their identifier. This can then be used to download the document.
-                 
+          
         The `DocumentType` is defined as per the table below: 
-           
+        
           | `DocumentType` | Description |
           |-----|-----|
           | `BS` | Bank Statement |
@@ -1244,7 +1239,6 @@ paths:
           | `BRD` | Borrower Repayment Declaration |
           | `COS` | Contract of Sale |
           | `OTHER` | Other document |
-            
       operationId: getDocumentList
       parameters:
         - in: header
@@ -1285,7 +1279,7 @@ paths:
       - Document
       summary: Get a link to download a specific document linked to an application.
       description:  >-
-        This endpoint generates a pre-signed URL to download a document.
+        This endpoint generates a pre-signed URL to download a document. The is then used with the [`{DownloadDocumentUrl}`](#{DownloadDocumentUrl}) call.
         
       operationId: downloadDocument
       parameters:
@@ -1327,16 +1321,13 @@ paths:
       - Document
       summary: Download document linked to an application.
       description:  >-
-    
-        This endpoint allows you to download a document linked to your application. The unique download URL will be returned in the `/document/download` endpoint response. 
+        This endpoint allows you to download a document linked to your application. The unique download URL will be returned in the [`/document/download`](#/document/download) endpoint response. 
          
         Please note:  
           * you will `GET` the object to the `DownloadDocumentUrl` directly, not to the XAI Validate endpoint.
           * no headers are required in the `GET`.
           * no `body` required.
-            
-        
-      operationId: downloadDocument
+      operationId: downloadDocumentLink
       parameters:
         - in: path
           name: DownloadDocumentUrl
