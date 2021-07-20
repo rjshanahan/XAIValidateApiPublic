@@ -1,6 +1,10 @@
 openapi: 3.0.1
 info:
   title: XAI Validate API
+  x-logo:
+    url: "https://tictoc.ai/img/XAI_rgb.svg"
+    backgroundColor: "#FFFFFF"
+    altText: "XAI logo"
   description:   >-
     ## Welcome to XAI Validate  
     
