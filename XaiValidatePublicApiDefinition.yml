@@ -2906,7 +2906,7 @@ components:
                 example: 21 Jump Street, Deppville, VIC 3999
               RentalIncome:
                 type: number
-                description: The monthly amount repayment for the loan.
+                description: The monthly rental income associated with the property.
                 example: 2500.25
               OwnershipPercentage:
                 description: Represents the applicant's property ownership percentage.
@@ -3249,7 +3249,7 @@ components:
             example: 0.0359
           RentalIncome:
             type: number
-            description: The monthly amount repayment for the loan.
+            description: The monthly rental income associated with the loan.
             example: 2500.25
           OwnershipPercentage:
             type: number
@@ -3708,7 +3708,7 @@ components:
           example: 0.0359
         RentalIncome:
           type: number
-          description: The monthly amount repayment for the loan.
+          description: The monthly rental income associated with the loan.
           example: 2500.25
         OwnershipPercentage:
           type: number
