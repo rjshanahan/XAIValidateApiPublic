@@ -4205,6 +4205,8 @@ components:
                               enum:
                               - YOD11
                               - ODS
+                              - EXT
+                              - MB
                             DataProviderReference:
                               type: array
                               description: List of external reference identifiers
