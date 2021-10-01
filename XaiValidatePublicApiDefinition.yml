@@ -1032,6 +1032,7 @@ paths:
           |`FileType` | Description|
           |-----|-----|
           |`application/msword` | Microsoft Word document |
+          |`application/vnd.openxmlformats-officedocument.wordprocessingml.document` | Microsoft Word (docx) document |
           |`application/pdf` | PDF document |
           |`application/vnd.ms-excel` | Microsoft Excel document |
           |`application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` | Microsoft Excel (xlsx) document |
@@ -4130,6 +4131,13 @@ components:
                         description: The household's monthly expenses. This is the
                           sum of monthly non-discretionary expenses for the applicants
                           within the household.
+                        format: double
+                        example: 1555.44
+                      ExpenseHem:
+                        type: number
+                        description: Represents the monthly HEM amount relevant to the applicant.
+                        format: double
+                        example: 2255.44
                   ApplicationContacts:
                     type: array
                     description: Object containing array of applicants. The first
@@ -4172,12 +4180,20 @@ components:
                         HasHecsDebt:
                           type: boolean
                           description: Determines whether the applicant has a HECS debt to pay.
+                        MaritalStatus:
+                          type: string
+                          description: Enumeration indicating the marital status type i.e. defacto, single etc. Used in HEM calculations.
+                          enum:
+                          - DEFACTO
+                          - MARRIED
+                          - SEPARATED
+                          - SINGLE
                         Dependants:
                           type: number
                           description: The number of dependants for the applicant
                         ResidentialStatus:
                           type: string
-                          description: The residential status of the applicant
+                          description: Enumeration indicating the residential status type i.e. renting (RENT), own with mortgage (OM), own outright (OO), sharehousing (SHARE) etc.
                           enum:
                           - RENT
                           - OO
@@ -4271,6 +4287,9 @@ components:
                                     type: number
                                     description: Applicant ownership percentage
                                       for investment property.
+                                  InvestmentPropertyExpenses:
+                                    type: number
+                                    description: Applicant investment property expenses.
                             IncomeSavingsInterestAnnual:
                               type: number
                               description: Yearly savings interest for the applicant. Will appear as "Interest"
@@ -4291,7 +4310,34 @@ components:
                               description: Yearly self employed income for the applicant. Will appear as "Self employed income"   
                             IncomeOtherAnnual:
                               type: number
-                              description: Yearly other income for the applicant. Will appear as "Other"  
+                              description: Yearly other income for the applicant. Will appear as "Other" 
+                            IncomeCommissionsAndBonusesAnnual:
+                              description: Yearly commissions and bonuses for the applicant.
+                              type: number
+                            IncomeOvertimeAnnual:
+                              description: Yearly overtime income for the applicant.
+                              type: number
+                            IncomeCarAllowanceAnnual:
+                              description: Yearly car allowance income for the applicant.
+                              type: number
+                            IncomeOtherAddbacksAnnual:
+                              description: Yearly other addback income for the applicant.
+                              type: number
+                            IncomeSelfEmployedAbnormalAnnual:
+                              description: Yearly self-employed abnormal income for the applicant.
+                              type: number
+                            IncomeSelfEmployedNetProfitAnnualAnnual:
+                              description: Yearly self employed net profit for the applicant.
+                              type: number
+                            IncomeSelfEmployedAddbackMotorVehicleAnnual:
+                              description: Yearly income from motor vehicle benefits for the applicant.
+                              type: number
+                            IncomeSelfEmployedAddbackDepreciationAnnual:
+                              description: Yearly income from depreciation offset for the applicant.
+                              type: number       
+                            IncomeSelfEmployedAddbackOtherAnnual:
+                              description: Yearly income from other addbacks for the applicant.
+                              type: number
                             LiabilitiesHomeLoans:
                               type: array
                               description: The applicant's home loans. Current maximum
@@ -4315,6 +4361,19 @@ components:
                                     type: number
                                     description: Applicant ownership percentage
                                       for property.
+                                  HomeLoanInterestRate:
+                                    type: number
+                                    description: Declared home loan interest rate.
+                                  HomeLoanTerm:
+                                    type: number
+                                    description: Declared home loan term.
+                                  HomeLoanRepaymentType:
+                                    type: string
+                                    description: Declared home loan repayment type.
+                                    enum:
+                                    - PI
+                                    - IO
+                                    - LOC
                             LiabilitiesPersonalLoans:
                               type: array
                               description: The applicant's personal loans.
@@ -4345,6 +4404,9 @@ components:
                                   CreditCardLimit:
                                     type: number
                                     description: Declared credit card monthly repayment.
+                            LiabilitiesRentOrBoardMonthly:
+                              type: number
+                              description: 'The applicant''s monthly rent or board payments. '
                             LiabilitiesCreditCardLimit:
                               type: number
                               description: 'The applicant''s total credit card limit
