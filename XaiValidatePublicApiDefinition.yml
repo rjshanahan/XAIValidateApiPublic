@@ -765,25 +765,6 @@ paths:
           * `ApplicationReferenceNumber`: this will extract validated financials from the application object from earlier processes.
           * `NewFacilities`: specifics of the new debt facilities.
           * `ConfigurationSet`: the lending policy configuration for which you wish to calculate serviceability metrics. This will be the lender or product enumeration you have configured within XAI Validate
-
-        If you require HEM calculations you can set the `IsHemRequired` optional parameter. This is set to `false` by default. If you set this value to `true` then you must provide the following additional values under the `ApplicationContacts` object:
-          * `EmailAddress`
-          * `Dependants`
-          * `MartialStatus`
-          * `ResidentialStatus`
-  
-
-        You also have the ability to provide additional applicant and application level values over and above the outputs from earlier financial validation processes. These are optional - we will use validated figures and configured defaults where these are not provided. The table below lists the high level optional objects for tailoring serviceability calculations.
-          
-          | Optional Value | Purpose |
-          |-----|-----|        
-          | `ApplicantIncome` | Applicant-specific income values including self-employed income inputs and addbacks.|
-          | `ApplicantDebt` | Applicant-specific liabilities including home loans and ownership percentage |
-          | `ApplicationExpenses` | Household-specific expenses include non-discretionary expenses and HEM values |
-           
-        Please note:  
-          * If your applicant is self employed you will need to set the `IsSelfEmployed` parameter within the `ApplicationContact` to `true`. This value is `false` by default.
-          * If your applicant has a HECS debt you will need to set the `HasHecsDebt` parameter within the `ApplicationContact` to `true`. This value is `false` by default.
         
       operationId: serviceabilityMetrics
       parameters:
@@ -2762,244 +2743,21 @@ components:
           type: object
           description: The lender or product code you have configured lending policy against within XAI Validate.
           properties:
+            Merchant:
+              type: string
+              description: The merchant code you have configured lending policy against within XAI Validate.
+              example: 'MERCHANTCODE'
             Lender:
               type: string
               description: The lender or product code you have configured lending policy against within XAI Validate.
               example: 'PRODUCTCODE'
-        ApplicationContacts:
-          type: array
-          description: A list of applicant-specific serviceability inputs.
-          items:
-            type: object
-            properties:
-              EmailAddress:
-                type: string
-                format: email
-                description: The email address of the applicant. This will be used to drive identification of validated financials.
-              Dependants:
-                type: integer
-                description: The dependants for the applicant. Used in HEM calculations.
-              MartialStatus:
-                type: string
-                description: Enumeration indicating the marital status type i.e. defacto, single etc. Used in HEM calculations.
-                enum:
-                - MARRIED
-                - SINGLE
-                - DEFACTO
-                - SEPARATED
-              ResidentialStatus:
-                type: string
-                description: Enumeration indicating the residential status type i.e. renting (RENT), own with mortgage (OM), own outright (OO), sharehousing (SHARE) etc.
-                enum:
-                - RENT
-                - OO
-                - OM
-                - SHARE
-              EmploymentType:
-                type: string
-                description: Enumeration indicating the employment type of the applicant. The default value is employed (i.e. full time, part time and casual)
-                default: EMPLOYED
-                enum:
-                - EMPLOYED
-                - SELFEMPLOYED
-                - UNEMPLOYED
-              HasHecsDebt:
-                type: boolean
-                default: false
-                description: indicator as to whether the applicant has a HECS debt. This value defaults to `false`
-              ApplicantIncome:
-                $ref: '#/components/schemas/RequestApplicantIncomes'
-              ApplicantDebt:
-                $ref: '#/components/schemas/RequestApplicantDebts'
-        ApplicationExpenses:
-          $ref: '#/components/schemas/RequestApplicationExpenses'
-        IsHemRequired:
-          type: boolean
-          description: An indicator as to whether HEM calculation is required. This value is defaulted to `false`. If you set this value to `true`, then you must provide the relevant parameters under `ApplicationContacts`.
-          default: false
-    RequestApplicantIncomes:
-      type: object
-      description: A list of optional applicant-level income inputs.
-      properties:
-        Salary:
-          description: Represents the applicant's gross annual salary income.
-          type: number
-          format: double
-          example: 110555.66
-        Overtime:
-          description: Represents the applicant's annual overtime.
-          type: number
-          format: double
-          example: 55.11
-        GovernmentBenefits:
-          description: Represents the applicant's annual government benefits.
-          type: number
-          format: double
-          example: 5412.22
-        CommissionsAndBonuses:
-          description: Represents the applicant's commissions and bonuses.
-          type: number
-          format: double
-          example: 555.66
-        Dividends:
-          description: Represents the applicant's dividends.
-          type: number
-          format: double
-          example: 100.55
-        CarAllowance:
-          description: Represents the applicant's car allowances.
-          type: number
-          format: double
-          example: 100.01
-        CommercialRent:
-          description: Represents the applicant's commercial rent.
-          type: number
-          format: double
-          example: 1500.55
-        OtherIncome:
-          description: Represents the applicant's other income.
-          type: number
-          format: double
-          example: 3044.77 
-        OtherIncomeAddbacks:
-          description: Represents the applicant's other monthly income addbacks.
-          type: number
-          format: double
-          example: 144.77 
-        SelfEmployedIncome:
-          description: Represents the applicant's annual self employed income.
-          type: number
-          format: double
-          example: 110555.66
-        SelfEmployedAbnormalIncome:
-          description: Represents the applicant's abnormal self-employed income.
-          type: number
-          format: double
-          example: 100.00
-        SelfEmployedNetProfit:
-          description: Represents the applicant's annual net profit from business.
-          type: number
-          format: double
-          example: 55648.11
-        SelfEmployedAddbackMotorVehicle:
-          description: Represents the applicant's motor vehicle benefits.
-          type: number
-          format: double
-          example: 233.14
-        SelfEmployedAddbackDepreciation:
-          description: Represents the applicant's depreciation offset.
-          type: number
-          format: double
-          example: 645.99        
-        SelfEmployedAddbackOther:
-          description: Represents the applicant's income addbacks.
-          type: number
-          format: double
-          example: 0.01  
-        PropertyIncomes:
-          description: List of applicants' property income.
-          type: array
-          items:
-            type: object
-            properties:
-              PropertyAddress:
-                type: string
-                example: 21 Jump Street, Deppville, VIC 3999
-              RentalIncome:
-                type: number
-                description: The monthly rental income associated with the property.
-                example: 2500.25
-              OwnershipPercentage:
-                description: Represents the applicant's property ownership percentage.
-                type: number
-                format: double
-                example: 0.50
-    RequestApplicantDebts:
-      type: object
-      description: A list of applicant-level debt inputs.
-      properties:
-        GovernmentChildSupport:
-          description: Represents the applicant's monthly government child support repayments.
-          type: number
-          format: double
-          example: 155.66
-        OtherAddbacks:
-          description: Represents the applicant's other debt addbacks.
-          type: number
-          format: double
-          example: 555.66
-        PersonalLoanMonthlyRepayment:
-          description: Represents the applicant's total personal loan monthly repayments.
-          type: number
-          format: double
-          example: 100.55
-        CreditCardMonthlyRepaymentRate:
-          description: Represents the applicant's total credit card monthly repayments.
-          type: number
-          format: double
-          example: 55.11
-        CreditCardLimit:
-          description: Represents the applicant's total credit card limit.
-          type: number
-          format: double
-          example: 100.01
-        PropertyDebts:
-          description: List of applicants' property liabilities.
-          type: array
-          items:
-            type: object
-            properties:
-              PropertyAddress:
-                type: string
-                example: 21 Jump Street, Deppville, VIC 3999
-              MonthlyRepayment:
-                description: Represents the applicant's monthly home loan repayments.
-                type: number
-                format: double
-                example: 1233.11 
-              OwnershipPercentage:
-                description: Represents the applicant's property ownership percentage.
-                type: number
-                format: double
-                example: 0.50
-              LoanAmount:
-                description: Represents the applicant's home loan balance.
-                type: number
-                format: double
-                example: 254666.44
-    RequestApplicationExpenses:
-      description: Application-level expenses.
-      type: object
-      properties:
-        Households:
-          description: List of application households.
-          type: array
-          items:
-            type: object
-            required: 
-            - ExpenseNonDiscretionary
-            - ExpenseHem
-            - RentBoardAmount
-            properties:
-              PropertyAddress:
-                type: string
-                description: the address of the household.
-                example: "21 Jump Street, Narre Warren, VIC 3999"
-              ExpenseNonDiscretionary:
-                description: Represents the monthly non-discretionary expense amount.
-                type: number
-                format: double
-                example: 3255.44
-              ExpenseHem:
-                description: Represents the monthly HEM amount relevant to the applicant.
-                type: number
-                format: double
-                example: 2255.44
-              RentBoardAmount:
-                description: Represents the monthly rent or board amount relevant to the applicant.
-                type: number
-                format: double
-                example: 255.44
+        ValidationType:
+          type: string
+          description: Enumeration indicating that serviceability should be run on stated (declared), actuals or validated.
+          enum:
+          - STATED
+          - ACTUAL
+          - VALIDATED
     ResponseApplicationServiceability:
       required:
       - RequestId
@@ -3045,6 +2803,7 @@ components:
                 - NetSurplusIncludingAddbacks
                 - NetSurplusRatioExcludingAddbacks
                 - NetSurplusRatioIncludingAddbacks
+                - MaxBorrowingAmount
                 - ApplicantServiceability
                 properties:
                   NetMonthlySurplus:
@@ -3117,6 +2876,11 @@ components:
                     format: double
                     description: Represents the net surplus ratio including addbacks at application level.
                     example: 1.6611
+                  MaxBorrowingAmount:
+                    type: number
+                    format: double
+                    description: Represents the maximum borrowing amount at application level.
+                    example: 100000.1155                    
                   ApplicationContacts:
                     $ref: '#/components/schemas/ResponseApplicantServiceability'
     ResponseApplicantServiceability:
@@ -3129,9 +2893,9 @@ components:
         - TaxableGrossIncome
         - AttributableGrossIncome
         - NetIncomeExcludingAddbacks
-        - NetIncomeExcludeAddbacksMonthly
+        - NetIncomeExcludingAddbacksMonthly
         - NetIncomeIncludingAddbacks
-        - NetIncomeIncludeAddbacksMonthly
+        - NetIncomeIncludingAddbacksMonthly
         - TotalAttributableAnnualRent
         - TotalExistingBufferedRepayment
         - CreditCardMonthlyRepayment
@@ -3156,7 +2920,7 @@ components:
             type: number
             format: double
             example: 101444.77
-          NetIncomeExcludeAddbacksMonthly:
+          NetIncomeExcludingAddbacksMonthly:
             description: Represents the applicant specific net monthly income excluding addbacks.
             type: number
             format: double
@@ -3166,7 +2930,7 @@ components:
             type: number
             format: double
             example: 101444.77
-          NetIncomeIncludeAddbacksMonthly:
+          NetIncomeIncludingAddbacksMonthly:
             description: Represents the applicant specific net monthly income including addbacks.
             type: number
             format: double
