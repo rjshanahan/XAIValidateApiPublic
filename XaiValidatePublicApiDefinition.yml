@@ -757,8 +757,10 @@ paths:
       summary: Get serviceability metrics for an application and its applicants.
       description:  >-
         
-        This endpoint allows you to get serviceability metrics for your applications. By passing the `ApplicationReferenceNumber` for an existing application you can use the validated financials from earlier [`/application/create`](#Application/Create) and [`/application/manage`](#Application/Manage) requests to get accurate serviceability outputs.
-        
+        This endpoint allows you to get serviceability metrics for your applications. 
+          
+        By passing the `ApplicationReferenceNumber` for an existing application this endpoint will return accurate serviceability results using your configured policy settings and any assessment changes your users have made through the user interface.
+          
         In each request you can provide a list of new facilities, for which serviceability metrics will be returned. 
           
         You will be required to supply the following required information:
@@ -2745,8 +2747,8 @@ components:
           properties:
             Merchant:
               type: string
-              description: The merchant code you have configured lending policy against within XAI Validate.
-              example: 'MERCHANTCODE'
+              description: The client code you have configured lending policy against within XAI Validate.
+              example: 'CLIENTCODE'
             Lender:
               type: string
               description: The lender or product code you have configured lending policy against within XAI Validate.
@@ -2964,11 +2966,8 @@ components:
         - PropertyAddress
         - PropertyPostcode
         - BorrowingAmount
-        - MonthlyRepayment
         - RepaymentType
         - LoanTerm
-        - RateTerm
-        - PropertyUsage
         - InterestRate
         - OwnershipPercentage
         properties:
@@ -2994,6 +2993,7 @@ components:
             enum:
               - PI
               - IO
+              - LOC
           LoanTerm:
             type: integer
             description: The number of years for the loan
@@ -3019,7 +3019,7 @@ components:
           OwnershipPercentage:
             type: number
             description: The decimal amount of the ownership percentage.
-            example: 1.0
+            example: 0.5
     RequestProvideAccounts:
       required:
       - ApplicationReferenceNumber
