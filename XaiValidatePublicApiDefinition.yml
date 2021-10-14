@@ -222,11 +222,12 @@ paths:
       description:  >-
     
         This versatile endpoint allows you to perform the following functions against an existing application:
+          
           | Function | Description |
           |-----|-----|        
           | Add/edit "stated/declared" financials against an application | This is only relevant if you require a "declare and verify" approach to financial assessment, and have passed the `"IsActualsOnly": false` parameter in your [`/application/create`](#Application/Create) request.|
           | Link additional data source to an application |This is useful when your applicants provide additional bank account information thorugh your data aggregator, and you need to rerun the automated assessment. Please see the table below for data source details. |
-          | Add/edit applicants within an application| Add new applicants or edit existing ones. |
+          | Add/edit applicants within an application| Add new applicants or edit existing. |
          
         When you call the endpoint, automated assessment will commence once you receive a successful response. You can monitor the progress using the [`/application/getstatus`](#/application/getstatus) endpoint. However, you can control when the automated assessments is started by using the `ApplicationStatus` parameter:
           - `Commenced`: hold automated assessment until you're ready. This is helpful if you're gradually building an application object as your customer completes their application.
@@ -2885,6 +2886,10 @@ components:
                     example: 100000.1155                    
                   ApplicationContacts:
                     $ref: '#/components/schemas/ResponseApplicantServiceability'
+        PolicyVersion:
+          type: string
+          description: The serviceability policy version used for serviceability calculations. 
+          example: 10
     ResponseApplicantServiceability:
       type: array
       description: A list of applicant-level serviceability results.
