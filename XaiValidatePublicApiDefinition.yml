@@ -2743,6 +2743,8 @@ components:
         NewFacilities:
           $ref: '#/components/schemas/RequestNewFacilities'
         ConfigurationSet:
+          required:
+          - Lender
           type: object
           description: The lender or product code you have configured lending policy against within XAI Validate.
           properties:
@@ -2754,19 +2756,45 @@ components:
               type: string
               description: The lender or product code you have configured lending policy against within XAI Validate.
               example: 'PRODUCTCODE'
-        ValidationType:
-          type: string
-          description: Enumeration indicating that serviceability should be run on stated (declared), actuals or validated.
-          enum:
-          - STATED
-          - ACTUAL
-          - VALIDATED
+        ValidationTypes:
+            type: object
+            description: The financial validation types to be used for serviceability. If not provided the default will be to use "validated" financials over "actuals" over "declared".
+            required: 
+              - Incomes
+              - Expenses
+              - Liabilities
+            properties:
+              Incomes:
+                type: string
+                description: The financial validation type to be used for income types.
+                enum:
+                - STATED
+                - ACTUAL
+                - VALIDATED
+              Expenses:
+                type: string
+                description: The financial validation type to be used for expenses.
+                enum:
+                - STATED
+                - ACTUAL
+                - VALIDATED
+              Liabilities:
+                type: string
+                description: The financial validation type to be used for liabilities.
+                enum:
+                - STATED
+                - ACTUAL
+                - VALIDATED
+        PolicyVersion:
+            type: string
+            description: The policy version you specify when creating serviceability configuration. The value is a string representation of a decimal
+            example: "1.11"
     ResponseApplicationServiceability:
       required:
       - RequestId
       - ApplicationReferenceNumber
       - ServiceabilityResults
-      - ApplicationServiceability
+      - PolicyVersion.
       type: object
       properties:
         RequestId:
@@ -2777,6 +2805,10 @@ components:
           type: string
           description: The unique application reference number. 
           example: AAAA111222333
+        PolicyVersion:
+          type: string
+          description: The policy version you specify when creating serviceability configuration. The value is a string representation of a decimal
+          example: "1.11"    
         ServiceabilityResults:
           type: array
           description: List containing serviceability results per facility in your request.
@@ -2885,11 +2917,7 @@ components:
                     description: Represents the maximum borrowing amount at application level.
                     example: 100000.1155                    
                   ApplicationContacts:
-                    $ref: '#/components/schemas/ResponseApplicantServiceability'
-        PolicyVersion:
-          type: string
-          description: The serviceability policy version used for serviceability calculations. 
-          example: 10
+                    $ref: '#/components/schemas/ResponseApplicantServiceability'      
     ResponseApplicantServiceability:
       type: array
       description: A list of applicant-level serviceability results.
