@@ -4136,9 +4136,13 @@ components:
                               description: Yearly income from other addbacks for the applicant.
                               type: number
                             LiabilitiesHomeLoans:
+                              required:
+                                - HomeLoanBalance
+                                - HomeLoanInterestRate
+                                - HomeLoanTerm
+                                - HomeLoanRepaymentType
                               type: array
-                              description: The applicant's home loans. Current maximum
-                                declared home loans is 8.
+                              description: The applicant's home loans. Current maximum declared home loans is 8. If you don't provide the HomeLoanRepaymentMonthly value you need to provide HomeLoanInterestRate, HomeLoanTerm, HomeLoanRepaymentType. This will enable us to derive the monthly repayment.
                               items:
                                 type: object
                                 properties:
@@ -4512,16 +4516,6 @@ components:
           - BRD
           - COS
           - OTHER
-        EnterpriseService:
-          type: string
-          example: YOD
-          description: The document provider.
-          enum:
-          - YOD11
-          - BASIQ
-          - ODS
-          - EXT
-          - MB
         FileType:
           type: string
           example: "application/pdf"
@@ -4537,12 +4531,10 @@ components:
         ApplicationId:
           type: integer
           description: The unique identifier of the application.
-        PropertyId:
-          type: integer
-          description: The unique identifier of the of the propery that the document belongs to.
         DocumentStoreKey:
           type: string
-          description: The document key with the path where document is stored in AWS WorkDocs.
+          description: The document key with the path where document is stored in Document Management Store.
+          example: "/ttil/ABC/ABC123245/2021121420323477-Test_Excel_document"
         Size:
           type: number
           description: The size of the document.
@@ -4553,6 +4545,26 @@ components:
         UploadedBy:
           type: string
           description: The user who uploaded the document.
+        Id:
+          type: integer
+          description: The unique identifier of the document.
+        CreatedOn:
+          type: string
+          format: date-time
+          description: The date that document was created.
+        CreatedBy:
+          type: string
+          description: The user who created the document.
+        LastUpdatedOn:
+          type: string
+          format: date-time
+          description: The date the document was last updated.
+        LastUpdateBy:
+          type: string
+          description: The user who last updated the document.
+        RowVersion:
+          type: string
+          description: The database-level version of the document.
   securitySchemes:
     tokenAuth:
       type: http
