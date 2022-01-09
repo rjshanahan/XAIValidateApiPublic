@@ -2916,7 +2916,7 @@ components:
                     format: double
                     description: Represents the maximum borrowing amount at application level.
                     example: 100000.1155                    
-                  ApplicationContacts:
+                  ApplicantServiceability:
                     $ref: '#/components/schemas/ResponseApplicantServiceability'      
     ResponseApplicantServiceability:
       type: array
