@@ -4146,6 +4146,9 @@ components:
                               items:
                                 type: object
                                 properties:
+                                  Id:
+                                    type: number
+                                    description: The unique identifier for the home loan liability.
                                   HomeLoanName:
                                     type: string
                                     description: The name or institution of the home loan liability.
@@ -4181,6 +4184,9 @@ components:
                               items:
                                 type: object
                                 properties:
+                                  Id:
+                                    type: number
+                                    description: The unique identifier for the personal loan liability.
                                   PersonalLoanName:
                                     type: string
                                     description: The name or institution of the personal loan liability.
@@ -4196,6 +4202,9 @@ components:
                               items:
                                 type: object
                                 properties:
+                                  Id:
+                                    type: number
+                                    description: The unique identifier for the credit card liability.
                                   CreditCardName:
                                     type: string
                                     description: The name or institution of the credit card liability.
