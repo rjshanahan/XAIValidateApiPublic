@@ -1496,6 +1496,10 @@ components:
       $ref: '#/components/schemas/ApplicationSchema'
       description: Request object containing Application Create payload.
     ResponseManageApplicationFinancials:
+      allOf:
+        - $ref: '#/components/schemas/ApplicationSchema'
+        - $ref: '#/components/schemas/ResponseManageApplicationFinancialsBase'
+    ResponseManageApplicationFinancialsBase:      
       required:
       - Applicants
       - ApplicationReferenceNumber
@@ -4148,7 +4152,7 @@ components:
                                 properties:
                                   Id:
                                     type: number
-                                    description: The unique identifier for the home loan liability.
+                                    description: The unique identifier for the home loan liability.                            
                                   HomeLoanName:
                                     type: string
                                     description: The name or institution of the home loan liability.
@@ -4204,7 +4208,7 @@ components:
                                 properties:
                                   Id:
                                     type: number
-                                    description: The unique identifier for the credit card liability.
+                                    description: The unique identifier for the personal loan liability.
                                   CreditCardName:
                                     type: string
                                     description: The name or institution of the credit card liability.
