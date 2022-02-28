@@ -1390,6 +1390,7 @@ components:
       type: object
       properties:
         Application:
+          description: Request object containing Application Create payload.
           type: object
           properties:
             ExternalApplicationReferenceNumber:
@@ -1449,11 +1450,10 @@ components:
                 \ value. Your \"declare/stated\" can then be added to the application\
                 \ at in the [`/application/manage`](#/application/manage) endpoint.\n\
                 \n                         "
-            Lender:
-              type: string
-              description: This optional parameter can be used to drive the credit policy against which you would like your application assessed. The code will be defined as part of your onboarding process.
-              example: YourLenderCreditPolicyCode
-          description: Request object containing Application Create payload.
+        Lender:
+          type: string
+          description: This optional parameter can be used to drive the credit policy against which you would like your application assessed. The code will be defined as part of your onboarding process.
+          example: YourLenderCreditPolicyCode
     ResponseCreateApplication:
       required:
       - Applicants
@@ -1496,6 +1496,10 @@ components:
       $ref: '#/components/schemas/ApplicationSchema'
       description: Request object containing Application Create payload.
     ResponseManageApplicationFinancials:
+      allOf:
+        - $ref: '#/components/schemas/ApplicationSchema'
+        - $ref: '#/components/schemas/ResponseManageApplicationFinancialsBase'
+    ResponseManageApplicationFinancialsBase:      
       required:
       - Applicants
       - ApplicationReferenceNumber
@@ -3018,6 +3022,10 @@ components:
             example: 450000.00
           MonthlyRepayment:
             type: number
+            description: The monthly amount repayment for the loan - deprecated. If MonthlyRepayments is provided, this value is ignored.
+            example: 2500.25            
+          MonthlyRepayments:
+            type: number
             description: The monthly amount repayment for the loan.
             example: 2500.25
           RepaymentType:
@@ -3049,6 +3057,10 @@ components:
             type: number
             description: The monthly rental income associated with the loan.
             example: 2500.25
+          RentalExpense:
+            type: number
+            description: The monthly rental expense associated with the loan.
+            example: 1500.50
           OwnershipPercentage:
             type: number
             description: The decimal amount of the ownership percentage.
@@ -3478,6 +3490,10 @@ components:
           example: 450000.00
         MonthlyRepayment:
           type: number
+          description: The monthly amount repayment for the loan - deprecated. If MonthlyRepayments is provided, this value is ignored.
+          example: 2500.25
+        MonthlyRepayments:
+          type: number
           description: The monthly amount repayment for the loan.
           example: 2500.25
         RepaymentType:
@@ -3508,6 +3524,10 @@ components:
           type: number
           description: The monthly rental income associated with the loan.
           example: 2500.25
+        RentalExpense:
+            type: number
+            description: The monthly rental expense associated with the loan.
+            example: 1500.50
         OwnershipPercentage:
           type: number
           description: The decimal amount of the ownership percentage.
@@ -4146,6 +4166,9 @@ components:
                               items:
                                 type: object
                                 properties:
+                                  Id:
+                                    type: number
+                                    description: The unique identifier for the home loan liability.                            
                                   HomeLoanName:
                                     type: string
                                     description: The name or institution of the home loan liability.
@@ -4181,6 +4204,9 @@ components:
                               items:
                                 type: object
                                 properties:
+                                  Id:
+                                    type: number
+                                    description: The unique identifier for the personal loan liability.
                                   PersonalLoanName:
                                     type: string
                                     description: The name or institution of the personal loan liability.
@@ -4196,6 +4222,9 @@ components:
                               items:
                                 type: object
                                 properties:
+                                  Id:
+                                    type: number
+                                    description: The unique identifier for the personal loan liability.
                                   CreditCardName:
                                     type: string
                                     description: The name or institution of the credit card liability.
@@ -4224,6 +4253,9 @@ components:
                               type: number
                               description: "The applicant's total personal loan\
                                 \ monthly repayment for all loans.    \n\n  "
+                            LiabilitiesChildMaintenance:
+                              type: number
+                              description: 'The applicant''s total child maintenance amounts.  '
                             ExpensesFoodGroceriesMonthly:
                               type: number
                               description: Declared monthly expenses for food and groceries. Will appear under "Food, groceries and household cleaning products" category.
@@ -4236,6 +4268,9 @@ components:
                             ExpensesClothingPersonalCareMonthly:
                               type: number
                               description: Declared monthly expenses for clothing and personal care. Will appear under "Clothing and personal care"
+                            ExpensesChildSupportMonthly:
+                              type: number
+                              description: Declared monthly expenses for Child Support. Will appear under "Child support"
                             ExpensesMedicalHealthCareMonthly:
                               type: number
                               description: Declared monthly expenses for medical and health care. Will appear under "Medical and health care"
@@ -4247,7 +4282,7 @@ components:
                               description: Declared monthly expenses for recreation and entertainment. Will appear under "Recreation, entertainment and travel"
                             ExpensesChildcareMonthly:
                               type: number
-                              description: Declared monthly expenses for childcare. Will appear under "Childcare"
+                              description: Declared monthly expenses for childcare. Will appear under "Childcare"  
                             ExpensesRentMonthly:
                               type: number
                               description: Declared monthly expenses for rent or board. Will appear under "Rent or board"
