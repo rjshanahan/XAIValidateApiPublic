@@ -4096,6 +4096,17 @@ components:
                                   RentalPropertyAddress:
                                     type: string
                                     description: The address of the investment property.
+                                  RentalPropertyPostcode:
+                                    type: string
+                                    description: The postcode of the investment property.                     
+                                  RentalPropertyType:
+                                    type: string
+                                    enum:
+                                    - HOUSE
+                                    - UNIT
+                                    - APARTMENT
+                                    - FLATS                                    
+                                    description: The property type of the investment property.
                                   IncomeRentalMonthly:
                                     type: number
                                     description: Monthly rental income for the investment
