@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "83c05ad1-6386-4990-89ae-0ecb33ed9aea",
+		"_postman_id": "ee10f301-0871-41c9-9deb-325c4726f9d1",
 		"name": "XAI Validate API Collection",
 		"description": " ",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -3371,11 +3371,6 @@
 							"mode": "file",
 							"file": {
 								"src": "/C:/Users/rshanahan/Documents/TestThisExcelX.xlsx"
-							},
-							"options": {
-								"raw": {
-									"language": "json"
-								}
 							}
 						},
 						"url": {
@@ -3440,7 +3435,7 @@
 								"getlist"
 							]
 						},
-						"description": "This endpoint includes the automated assessment of financial position results. It reflects the automated assessment, and any of your users' interaction with the data in the XAI Validare UI. Using this endpoint you'll be able to retrieve a comprehensive assessment of your applicants' income, expenses, assets, liabilities and any behavioural flags such as high risk transactions or arrears events.\r\n\r\nThe table below summarises the key objects returned:\r\nObject\tDescription\r\nAssessmentSummary\tThis list of objects is tailored to those clients undertaking \"declare and verify\" financial assessment. Each object in the list will align to a client-specific credit policy setting, including an automated decision outcome, the applicant's \"declared\" financials, the \"actual\" financials found by XAI Validate and any \"reviewed\" financials from your users' interaction with the XAI Validate user interface.\r\nApplicationResults\tThis object includes the results for application-specific automated assessments, specifically your applicants' total asset position (i.e. deposit).\r\nHouseholdResults\tThis object includes key descriptive statistics from the XAI Validate assessment of household-specific expenses including non-discretionary, discretionary and any removed expenses.\r\nApplicationContactResults\tThis object contains detailed information about the XAI Validate assessment of your applicants' financial position. Individual objects will be returned for income (salary, rental and other), home loans, credit cards and personal loans."
+						"description": "Get a list of documents already uploaded to an application."
 					},
 					"response": []
 				},
@@ -3485,7 +3480,7 @@
 								"get"
 							]
 						},
-						"description": "This endpoint includes the automated assessment of financial position results. It reflects the automated assessment, and any of your users' interaction with the data in the XAI Validare UI. Using this endpoint you'll be able to retrieve a comprehensive assessment of your applicants' income, expenses, assets, liabilities and any behavioural flags such as high risk transactions or arrears events.\r\n\r\nThe table below summarises the key objects returned:\r\nObject\tDescription\r\nAssessmentSummary\tThis list of objects is tailored to those clients undertaking \"declare and verify\" financial assessment. Each object in the list will align to a client-specific credit policy setting, including an automated decision outcome, the applicant's \"declared\" financials, the \"actual\" financials found by XAI Validate and any \"reviewed\" financials from your users' interaction with the XAI Validate user interface.\r\nApplicationResults\tThis object includes the results for application-specific automated assessments, specifically your applicants' total asset position (i.e. deposit).\r\nHouseholdResults\tThis object includes key descriptive statistics from the XAI Validate assessment of household-specific expenses including non-discretionary, discretionary and any removed expenses.\r\nApplicationContactResults\tThis object contains detailed information about the XAI Validate assessment of your applicants' financial position. Individual objects will be returned for income (salary, rental and other), home loans, credit cards and personal loans."
+						"description": "Get details about a specific document already uploaded to an application."
 					},
 					"response": []
 				},
@@ -3542,7 +3537,7 @@
 								"download"
 							]
 						},
-						"description": "This endpoint includes the automated assessment of financial position results. It reflects the automated assessment, and any of your users' interaction with the data in the XAI Validare UI. Using this endpoint you'll be able to retrieve a comprehensive assessment of your applicants' income, expenses, assets, liabilities and any behavioural flags such as high risk transactions or arrears events.\r\n\r\nThe table below summarises the key objects returned:\r\nObject\tDescription\r\nAssessmentSummary\tThis list of objects is tailored to those clients undertaking \"declare and verify\" financial assessment. Each object in the list will align to a client-specific credit policy setting, including an automated decision outcome, the applicant's \"declared\" financials, the \"actual\" financials found by XAI Validate and any \"reviewed\" financials from your users' interaction with the XAI Validate user interface.\r\nApplicationResults\tThis object includes the results for application-specific automated assessments, specifically your applicants' total asset position (i.e. deposit).\r\nHouseholdResults\tThis object includes key descriptive statistics from the XAI Validate assessment of household-specific expenses including non-discretionary, discretionary and any removed expenses.\r\nApplicationContactResults\tThis object contains detailed information about the XAI Validate assessment of your applicants' financial position. Individual objects will be returned for income (salary, rental and other), home loans, credit cards and personal loans."
+						"description": "Get a document download link."
 					},
 					"response": []
 				},
@@ -3564,6 +3559,490 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Product Rate Information",
+			"item": [
+				{
+					"name": "Get a list of ALL current product rates",
+					"item": [
+						{
+							"name": "Get Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"SessionToken\", jsonData.access_token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-length": true,
+									"user-agent": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{ClientSecret}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{ClientId}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "https://{{AuthUrl}}/oauth2/token?grant_type={{GrantType}}",
+									"protocol": "https",
+									"host": [
+										"{{AuthUrl}}"
+									],
+									"path": [
+										"oauth2",
+										"token"
+									],
+									"query": [
+										{
+											"key": "grant_type",
+											"value": "{{GrantType}}"
+										}
+									]
+								},
+								"description": "Before you can call the XAI Validate endpoints, you need to authenticate via the /token API. Successful authentication will return a token that can then be used to authorise your access to functional APIs. You'll need to include this token in the Authorization header in your calls.\r\n\r\nThe /token API URL includes values in the query path. The URL will look like this:\r\nhttps://{host}/oauth2/token?grant_type=client_credentials\r\n\r\nThe host value will either be auth.tictoc.ai for production or auth.stage.tictoc.ai for testing. You'll also need to include information in your headers:\r\n\r\n    Authorization: Base64 encoded client_id and client_secret provided to you by the XAI Validate team as part of onboarding. The format is: \"Basic {client_id}:{client_secret}\"\r\n    Content-Type: the value is \"application/x-www-form-urlencoded\"\r\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Get product rate list",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SessionToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{ApiKey}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Filters\": {\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{BasePath}}/product/rate/getlist",
+									"protocol": "https",
+									"host": [
+										"{{BasePath}}"
+									],
+									"path": [
+										"product",
+										"rate",
+										"getlist"
+									]
+								},
+								"description": "Get a list of products using a set of filters"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get product rates for owner occupier",
+					"item": [
+						{
+							"name": "Get Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"SessionToken\", jsonData.access_token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-length": true,
+									"user-agent": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{ClientSecret}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{ClientId}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "https://{{AuthUrl}}/oauth2/token?grant_type={{GrantType}}",
+									"protocol": "https",
+									"host": [
+										"{{AuthUrl}}"
+									],
+									"path": [
+										"oauth2",
+										"token"
+									],
+									"query": [
+										{
+											"key": "grant_type",
+											"value": "{{GrantType}}"
+										}
+									]
+								},
+								"description": "Before you can call the XAI Validate endpoints, you need to authenticate via the /token API. Successful authentication will return a token that can then be used to authorise your access to functional APIs. You'll need to include this token in the Authorization header in your calls.\r\n\r\nThe /token API URL includes values in the query path. The URL will look like this:\r\nhttps://{host}/oauth2/token?grant_type=client_credentials\r\n\r\nThe host value will either be auth.tictoc.ai for production or auth.stage.tictoc.ai for testing. You'll also need to include information in your headers:\r\n\r\n    Authorization: Base64 encoded client_id and client_secret provided to you by the XAI Validate team as part of onboarding. The format is: \"Basic {client_id}:{client_secret}\"\r\n    Content-Type: the value is \"application/x-www-form-urlencoded\"\r\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Get product rate list",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"ProductRateCodes\", JSON.stringify(jsonData.ProductRateCodes));\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SessionToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{ApiKey}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Filters\": {\r\n        \"ProductCodes\": [\r\n            \"QANTAS_BEN_PRI\"\r\n        ]\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{BasePath}}/product/rate/getlist",
+									"protocol": "https",
+									"host": [
+										"{{BasePath}}"
+									],
+									"path": [
+										"product",
+										"rate",
+										"getlist"
+									]
+								},
+								"description": "Get a list of products using a set of filters"
+							},
+							"response": []
+						},
+						{
+							"name": "Get product rates for owner occupier",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SessionToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{ApiKey}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ProductRateCodes\": {{ProductRateCodes}},\r\n    \"Options\": {\r\n        \"HasOffset\": false,\r\n        \"LvrMin\": 0.0,\r\n        \"LvrMax\": 1.0\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{BasePath}}/product/rate/get",
+									"protocol": "https",
+									"host": [
+										"{{BasePath}}"
+									],
+									"path": [
+										"product",
+										"rate",
+										"get"
+									]
+								},
+								"description": "This endpoint includes the automated assessment of financial position results. It reflects the automated assessment, and any of your users' interaction with the data in the XAI Validare UI. Using this endpoint you'll be able to retrieve a comprehensive assessment of your applicants' income, expenses, assets, liabilities and any behavioural flags such as high risk transactions or arrears events.\r\n\r\nThe table below summarises the key objects returned:\r\nObject\tDescription\r\nAssessmentSummary\tThis list of objects is tailored to those clients undertaking \"declare and verify\" financial assessment. Each object in the list will align to a client-specific credit policy setting, including an automated decision outcome, the applicant's \"declared\" financials, the \"actual\" financials found by XAI Validate and any \"reviewed\" financials from your users' interaction with the XAI Validate user interface.\r\nApplicationResults\tThis object includes the results for application-specific automated assessments, specifically your applicants' total asset position (i.e. deposit).\r\nHouseholdResults\tThis object includes key descriptive statistics from the XAI Validate assessment of household-specific expenses including non-discretionary, discretionary and any removed expenses.\r\nApplicationContactResults\tThis object contains detailed information about the XAI Validate assessment of your applicants' financial position. Individual objects will be returned for income (salary, rental and other), home loans, credit cards and personal loans."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get product rates for variable owner occupier only",
+					"item": [
+						{
+							"name": "Get Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"SessionToken\", jsonData.access_token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"content-length": true,
+									"user-agent": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{ClientSecret}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{ClientId}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": []
+								},
+								"url": {
+									"raw": "https://{{AuthUrl}}/oauth2/token?grant_type={{GrantType}}",
+									"protocol": "https",
+									"host": [
+										"{{AuthUrl}}"
+									],
+									"path": [
+										"oauth2",
+										"token"
+									],
+									"query": [
+										{
+											"key": "grant_type",
+											"value": "{{GrantType}}"
+										}
+									]
+								},
+								"description": "Before you can call the XAI Validate endpoints, you need to authenticate via the /token API. Successful authentication will return a token that can then be used to authorise your access to functional APIs. You'll need to include this token in the Authorization header in your calls.\r\n\r\nThe /token API URL includes values in the query path. The URL will look like this:\r\nhttps://{host}/oauth2/token?grant_type=client_credentials\r\n\r\nThe host value will either be auth.tictoc.ai for production or auth.stage.tictoc.ai for testing. You'll also need to include information in your headers:\r\n\r\n    Authorization: Base64 encoded client_id and client_secret provided to you by the XAI Validate team as part of onboarding. The format is: \"Basic {client_id}:{client_secret}\"\r\n    Content-Type: the value is \"application/x-www-form-urlencoded\"\r\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Get product rate list",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"pm.environment.set(\"ProductRateCodes\", JSON.stringify(jsonData.ProductRateCodes));\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SessionToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{ApiKey}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Filters\": {\r\n        \"RateType\": \"VAR\",\r\n        \"UsageType\": \"PRI\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{BasePath}}/product/rate/getlist",
+									"protocol": "https",
+									"host": [
+										"{{BasePath}}"
+									],
+									"path": [
+										"product",
+										"rate",
+										"getlist"
+									]
+								},
+								"description": "Get a list of products using a set of filters"
+							},
+							"response": []
+						},
+						{
+							"name": "Get product rates for variable owner occupier",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SessionToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{ApiKey}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ProductRateCodes\": {{ProductRateCodes}},\r\n    \"Options\": {\r\n        \"HasOffset\": true,\r\n        \"LvrMin\": 0.0,\r\n        \"LvrMax\": 1.0\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://{{BasePath}}/product/rate/get",
+									"protocol": "https",
+									"host": [
+										"{{BasePath}}"
+									],
+									"path": [
+										"product",
+										"rate",
+										"get"
+									]
+								},
+								"description": "This endpoint includes the automated assessment of financial position results. It reflects the automated assessment, and any of your users' interaction with the data in the XAI Validare UI. Using this endpoint you'll be able to retrieve a comprehensive assessment of your applicants' income, expenses, assets, liabilities and any behavioural flags such as high risk transactions or arrears events.\r\n\r\nThe table below summarises the key objects returned:\r\nObject\tDescription\r\nAssessmentSummary\tThis list of objects is tailored to those clients undertaking \"declare and verify\" financial assessment. Each object in the list will align to a client-specific credit policy setting, including an automated decision outcome, the applicant's \"declared\" financials, the \"actual\" financials found by XAI Validate and any \"reviewed\" financials from your users' interaction with the XAI Validate user interface.\r\nApplicationResults\tThis object includes the results for application-specific automated assessments, specifically your applicants' total asset position (i.e. deposit).\r\nHouseholdResults\tThis object includes key descriptive statistics from the XAI Validate assessment of household-specific expenses including non-discretionary, discretionary and any removed expenses.\r\nApplicationContactResults\tThis object contains detailed information about the XAI Validate assessment of your applicants' financial position. Individual objects will be returned for income (salary, rental and other), home loans, credit cards and personal loans."
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "This API is available to clients that are using a managed solution for their Products."
 		}
 	],
 	"auth": {
@@ -3649,6 +4128,11 @@
 		{
 			"key": "ApplicantTwoId",
 			"value": "{{ApplicantTwoId}}"
+		},
+		{
+			"key": "ProductRateCodes",
+			"value": "{{ProductRateCodes}}",
+			"type": "string"
 		}
 	]
 }
