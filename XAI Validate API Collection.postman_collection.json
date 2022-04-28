@@ -3815,7 +3815,7 @@
 							"response": []
 						},
 						{
-							"name": "Get product rates for owner occupier",
+							"name": "Get product rates for owner occupier with offset",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -3837,7 +3837,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"ProductRateCodes\": {{ProductRateCodes}},\r\n    \"Options\": {\r\n        \"HasOffset\": false,\r\n        \"LvrMin\": 0.0,\r\n        \"LvrMax\": 1.0\r\n    }\r\n}",
+									"raw": "{\r\n    \"ProductRateCodes\": {{ProductRateCodes}},\r\n    \"Options\": {\r\n        \"HasOffset\": true,\r\n        \"LvrMin\": 0.0,\r\n        \"LvrMax\": 1.0\r\n    }\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
