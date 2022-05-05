@@ -1472,9 +1472,8 @@ components:
           format: date-time
         RequestId:
           type: string
-          description: Unique identifier which can be used to check the over financial
-            validation status through the [`/jobs`](#/application/getstatus) endpoint.
-          format: uuid
+          description: Unique identifier for the request
+          example: RojLCjD-ywPPMNg=
         Applicants:
           type: array
           description: List of objects indicating applicants included within the application.
@@ -1521,9 +1520,8 @@ components:
           format: date-time
         RequestId:
           type: string
-          description: Unique identifier which can be used to check the over financial
-            validation status through the [`/jobs`](#/application/getstatus) endpoint.
-          format: uuid
+          description: Unique identifier for the request
+          example: RojLCjD-ywPPMNg=
         GroupId:
           type: string
           example: AABB112233-3fa85f64-5717-4562-b3fc-2c963f66afa6
@@ -2439,7 +2437,7 @@ components:
                         - DEAD
         RequestId:
           type: string
-          format: uuid
+          example: RojLCjD-ywPPMNg=
           description: unique request identifier
     ResponseGetExpenseSummary:
       required:
@@ -2612,7 +2610,7 @@ components:
                       example: 45
         RequestId:
           type: string
-          format: uuid
+          example: RojLCjD-ywPPMNg=
           description: unique request identifier
     RequestJobsFinancialValidation:
       required:
@@ -2657,7 +2655,7 @@ components:
         RequestId:
           type: integer
           description: Unique `RequestId` for the asyncrhonous Request
-          format: uuid
+          example: RojLCjD-ywPPMNg=
         RequestStatus:
           type: string
           description: Name of the Request being processed e.g. `CreateApplication`
@@ -2685,7 +2683,7 @@ components:
         RequestId:
           type: string
           description: Unique `RequestId` for the request
-          format: uuid
+          example: RojLCjD-ywPPMNg=
         CallbackUrl:
           type: string
           description: Confirmation of the configured URL for your notification subscriptions.
@@ -2805,7 +2803,7 @@ components:
         RequestId:
           type: string
           description: Unique identifier for your request.
-          format: uuid
+          example: RojLCjD-ywPPMNg=
         ApplicationReferenceNumber:
           type: string
           description: The unique application reference number. 
@@ -3113,9 +3111,8 @@ components:
 
         RequestId:
           type: string
-          description: Unique identifier which can be used to check the over financial
-            validation status through the [`/jobs`](#/application/getstatus) endpoint.
-          format: uuid
+          description: Unique identifier for the request
+          example: RojLCjD-ywPPMNg=
     RequestUploadAccountTransaction: 
       required:
         - Accounts
@@ -3222,7 +3219,7 @@ components:
         RequestId:
           type: string
           description: 'Unique identifier for the request.    '
-          format: uuid
+          example: RojLCjD-ywPPMNg=
                 
     RequestEnrichExpense:
       required:
@@ -3590,7 +3587,7 @@ components:
         RequestId:
           type: string
           description: Unique identifier for the request that generated the error.
-          format: uuid
+          example: RojLCjD-ywPPMNg=
     ResponseRequestError:
       required:
       - Errors
@@ -3628,7 +3625,7 @@ components:
         RequestId:
           type: string
           description: 'Unique identifier for the request that generated the error.     '
-          format: uuid
+          example: RojLCjD-ywPPMNg=
     
     RequestCreditEnquiry:
       required:
@@ -3680,7 +3677,7 @@ components:
           example: "ABC123456"
         RequestId:
           type: string
-          format: uuid
+          example: RojLCjD-ywPPMNg=
           description: unique request identifier
     RequestCreditGetEnquiry:
       type: object
@@ -3703,7 +3700,7 @@ components:
           description: To be determined.
         RequestId:
           type: string
-          format: uuid
+          example: RojLCjD-ywPPMNg=
           description: unique request identifier
     RequestCreditGetSummary:
       type: object
@@ -3819,7 +3816,7 @@ components:
                       example: 2 
         RequestId:
           type: string
-          format: uuid
+          example: RojLCjD-ywPPMNg=
           description: unique request identifier
     RequestGetApplication:
       required:
@@ -4422,7 +4419,7 @@ components:
           description: Pre-signe URL to upload document.
         RequestId:
           type: string
-          format: uuid
+          example: RojLCjD-ywPPMNg=
           description: Unique request identifier.
     RequestGetDocument: 
       required:
@@ -4444,7 +4441,7 @@ components:
           $ref: '#/components/schemas/DocumentSchema'
         RequestId:
           type: string
-          format: uuid
+          example: RojLCjD-ywPPMNg=
           description: Unique request identifier.    
     RequestGetListDocument: 
       required:
@@ -4510,7 +4507,7 @@ components:
               description: The total number of pages.
         RequestId:
           type: string
-          format: uuid
+          example: RojLCjD-ywPPMNg=
           description: Unique request identifier.
     RequestDownloadDocument: 
       required:
@@ -4533,7 +4530,7 @@ components:
           description: Pre-signed URL to download document.
         RequestId:
           type: string
-          format: uuid
+          example: RojLCjD-ywPPMNg=
           description: Unique request identifier.   
     DocumentSchema:
       type: object
