@@ -1159,6 +1159,17 @@ paths:
           | `BRD` | Borrower Repayment Declaration |
           | `COS` | Contract of Sale |
           | `OTHER` | Other document |
+
+        The `OcrStatus` is defined as per the table below: 
+        
+          | `OcrStatus` | Description |
+          |-----|-----|
+          | `READY` | The document is ready to be processed |
+          | `PROCESSING` | The document is processing |
+          | `SUCCESS` | The document has successfully completed processing |
+          | `FAILED` | The document has failed processing | 
+          | `DEAD` | The document is dead and cannot be processed |
+          | `UNSUPPORTED` | The document is not supported for OCR processing |
       operationId: getDocumentList
       parameters:
         - in: header
@@ -4107,7 +4118,7 @@ components:
                                     description: The property type of the investment property.
                                   IncomeRentalMonthly:
                                     type: number
-                                    description: Monthly rental income for the investment
+                                    description: Gross monthly rental income for the investment
                                       property.
                                   InvestmentPropertyOwnershipPercentage:
                                     type: number
@@ -4595,6 +4606,17 @@ components:
         UploadedBy:
           type: string
           description: The user who uploaded the document.
+        OcrStatus:
+          type: string
+          example: UNSUPPORTED
+          description: OCR processing status of the document.
+          enum:
+          - READY
+          - PROCESSING
+          - SUCCESS
+          - FAILED
+          - DEAD
+          - UNSUPPORTED
         Id:
           type: integer
           description: The unique identifier of the document.
