@@ -1160,7 +1160,7 @@ paths:
           | `COS` | Contract of Sale |
           | `OTHER` | Other document |
 
-        The `OcrStatus` is defined as per the table below: 
+        If you have OCR enabled on your account, the `OcrStatus` will show tell you how the status of OCR processing: 
         
           | `OcrStatus` | Description |
           |-----|-----|
