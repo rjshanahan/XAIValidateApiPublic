@@ -17,4 +17,4 @@ jobs:
         # Docs: https://docs.github.com/actions/using-workflows/workflow-syntax-for-github-actions#example-using-versioned-actions
         uses: readmeio/rdme@7.2.0
         with:
-          rdme:  openapi './XaiValidatePublicApiDefinition.yaml' --key=${{ secrets.README_OAS_KEY }} --id=${{ secrets.README_API_ID }}
+          rdme:  openapi './XaiValidatePublicApiDefinition.yml' --key=${{ secrets.README_OAS_KEY }} --id=${{ secrets.README_API_ID }}
