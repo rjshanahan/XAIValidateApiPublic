@@ -1164,6 +1164,7 @@ paths:
         
           | `OcrStatus` | Description |
           |-----|-----|
+          | `CHECKING` | The document is being checked if it is supported for OCR processing |
           | `READY` | The document is ready to be processed |
           | `PROCESSING` | The document is processing |
           | `SUCCESS` | The document has successfully completed processing |
@@ -4611,6 +4612,7 @@ components:
           example: UNSUPPORTED
           description: OCR processing status of the document.
           enum:
+          - CHECKING
           - READY
           - PROCESSING
           - SUCCESS
