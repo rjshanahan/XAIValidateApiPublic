@@ -2854,6 +2854,7 @@ components:
                 - NetSurplusRatioExcludingAddbacks
                 - NetSurplusRatioIncludingAddbacks
                 - MaxBorrowingAmount
+                - HecsTotalMonthlyRepayment
                 - ApplicantServiceability
                 properties:
                   NetMonthlySurplus:
@@ -2876,6 +2877,26 @@ components:
                     format: double
                     description: Represents the debt to income ratio at application level 
                     example: 4.5667
+                  TotalPersonalLoanMonthlyRepayment:
+                    description: Represents the sum of all personal loans repayments at application level.
+                    type: number
+                    format: double
+                    example: 750.0000
+                  TotalCreditCardMonthlyRepayment:
+                    description: Represents the sum of all credit cards monthly repayments at application level.
+                    type: number
+                    format: double
+                    example: 500.1112 
+                  TotalExistingMonthlyBufferedRepayment:
+                    description: The sum of all debt repayments for facilities currently owned by all applicants.
+                    type: number
+                    format: double
+                    example: 3090.1134
+                  TotalNewMonthlyBufferedRepayment:
+                    description: The sum of all debt repayments for the new facility.
+                    type: number
+                    format: double
+                    example: 4020.1123
                   TotalDebtRepayment:
                     type: number
                     format: double
@@ -2930,7 +2951,12 @@ components:
                     type: number
                     format: double
                     description: Represents the maximum borrowing amount at application level.
-                    example: 100000.1155                    
+                    example: 100000.1155
+                  HecsTotalMonthlyRepayment:
+                    description: The total HECS monthly repayment at the application level.
+                    type: number
+                    format: double
+                    example: 350.75                     
                   ApplicantServiceability:
                     $ref: '#/components/schemas/ResponseApplicantServiceability'      
     ResponseApplicantServiceability:
@@ -2950,6 +2976,7 @@ components:
         - TotalExistingBufferedRepayment
         - CreditCardMonthlyRepayment
         - PersonalLoanMonthlyRepayment
+        - HecsMonthlyRepayment
         properties:
           EmailAddress:
             description: The email address indicating the applicant-level serviceability results.
@@ -2995,6 +3022,11 @@ components:
             type: number
             format: double
             example: 3090.11 
+          TotalNewMonthlyBufferedRepayment:
+            description: The debt repayments for the new facility.
+            type: number
+            format: double
+            example: 4020.1111
           CreditCardMonthlyRepayment:
             description: Represents the applicant specific total credit card monthly repayment.
             type: number
@@ -3004,7 +3036,12 @@ components:
             description: Represents the applicant specific total personal loan monthly repayment.
             type: number
             format: double
-            example: 750.00    
+            example: 750.00
+          HecsMonthlyRepayment:
+            description: HECS debt monthly repayment at the applicant level.
+            type: number
+            format: double
+            example: 350.75      
     RequestNewFacilities:
       type: array
       description: A list of new debt facilities for which your customer is applying.
@@ -4007,6 +4044,9 @@ components:
                         HasHecsDebt:
                           type: boolean
                           description: Determines whether the applicant has a HECS debt to pay.
+                        HecsRemainingBalance:
+                          type: number
+                          description: The amount of HECS debt remaining. This is an optional parameter and is only considered if "HasHecsDebt" is true.
                         MaritalStatus:
                           type: string
                           description: Enumeration indicating the marital status type i.e. defacto, single etc. Used in HEM calculations.
