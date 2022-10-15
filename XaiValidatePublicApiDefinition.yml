@@ -3085,6 +3085,12 @@ components:
               - PI
               - IO
               - LOC
+          LoanPurpose:
+            type: string
+            description: The loan type, purchase PUR or refinance REF. The address must match a home loan provided in the ManageApplication call if refinancing. If not provided, the default will be 'REF'.
+            enum:
+            - PUR
+            - REF
           LoanTerm:
             type: integer
             description: The number of years for the loan
@@ -3105,11 +3111,11 @@ components:
             example: 0.0359
           RentalIncome:
             type: number
-            description: The monthly rental income associated with the loan.
+            description: The monthly rental income associated with the loan. If this is not provided on a refinance, we will use the property's rental income declared in the ManageApplication call.
             example: 2500.25
           RentalExpense:
             type: number
-            description: The monthly rental expense associated with the loan.
+            description: The monthly rental expense associated with the loan. If this is not provided on a refinance, we will use the property's rental expense declared in the ManageApplication call.
             example: 1500.50
           OwnershipPercentage:
             type: number
