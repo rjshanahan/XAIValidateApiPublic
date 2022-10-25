@@ -49,6 +49,7 @@ info:
       | [`/document/get`](#/document/get) | Retrieve information about a specific document linked to an application or applicant.  |
       | [`/document/getlist`](#/document/getlist) | Retrieves the list of documents for an application or applicant.  |
       | [`/document/download`](#/document/download) | Retrieves the pre-signed URL to download the document.  |
+      | [`/property/postcode/get`](#/property/postcode/get) | Retrieves the category of a postcode.  |
 
     ## Data Model  
       
@@ -1357,6 +1358,69 @@ paths:
                 $ref: '#/components/schemas/ResponseRequestError'
       x-codegen-request-body-name: RequestBody
 
+  /property/postcode/get:
+    post:
+      tags:
+      - Property
+      summary: Get postcode category for valuation purposes.
+      description:  >-
+        This endpoint allows you to retrieve the category of an Australian postcode and property type for valuation purposes. This is used to determine the property's suitability under your credit policy.
+          
+        The request requires at minimum the `Lender` code, which represents your relevant credit policy and the `Postcode` string. You can additionally filter by `PropertyType`, which has the enumerations below. 
+           
+          | `PropertyType` | Description |
+          |-----|-----|
+          |`APARTMENT`|A single apartment with in a property or building|
+          |`FLATS`|A single flat with in a property or building|
+          |`HOUSE`|A freestanding house|
+          |`UNIT`|A single unit with in a property or building|
+            
+        The response will return the relevant credit policy `PostcodeCategory` and `PostcodeType` for your request. If `PropertyType` is not provided in the request, then an object per `PropertyType` containing the `PostcodeCategory` and `MinimumValuationRequired` will be returned.
+          
+        The `MinimumValuationRequired` values are:
+           
+          | `MinimumValuationRequired` | Description |
+          |-----|-----|
+          |`AVM`|Automated Valuation Model|
+          |`EVR`|Electronic / desktop valuation report |
+          |`FV`|A full valuation report|
+          |`PC`|A purchase contract|
+
+            
+      operationId: getPostcodeCategory
+      parameters:
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The JSON request body for the POST.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestGetPostcodeCategory'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseGetPostcodeCategory'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to retrieve postcode category.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
 components:
   schemas:
     ResponseGetToken:
@@ -4687,7 +4751,99 @@ components:
         RowVersion:
           type: string
           description: The database-level version of the document.
-  
+    RequestGetPostcodeCategory: 
+      required:
+        - Lender
+        - Postcode
+      type: object
+      properties:
+        Lender:
+          type: string
+          example: POLICY_CODE
+          description: Policy or lender code.
+        Postcode:
+          type: string
+          example: 2000
+          description: The postcode.
+        PropertyType:
+          type: string
+          example: HOUSE
+          description: Property type to filter results by.
+          enum:
+          - APARTMENT
+          - FLATS
+          - HOUSE
+          - UNIT
+    ResponseGetPostcodeCategory:
+      required:
+      - Lender
+      - Postcode
+      - PostcodeType
+      - Messages
+      type: object
+      properties:
+        Lender:
+          type: string
+          example: POLICY_CODE
+          description: Policy or lender code.
+        Postcode:
+          type: string
+          example: 2000
+          description: The postcode.
+        PostcodeType:
+          type: string
+          example: METRO
+          description: The postcode classification.
+          enum:
+          - METRO
+          - RURAL
+          - OTHER
+        PropertyTypes:
+          type: array
+          description: Object containing postcode types, property types and minimum valuation required.
+          items:
+            required:
+            - PostcodeCategory
+            - MinimumValuationRequired
+            - PropertyType
+            type: object
+            properties:
+              PostcodeCategory:
+                type: string
+                description: Postcode category. Depending on your credit policy, these will determine whether you can lend against properties in these areas.
+                example: CAT1
+                enum: 
+                - CAT1
+                - CAT2
+                - CAT3
+                - CAT4
+                - CAT5
+              MinimumValuationRequired:
+                type: string
+                description: The minimum valuation required for properties in a postcode by property type.
+                example: AVM
+                enum: 
+                - AVM
+                - EVR
+                - FV
+                - NONE
+                - PC
+              PropertyType:
+                type: string
+                example: HOUSE
+                description: Property type for the postcode and valuation type.
+                enum:
+                - APARTMENT
+                - FLATS
+                - HOUSE
+                - UNIT
+        Messages:
+          type: array
+          description: Array of objects containing any relevant messages or functional errors.          
+        RequestId:
+          type: string
+          example: RojLCjD-ywPPGNg=
+          description: Unique request identifier.   
   securitySchemes:
     tokenAuth:
       type: http
