@@ -1373,6 +1373,7 @@ paths:
           |`APARTMENT`|A single apartment with in a property or building|
           |`FLATS`|A single flat with in a property or building|
           |`HOUSE`|A freestanding house|
+          |`TOWNHOUSE`|A self-contained property, sometimes attached and sometimes freestanding, within a complex of three or more dwellings|
           |`UNIT`|A single unit with in a property or building|
             
         The response will return the relevant credit policy `PostcodeCategory` and `PostcodeType` for your request. If `PropertyType` is not provided in the request, then an object per `PropertyType` containing the `PostcodeCategory` and `MinimumValuationRequired` will be returned.
@@ -3995,6 +3996,7 @@ components:
                     - UNIT
                     - APARTMENT
                     - FLATS
+                    - TOWNHOUSE
                   EstimatedValue:
                     type: number
                     description: The estimated value of the security.
@@ -4227,7 +4229,8 @@ components:
                                     - HOUSE
                                     - UNIT
                                     - APARTMENT
-                                    - FLATS                                    
+                                    - FLATS
+                                    - TOWNHOUSE                         
                                     description: The property type of the investment property.
                                   IncomeRentalMonthly:
                                     type: number
@@ -4773,6 +4776,7 @@ components:
           - APARTMENT
           - FLATS
           - HOUSE
+          - TOWNHOUSE
           - UNIT
     ResponseGetPostcodeCategory:
       required:
@@ -4836,6 +4840,7 @@ components:
                 - APARTMENT
                 - FLATS
                 - HOUSE
+                - TOWNHOUSE
                 - UNIT
         Messages:
           type: array
