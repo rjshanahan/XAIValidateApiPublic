@@ -37,6 +37,7 @@ info:
       | [`/application/create`](#/financialvalidation/application/create) | Create an application linking your applicants, and their external data aggregator reference identifiers.  |
       | [`/application/manage`](#/financialvalidation/application/manage) | Update an existing application including adding "declared/stated" financials, updating applicant details or adding new external data aggregator reference identifiers.  |
       | [`/application/get`](#/financialvalidation/application/get) | Retrieve an existing application using an application reference number.  |
+      | [`/application/beginurl/get`](#/financialvalidation/application/beginurl/get) | Retrieve a secure url to begin T3 applications.  |
       | [`/provideaccounts`](#/financialvalidation/provideaccounts) | Connect your customers' account and transaction data against an existing application and applicant. This is ideal if you've sourced your own raw transaction data from core systems or through Open Banking.  |
       | [`/application/getstatus`](#/application/getstatus) |  Monitor the progress of automated financial assessment.  |
       | [`/result/getsummary`](#/result/getsummary)| Retrieve the results of automated financial assessment. The endpoint will surface automated assessments against your configured credit policy (where relevant), and validation figures for income, expenses, assets and liabilities. |
@@ -327,6 +328,52 @@ paths:
                 $ref: '#/components/schemas/ResponseRequestError'
         422:
           description: Unable to retrieve application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+      x-codegen-request-body-name: RequestBody
+  /financialvalidation/application/beginurl/get:
+    post:
+      tags:
+      - Application
+      summary: Retrieve a secure URL to begin or resume a customer application.
+      description:  >-
+        This endpoint allows you to retrieve an `ApplicationBeginUrl`. This allows customers to securely begin or resume an application form session. It contains a "token" that is valid for 2 hours by default.
+          
+        The application begin url is retrieved using a `ApplicationUniqueNumber` that is made available when creating your application.
+          
+        This endpoint is only relevant to our "platform as a service" partners.
+        
+      operationId: getApplicationBeginUrl
+      parameters:
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The JSON request body for the POST.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestGetApplicationBeginUrl'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseGetApplicationBeginUrl'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
+        422:
+          description: Unable to retrieve application begin url.
           content:
             application/json:
               schema:
@@ -4482,6 +4529,38 @@ components:
                               description: Declared monthly expenses for other goods and services. Will appear under "Other goods and services"
 
           description: Object containing application payload.
+    RequestGetApplicationBeginUrl:
+      required:
+      - ApplicationUniqueNumber
+      type: object
+      properties:
+        ApplicationUniqueNumber:
+          type: string
+          format: uuid
+          description: Unique identifier for the application.
+    ResponseGetApplicationBeginUrl:
+      required:
+        - ApplicationUniqueNumber
+        - ApplicationBeginUrl
+        - RequestId
+      type: object
+      properties:
+        ApplicationUniqueNumber:
+          type: string
+          format: uuid
+          description: Unique identifier for the application.
+        ApplicationBeginUrl:
+          type: string
+          example: "https://apply.yourbrand.com.au?nnnnnnnnnnnnnnnnnn"
+          description: Secure URL to begin or resume customer application. The default expiry is set to 2 hours.
+        ExpiryIn:
+          type: integer
+          example: 7200
+          description: Expiry time for secure URL in seconds.
+        RequestId:
+          type: string
+          example: RojLCjD-ywPPMNg=
+          description: Unique request identifier.
     RequestUploadDocument: 
       required:
         - ApplicationReferenceNumber
