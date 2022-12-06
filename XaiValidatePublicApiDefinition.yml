@@ -816,6 +816,7 @@ paths:
         You will be required to supply the following required information:
           * `ApplicationReferenceNumber`: this will extract validated financials from the application object from earlier processes.
           * `ConfigurationSet`: the lending policy configuration for which you wish to calculate serviceability metrics. This will be the lender or product enumeration you have configured within XAI Validate.
+          * `NewFacilities`: specifics of the new debt facilities. This is optional - the new facility information is set in the `application/manage` call.
           * `ValidationTypes`: the financial values type to consume within the serviceability calculations. You can specify the financial value type for `Income`, `Expenses` and `Liabilities`:
               * `STATED`: customer declared financials
               * `ACTUALS`: automatically identified financials from linked data
@@ -2920,12 +2921,83 @@ components:
             type: string
             description: The policy version you specify when creating serviceability configuration. The value is a string representation of a decimal
             example: "1.11"
+        NewFacilities:
+          $ref: '#/components/schemas/RequestNewFacilities'
+    RequestNewFacilities:
+      type: array
+      description: A list of new debt facilities for which your customer is applying.
+      items:
+        type: object
+        properties:
+          PropertyAddress:
+            type: string
+            description: the address of the property.
+            example: "21 Jump Street, Narre Warren, VIC 3999"
+          PropertyPostcode:
+            type: string
+            description: the postcode of the property.
+            example: 3999
+          BorrowingAmount:
+            type: number
+            description: The amount your customer wants to borrow.
+            example: 450000.00
+          MonthlyRepayment:
+            type: number
+            description: The monthly amount repayment for the loan - deprecated. If MonthlyRepayments is provided, this value is ignored.
+            example: 2500.25            
+          MonthlyRepayments:
+            type: number
+            description: The monthly amount repayment for the loan.
+            example: 2500.25
+          RepaymentType:
+            type: string
+            description: The repayment type of the loan - principal & interest (`PI`) or interest only (`IO`).
+            enum:
+              - PI
+              - IO
+              - LOC
+          LoanPurpose:
+            type: string
+            description: The loan type, purchase PUR or refinance REF. The address must match a home loan provided in the ManageApplication call if refinancing. If not provided, the default will be 'REF'.
+            enum:
+            - PUR
+            - REF
+          LoanTerm:
+            type: integer
+            description: The number of years for the loan
+            example: 30
+          RateTerm:
+            type: integer
+            description: The number of years the initial interest rate applies.
+            example: 0
+          PropertyUsage:
+            type: string
+            description: How the property will be used - `Livein` or `Investment`. This will be used to calculate rent threshold.
+            enum:
+              - Livein
+              - Investment
+          InterestRate:
+            type: number
+            description: The decimal amount of the annual interest rate.
+            example: 0.0359
+          RentalIncome:
+            type: number
+            description: The monthly rental income associated with the loan. If this is not provided on a refinance, we will use the property's rental income declared in the ManageApplication call.
+            example: 2500.25
+          RentalExpense:
+            type: number
+            description: The monthly rental expense associated with the loan. If this is not provided on a refinance, we will use the property's rental expense declared in the ManageApplication call.
+            example: 1500.50
+          OwnershipPercentage:
+            type: number
+            description: The decimal amount of the ownership percentage.
+            example: 0.5
     ResponseApplicationServiceability:
       required:
       - RequestId
       - ApplicationReferenceNumber
       - ServiceabilityResults
-      - PolicyVersion.
+      - PolicyVersion
       type: object
       properties:
         RequestId:
@@ -2947,7 +3019,10 @@ components:
             type: object
             required: 
               - ApplicationServiceability
+              - NewFacility
             properties:
+              NewFacility:
+                $ref: '#/components/schemas/ResponseNewFacility'
               ApplicationServiceability:
                 type: object
                 description: Object containing the Application and Applicant Serviceability results.
@@ -3601,10 +3676,10 @@ components:
           example: 0
         PropertyUsage:
           type: string
-          description: The usage of the security. INV = investment and PRI = live-in/owner-occupier.
+          description: The usage of the security.
           enum:
-          - PRI
-          - INV
+          - Livein
+          - Investment
         InterestRate:
           type: number
           description: The decimal amount of the annual interest rate.
@@ -3968,11 +4043,11 @@ components:
                     - TOWNHOUSE
                   PropertyUsage:
                     type: string
-                    description: The usage of the security. INV = investment and PRI = live-in/owner-occupier.
+                    description: The usage of the security.
                     enum:
-                    - PRI
-                    - INV
-                    default: PRI
+                    - Livein
+                    - Investment
+                    default: Livein
                   EstimatedValue:
                     type: number
                     description: The estimated value of the security.
@@ -4306,7 +4381,7 @@ components:
                                     - LOC
                                   IsRefinanceLoan:
                                     type: boolean
-                                    description: Indicates the home loan is being refinanced as part of application (debt consolidation). This ensures the liability is correctly handled in serviceability calculations, by removing it as an ongoing debt committment.
+                                    description: Indicates the home loan is being refinanced as part of application (debt consolidation). This ensures the liability is correctly handled in serviceability calculations, by removing it as an ongoing debt committment. This is only used if the LoanPurpose is set to `REF`.
                                   IsInvestmentLoan:
                                     type: boolean
                                     description: Indicates the home loan is attached to a property that is being used as an investment. This boolean informs serviceability calculations that interest for the home loan is to be considered for tax deductions purposes within credit policy configuration.
@@ -4336,7 +4411,7 @@ components:
                                     example: 0.5
                                   IsRefinanceLoan:
                                     type: boolean
-                                    description: Indicates the personal loan is being refinanced as part of application (debt consolidation). This ensures the liability is correctly handled in serviceability calculations, by removing it as an ongoing debt committment.
+                                    description: Indicates the personal loan is being refinanced as part of application (debt consolidation). This ensures the liability is correctly handled in serviceability calculations, by removing it as an ongoing debt committment. This is only used if the LoanPurpose is set to `REF`.
                             LiabilitiesCreditCards:
                               type: array
                               description: The applicant's credit cards.
@@ -4357,7 +4432,7 @@ components:
                                     description: Declared credit card monthly repayment.
                                   IsRefinanceLoan:
                                     type: boolean
-                                    description: Indicates the credit card is being refinanced as part of application (debt consolidation). This ensures the liability is correctly handled in serviceability calculations, by removing it as an ongoing debt committment.
+                                    description: Indicates the credit card is being refinanced as part of application (debt consolidation). This ensures the liability is correctly handled in serviceability calculations, by removing it as an ongoing debt committment. This is only used if the LoanPurpose is set to `REF`.
                             LiabilitiesRentOrBoardMonthly:
                               type: number
                               description: 'The applicant''s monthly rent or board payments. '
