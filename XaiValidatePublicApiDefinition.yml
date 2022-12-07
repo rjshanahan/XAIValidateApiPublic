@@ -4381,9 +4381,11 @@ components:
                                     - LOC
                                   IsRefinanceLoan:
                                     type: boolean
+                                    nullable: true
                                     description: Indicates the home loan is being refinanced as part of application (debt consolidation). This ensures the liability is correctly handled in serviceability calculations, by removing it as an ongoing debt committment. This is only used if the LoanPurpose is set to `REF`.
                                   IsInvestmentLoan:
                                     type: boolean
+                                    nullable: true
                                     description: Indicates the home loan is attached to a property that is being used as an investment. This boolean informs serviceability calculations that interest for the home loan is to be considered for tax deductions purposes within credit policy configuration.
                             LiabilitiesPersonalLoans:
                               type: array
@@ -4411,6 +4413,7 @@ components:
                                     example: 0.5
                                   IsRefinanceLoan:
                                     type: boolean
+                                    nullable: true
                                     description: Indicates the personal loan is being refinanced as part of application (debt consolidation). This ensures the liability is correctly handled in serviceability calculations, by removing it as an ongoing debt committment. This is only used if the LoanPurpose is set to `REF`.
                             LiabilitiesCreditCards:
                               type: array
@@ -4432,6 +4435,7 @@ components:
                                     description: Declared credit card monthly repayment.
                                   IsRefinanceLoan:
                                     type: boolean
+                                    nullable: true
                                     description: Indicates the credit card is being refinanced as part of application (debt consolidation). This ensures the liability is correctly handled in serviceability calculations, by removing it as an ongoing debt committment. This is only used if the LoanPurpose is set to `REF`.
                             LiabilitiesRentOrBoardMonthly:
                               type: number
