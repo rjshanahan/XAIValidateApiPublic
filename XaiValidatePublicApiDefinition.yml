@@ -2964,6 +2964,7 @@ components:
             - REF
           LoanTerm:
             type: integer
+            format: float
             description: The number of years for the loan
             example: 30
           RateTerm:
@@ -3668,6 +3669,7 @@ components:
             - IO
         LoanTerm:
           type: integer
+          format: float
           description: The number of years for the loan
           example: 30
         RateTerm:
@@ -4071,6 +4073,7 @@ components:
                     - REF
                   LoanTerm:
                     type: number
+                    format: float
                     description: The loan term in years.
                   MonthlyRepayment:
                     type: number
@@ -4371,7 +4374,8 @@ components:
                                     description: Declared home loan interest rate.
                                   HomeLoanTerm:
                                     type: number
-                                    description: Declared home loan term.
+                                    format: float
+                                    description: Declared home loan term in years.
                                   HomeLoanRepaymentType:
                                     type: string
                                     description: Declared home loan repayment type.
