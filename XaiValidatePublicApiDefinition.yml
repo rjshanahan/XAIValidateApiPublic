@@ -4086,7 +4086,7 @@ components:
                 to "actual financials" identified as part of the AI models, within
                 your credit policy tolerances.
               properties:
-                AssestsCash:
+                AssetsCash:
                   type: number
                   description: The application's total cash savings - to be used
                     as "deposit" declared financial.
@@ -4442,11 +4442,11 @@ components:
                               type: number
                               description: 'The applicant''s total credit card balance
                                 for all cards.                                 '
-                            LiabilitiesPersonaLoanBalance:
+                            LiabilitiesPersonalLoanBalance:
                               type: number
                               description: 'The applicant''s total personal loan
                                 balance for all loans.            '
-                            LiabilitiesPersonaLoanRepaymentMonthly:
+                            LiabilitiesPersonalLoanRepaymentMonthly:
                               type: number
                               description: "The applicant's total personal loan\
                                 \ monthly repayment for all loans.    \n\n  "
