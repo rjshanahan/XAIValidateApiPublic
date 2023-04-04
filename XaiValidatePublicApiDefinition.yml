@@ -42,6 +42,7 @@ info:
       | [`/application/getstatus`](#/application/getstatus) |  Monitor the progress of automated financial assessment.  |
       | [`/result/getsummary`](#/result/getsummary)| Retrieve the results of automated financial assessment. The endpoint will surface automated assessments against your configured credit policy (where relevant), and validation figures for income, expenses, assets and liabilities. |
       | [`/serviceability/getserviceability`](#/serviceability/getserviceability)| Calculate serviceability for your application including income, expense, debt, borrowing amount and ratios. |
+      | [`/serviceability/scenario/potentialmaxborrowing`](#/serviceability/scenario/potentialmaxborrowing) | Calculates the maximum potential borrowing amount based on the configuration of an ideal scenario.  |
       | [`/token`](#/token) | XAI Validate uses OAuth2 authentication. Every time you call these endpoints you'll need to ensure you have a valid token.  |
       | [`/credit/enquiry`](#/credit/enquiry) | (Coming soon!) Make a credit enquiry based on key identifying information for an applicant.  |
       | [`/credit/getenquiry`](#/credit/getenquiry) | (Coming soon!) Retrieve the results of a credit enquiry detailing accounts and liabilities for an applicant.  |
@@ -50,7 +51,7 @@ info:
       | [`/document/get`](#/document/get) | Retrieve information about a specific document linked to an application or applicant.  |
       | [`/document/getlist`](#/document/getlist) | Retrieves the list of documents for an application or applicant.  |
       | [`/document/download`](#/document/download) | Retrieves the pre-signed URL to download the document.  |
-      | [`/property/postcode/get`](#/property/postcode/get) | Retrieves the category of a postcode.  |
+      | [`/property/postcode/get`](#/property/postcode/get) | Retrieves the category of a postcode.  |     
 
     ## Data Model  
       
@@ -854,7 +855,73 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseRequestError' 
+                $ref: '#/components/schemas/ResponseRequestError'
+  /serviceability/scenario/potentialmaxborrowing:
+    post:
+      tags:
+      - Serviceability
+      summary: Calculates the maximum potential borrowing amount based on the configuration of an ideal scenario.
+      description: >-
+        This endpoint allows you to calculate how much an applicant(s) can afford in a best-case scenario for a 30-year loan where they have no unsecured liabilities and their expenses are at the Household Expenditure Measure (HEM) benchmark. Potential max borrowing amount is an API-only feature for our Serviceability customers. Note that this hypothetical scenario does not modify the application in any way.
+        
+
+        The `ApplicationReferenceNumber` and `Merchant`/`Lender` codes are required to use this endpoint. Optionally, you can indicate the desired `ValidationTypes` to use with the calculation. If `ValidationTypes` is not provided, the API will respond with results using `STATED`, `ACTUALS`, and `VALIDATED` figures.
+        
+        
+        This max potential borrowing amount is determined by using the following data:
+          * Flat HEM figure for expenses (e.g. this means we are not using the living expense formula, including the stated additional/non-basic expenses)
+          * Reduced all unsecured liabilities limits to 0, this includes:
+              * Personal Loans
+              * Credit Cards
+              * Lines of Credit
+              * HECS Debt
+          * Loan term of 30 years
+          * Rate, which is the maximum of buffered or a floor rate.
+
+        Investment Loans remain as they are in the application and are not reduced.
+
+        The following information is required:
+          * `ApplicationReferenceNumber`: to gather the financials of the  ValidationTypes indicated in the request from the application object from earlier processes.
+          * `ConfigurationSet`: the lending policy configuration used to calculate serviceability metrics. This will be the lender or product enumeration you have configured within XAI Validate.
+          * `ValidationTypes`: the financial values consumed within the potential max borrowing amount calculations. You can specify one or none of the validation types below:
+              * `STATED`: customer declared financials
+              * `ACTUAL`: automatically detected financials from linked data
+              * `VALIDATED`: user-validated data from automated or manual assessment
+              * `null`
+
+      operationId: potentialmaxborrowing
+      parameters:
+        - in: header
+          name: x-api-key
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The JSON request body for the POST.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestPotentialMaxBorrowing'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponsePotentialMaxBorrowing'
+        401:
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseGetToken401'
+        422:
+          description: Unable to create token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseRequestError'
   /credit/enquiry:
     post:
       tags:
@@ -4936,6 +5003,66 @@ components:
           type: string
           example: RojLCjD-ywPPGNg=
           description: Unique request identifier.   
+    RequestPotentialMaxBorrowing:
+      required:
+      - ApplicationReferenceNumber      
+      - ConfigurationSet
+      type: object
+      properties:
+        ApplicationReferenceNumber:
+          type: string
+          description: The unique application reference number. 
+          example: AAAA111222333
+        ConfigurationSet:
+          required:
+          - Lender
+          type: object
+          description: The lender or product code you have configured lending policy against within XAI Validate.
+          properties:
+            Merchant:
+              type: string
+              description: The client code you have configured lending policy against within XAI Validate.
+              example: 'CLIENTCODE'
+            Lender:
+              type: string
+              description: The lender or product code you have configured lending policy against within XAI Validate.
+              example: 'PRODUCTCODE'
+        ValidationTypes:
+            type: array
+            items: 
+              type: string
+            example: ["VALIDATED", "STATED", "ACTUAL"]
+            description: Optional string array indicating which values to use to calculate potential max borrowing amount, STATED, ACTUAL or VALIDATED data should be used.
+    ResponsePotentialMaxBorrowing:
+      required:
+      - ApplicationReferenceNumber      
+      - ConfigurationSet
+      type: object
+      properties:
+        ApplicationReferenceNumber:
+          type: string
+          description: The unique application reference number. 
+          example: AAAA111222333        
+        PotentialMaxBorrowingAmountResults:
+            type: array
+            items: 
+              type: object
+              properties:
+                PotentialMaxBorrowingAmount: 
+                  type: number
+                  format: decimal
+                  description: The potential max borrowing amount
+                  example: 832600.86
+                DebtToIncomeRatio:
+                  type: number
+                  format: decimal
+                  description: The debt-to-income ratio
+                  example: 0.86
+                ValidationType:
+                  type: string
+                  description: Indicates which data was used to calculate the potential max borrowing amount, could be either STATED, ACTUAL or VALIDATED
+                  example: "VALIDATED"   
+            example: [{"PotentialMaxBorrowingAmount": 832600.86, "DebtToIncomeRatio": 0.86, "ValidationType": "VALIDATED"}, {"PotentialMaxBorrowingAmount": 922600.23, "DebtToIncomeRatio": 0.86, "ValidationType": "STATED"}]            
   securitySchemes:
     tokenAuth:
       type: http
