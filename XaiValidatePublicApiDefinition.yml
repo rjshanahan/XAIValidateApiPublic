@@ -1874,8 +1874,7 @@ components:
                   is "applicant-based".
               IncomeSalaryResultSummary:
                 type: array
-                description: Summary object for Income - Salary. Will return all
-                  sources of Income - Salary.
+                description: Summary object for Income - Salary. Will return all sources of Income - Salary, except those with a one-off frequency.
                 items:
                   type: object
                   properties:
@@ -1968,7 +1967,7 @@ components:
                             - PASSED
                             - FAILED
                             - REVIEWED
-                      description: Frequency of the salary income identified -
+                      description: Detected payment frequency.
                     TransactionCount:
                       type: object
                       properties:
@@ -2099,8 +2098,7 @@ components:
                         - DEAD
               IncomeOtherResultSummary:
                 type: array
-                description: Summary object for Income - Other. Will return all
-                  sources of Income - Other.
+                description: Summary object for Income - Other. Will return all sources of Income - Other, except those with a one-off frequency.
                 items:
                   type: object
                   properties:
@@ -2115,12 +2113,6 @@ components:
                       properties:
                         Value:
                           type: number
-                        Status:
-                          type: string
-                          enum:
-                            - PASSED
-                            - FAILED
-                            - REVIEWED
                       description: Net amount of other income - monthly. Returns
                         0 if no "actual" found, else "actual". If a user-entered
                         "validated" amount available, this will be returned.
@@ -2129,26 +2121,25 @@ components:
                       properties:
                         Value:
                           type: number
-                        Status:
-                          type: string
-                          enum:
-                            - PASSED
-                            - FAILED
-                            - REVIEWED
                       description: Net amount of other income - annual. Returns
                         0 if no "actual" found, else "actual". If a user-entered
                         "validated" amount available, this will be returned.
+                    Frequency:
+                      type: object
+                      properties:
+                        Value:
+                          type: string
+                          enum:
+                            - MONTH
+                            - FORT
+                            - WEEK
+                            - IRREGULAR
+                      description: Detected payment frequency.
                     TransactionCount:
                       type: object
                       properties:
                         Value:
                           type: number
-                        Status:
-                          type: string
-                          enum:
-                            - PASSED
-                            - FAILED
-                            - REVIEWED
                       description: Count of "actual" other income transactions
                         identified.
                     AgeInDays:
@@ -2156,12 +2147,6 @@ components:
                       properties:
                         Value:
                           type: number
-                        Status:
-                          type: string
-                          enum:
-                            - PASSED
-                            - FAILED
-                            - REVIEWED
                       description: Age in days of other income identified.
                     ProcessingGroup:
                       type: string
@@ -2181,6 +2166,23 @@ components:
                         - COMPLETED
                         - FAILED
                         - DEAD
+                    IncomeType:
+                      type: string
+                      description: The income type of the income identified
+                      enum:
+                        - BN
+                        - CAR
+                        - CS
+                        - DEP
+                        - DIV
+                        - GIF 
+                        - GOV
+                        - INT
+                        - LFY
+                        - OVR
+                        - ROY
+                        - SUPER
+                        - TAX
               HomeLoanResultSummary:
                 type: array
                 description: Summary object for Home Loans. Will return all home
@@ -4117,6 +4119,7 @@ components:
                     type: number
                     description: The estimated value of the security.
             Product:
+              type: object
               properties:
                   Key:
                     type: string
@@ -4400,6 +4403,9 @@ components:
                               type: number       
                             IncomeSelfEmployedAddbackOtherAnnual:
                               description: Yearly income from other addbacks for the applicant.
+                              type: number
+                            IncomeSuperannuationAnnual:
+                              description: Yearly superannuation income for the applicant.
                               type: number
                             LiabilitiesHomeLoans:
                               required:
