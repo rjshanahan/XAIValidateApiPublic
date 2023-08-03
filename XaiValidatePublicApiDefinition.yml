@@ -5071,16 +5071,28 @@ components:
           required:
           - Lender
           type: object
-          description: The lender or product code you have configured lending policy against within XAI Validate.
+          description: These are the settings we will use when calculating the potential max borrowing of an application. These include the merchant, lender, configuration, and policy versions.
           properties:
             Merchant:
               type: string
-              description: The client code you have configured lending policy against within XAI Validate.
-              example: 'CLIENTCODE'
+              description: The client code you have configured a lending policy against.
+              example: 'MERCHANTCODE'
             Lender:
               type: string
-              description: The lender or product code you have configured lending policy against within XAI Validate.
-              example: 'PRODUCTCODE'
+              description: The lender or product code you have configured a lending policy against.
+              example: 'LENDERCODE'
+            Version:
+              type: object
+              description: This is where you will specify the serviceability configuration of the credit policy you wish to use. A credit policy can have pre-configured variations, i.e., one where the new loan interest rate is 3% and another at 1%.
+              properties:
+                Id:
+                  type: string
+                  description: The Id code you have configured the specific lending policy against. This field is required to utilise an alternate configuration; otherwise, this field can be left as null or enter the value “1”.
+                  example: '1'
+                Label:
+                  type: string
+                  description: The label you have configured the specific lending policy against. For your default policy, use the term “DEFAULT”; if you have an alternative policy, this would be your chosen label.
+                  example: 'DEFAULT'
         ValidationTypes:
             type: array
             items: 
@@ -5096,7 +5108,33 @@ components:
         ApplicationReferenceNumber:
           type: string
           description: The unique application reference number. 
-          example: AAAA111222333        
+          example: AAAA111222333
+        ConfigurationSet:
+          required:
+          - Lender
+          type: object
+          description: These are the settings we will use when calculating the potential max borrowing of an application. These include the merchant, lender, configuration, and policy versions.
+          properties:
+            Merchant:
+              type: string
+              description: The client code you have configured a lending policy against.
+              example: 'MERCHANTCODE'
+            Lender:
+              type: string
+              description: The lender or product code you have configured a lending policy against.
+              example: 'LENDERCODE'
+            Version:
+              type: object
+              description: This is where you will specify the serviceability configuration of the credit policy you wish to use. A credit policy can have pre-configured variations, i.e., one where the new loan interest rate is 3% and another at 1%.
+              properties:
+                Id:
+                  type: string
+                  description: The Id code you have configured the specific lending policy against. This field is required to utilise an alternate configuration; otherwise, this field can be left as null or enter the value “1”.
+                  example: '1'
+                Label:
+                  type: string
+                  description: The label you have configured the specific lending policy against. For your default policy, use the term “DEFAULT”; if you have an alternative policy, this would be your chosen label.
+                  example: 'DEFAULT'
         PotentialMaxBorrowingAmountResults:
             type: array
             items: 
