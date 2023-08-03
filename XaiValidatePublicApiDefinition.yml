@@ -2947,20 +2947,35 @@ components:
         ConfigurationSet:
           required:
           - Lender
+          - Version
           type: object
-          description: The lender or product code you have configured lending policy against within XAI Validate.
+          description: These are the settings we will use when calculating the serviceability of an application. These include the merchant, lender, configuration, and policy versions.
           properties:
             Merchant:
               type: string
-              description: The client code you have configured lending policy against within XAI Validate.
-              example: 'CLIENTCODE'
+              description: The client code you have configured a lending policy against.
+              example: 'MERCHANTCODE'
             Lender:
               type: string
-              description: The lender or product code you have configured lending policy against within XAI Validate.
-              example: 'PRODUCTCODE'
+              description: The lender or product code you have configured a lending policy against.
+              example: 'LENDERCODE'
+            Version:
+              required:
+              - Id
+              type: object
+              description: This is where you will specify the serviceability configuration of the credit policy you wish to use. A credit policy can have pre-configured variations, i.e., one where the new loan interest rate is 3% and another at 1%.
+              properties:
+                Id:
+                  type: string
+                  description: The Id code you have configured the specific lending policy against. This field is required to utilise an alternate configuration; otherwise, this field can be left as null or enter the value “1”.
+                  example: '1'
+                Label:
+                  type: string
+                  description: The label you have configured the specific lending policy against. For your default policy, use the term “DEFAULT”; if you have an alternative policy, this would be your chosen label.
+                  example: 'DEFAULT'
         ValidationTypes:
             type: object
-            description: The financial validation types to be used for serviceability. If not provided the default will be to use "validated" financials over "actuals" over "declared".
+            description: This object will determine what kind of data we use when calculating serviceability on an application. If none are provided, the default will be to use “validated” financials over detected “actuals” over “declared”.
             required: 
               - Incomes
               - Expenses
@@ -2989,7 +3004,7 @@ components:
                 - VALIDATED
         PolicyVersion:
             type: string
-            description: The policy version you specify when creating serviceability configuration. The value is a string representation of a decimal
+            description: The policy version you specify when creating serviceability configuration. The value is a string representation of a decimal.
             example: "1.11"
     ResponseApplicationServiceability:
       required:
@@ -2997,6 +3012,7 @@ components:
       - ApplicationReferenceNumber
       - ServiceabilityResults
       - PolicyVersion
+      - ConfigurationSet
       type: object
       properties:
         RequestId:
@@ -3007,9 +3023,38 @@ components:
           type: string
           description: The unique application reference number. 
           example: AAAA111222333
+        ConfigurationSet:
+          required:
+          - Lender
+          - Version
+          type: object
+          description: These are the settings we will use when calculating the serviceability of an application. These include the merchant, lender, configuration, and policy versions.
+          properties:
+            Merchant:
+              type: string
+              description: The client code you have configured a lending policy against.
+              example: 'MERCHANTCODE'
+            Lender:
+              type: string
+              description: The lender or product code you have configured a lending policy against.
+              example: 'LENDERCODE'
+            Version:
+              required:
+              - Id
+              type: object
+              description: This is where you will specify the serviceability configuration of the credit policy you wish to use. A credit policy can have pre-configured variations, i.e., one where the new loan interest rate is 3% and another at 1%.
+              properties:
+                Id:
+                  type: string
+                  description: The Id code you have configured the specific lending policy against. This field is required to utilise an alternate configuration; otherwise, this field can be left as null or enter the value “1”.
+                  example: '1'
+                Label:
+                  type: string
+                  description: The label you have configured the specific lending policy against. For your default policy, use the term “DEFAULT”; if you have an alternative policy, this would be your chosen label.
+                  example: 'DEFAULT'
         PolicyVersion:
           type: string
-          description: The policy version you specify when creating serviceability configuration. The value is a string representation of a decimal
+          description: The policy version you specify when creating serviceability configuration. The value is a string representation of a decimal.
           example: "1.11"    
         ServiceabilityResults:
           type: array
@@ -4491,7 +4536,7 @@ components:
                                 properties:
                                   Id:
                                     type: number
-                                    description: The unique identifier for the personal loan liability.
+                                    description: The unique identifier for the credit card liability.
                                   CreditCardName:
                                     type: string
                                     description: The name or institution of the credit card liability.
@@ -4504,6 +4549,9 @@ components:
                                   IsRefinanceLoan:
                                     type: boolean
                                     description: Indicates the credit/store card is being refinanced as part of application. This ensures the liability is correctly handled in serviceability calculations.
+                                  IsJoint:
+                                    type: boolean
+                                    description: Indicates the credit/store card is held jointly with the other applicant in the application.
                             LiabilitiesRentOrBoardMonthly:
                               type: number
                               description: 'The applicant''s monthly rent or board payments. '
